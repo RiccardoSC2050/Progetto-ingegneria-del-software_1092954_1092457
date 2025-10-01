@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmlns:style="http://www.eclipse.org/papyrus/infra/gmfdiag/style" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_ijL70J69EfCH2N4CpiyzgQ" type="PapyrusUMLClassDiagram" name="Class Diagram" measurementUnit="Pixel">
+  <children xmi:type="notation:Shape" xmi:id="_dXh50J6-EfCH2N4CpiyzgQ" type="Class_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_dXh50p6-EfCH2N4CpiyzgQ" type="Class_NameLabel"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_dXh5056-EfCH2N4CpiyzgQ" type="Class_FloatingNameLabel">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_dXh51J6-EfCH2N4CpiyzgQ" y="15"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dXh51Z6-EfCH2N4CpiyzgQ" type="Class_AttributeCompartment" collapsed="true">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_dXh51p6-EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dXh5156-EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dXh52J6-EfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dXh52Z6-EfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dXh52p6-EfCH2N4CpiyzgQ" type="Class_OperationCompartment">
+      <children xmi:type="notation:Shape" xmi:id="_J7FSwJ6_EfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_J7BoYJ6_EfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_J7FSwZ6_EfCH2N4CpiyzgQ"/>
+      </children>
+      <styles xmi:type="notation:TitleStyle" xmi:id="_dXh5256-EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dXh53J6-EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dXh53Z6-EfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dXh53p6-EfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dXh5356-EfCH2N4CpiyzgQ" type="Class_NestedClassifierCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_dXh54J6-EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dXh54Z6-EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dXh54p6-EfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dXh5456-EfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Class" href="gestione-dipendenti-azienda.uml#_dXgrsJ6-EfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dXh50Z6-EfCH2N4CpiyzgQ" x="840"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_Owtk8J6_EfCH2N4CpiyzgQ" type="Package_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Owtk8p6_EfCH2N4CpiyzgQ" type="Package_NameLabel"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_Owtk856_EfCH2N4CpiyzgQ" type="Package_PackagedElementCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_Owtk9J6_EfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Owtk9Z6_EfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Package" href="gestione-dipendenti-azienda.uml#_OwsW0J6_EfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Owtk8Z6_EfCH2N4CpiyzgQ" x="360"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_YnW58J6_EfCH2N4CpiyzgQ" type="Class_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_YnW58p6_EfCH2N4CpiyzgQ" type="Class_NameLabel"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_YnW5856_EfCH2N4CpiyzgQ" type="Class_FloatingNameLabel">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_YnW59J6_EfCH2N4CpiyzgQ" y="15"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_YnW59Z6_EfCH2N4CpiyzgQ" type="Class_AttributeCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_YnW59p6_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_YnW5956_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_YnW5-J6_EfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YnW5-Z6_EfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_YnW5-p6_EfCH2N4CpiyzgQ" type="Class_OperationCompartment">
+      <children xmi:type="notation:Shape" xmi:id="_qkTAoJ6_EfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_qkP9UJ6_EfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_qkTAoZ6_EfCH2N4CpiyzgQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_r4kr8J6_EfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_r4hBkJ6_EfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_r4kr8Z6_EfCH2N4CpiyzgQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_t5XfAJ6_EfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_t5T0oJ6_EfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_t5XfAZ6_EfCH2N4CpiyzgQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_vRDDoJ6_EfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_vQ-yMJ6_EfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_vRDDoZ6_EfCH2N4CpiyzgQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_xHUBsJ6_EfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_xHQXUJ6_EfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_xHUBsZ6_EfCH2N4CpiyzgQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_yw9gEJ6_EfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_yw51sJ6_EfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_yw9gEZ6_EfCH2N4CpiyzgQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_4ZIpgJ6_EfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_4ZEYEJ6_EfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_4ZIpgZ6_EfCH2N4CpiyzgQ"/>
+      </children>
+      <styles xmi:type="notation:TitleStyle" xmi:id="_YnW5-56_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_YnW5_J6_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_YnW5_Z6_EfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YnW5_p6_EfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_YnW5_56_EfCH2N4CpiyzgQ" type="Class_NestedClassifierCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_YnW6AJ6_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_YnW6AZ6_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_YnW6Ap6_EfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YnW6A56_EfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Class" href="gestione-dipendenti-azienda.uml#_YnVr0J6_EfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YnW58Z6_EfCH2N4CpiyzgQ" x="360" y="300"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_8MzvcJ6_EfCH2N4CpiyzgQ" type="Class_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_8Mzvcp6_EfCH2N4CpiyzgQ" type="Class_NameLabel"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_8Mzvc56_EfCH2N4CpiyzgQ" type="Class_FloatingNameLabel">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_8MzvdJ6_EfCH2N4CpiyzgQ" y="15"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_8MzvdZ6_EfCH2N4CpiyzgQ" type="Class_AttributeCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_8Mzvdp6_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_8Mzvd56_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_8MzveJ6_EfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_8MzveZ6_EfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_8Mzvep6_EfCH2N4CpiyzgQ" type="Class_OperationCompartment">
+      <children xmi:type="notation:Shape" xmi:id="_BA-pEJ7AEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_BA5JgJ7AEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_BA-pEZ7AEfCH2N4CpiyzgQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_DIRFsJ7AEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_DIM0QJ7AEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_DIRFsZ7AEfCH2N4CpiyzgQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_KrV1kJ7AEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_KrRkIJ7AEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_KrV1kZ7AEfCH2N4CpiyzgQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_MswTsJ7AEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_MsspUJ7AEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_MswTsZ7AEfCH2N4CpiyzgQ"/>
+      </children>
+      <styles xmi:type="notation:TitleStyle" xmi:id="_8Mzve56_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_8MzvfJ6_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_8MzvfZ6_EfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_8Mzvfp6_EfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_8Mzvf56_EfCH2N4CpiyzgQ" type="Class_NestedClassifierCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_8MzvgJ6_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_8MzvgZ6_EfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_8Mzvgp6_EfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_8Mzvg56_EfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Class" href="gestione-dipendenti-azienda.uml#_8MyhUJ6_EfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_8MzvcZ6_EfCH2N4CpiyzgQ" x="380" y="120" width="171" height="158"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_R9SZMJ7AEfCH2N4CpiyzgQ" type="Class_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_R9TAQJ7AEfCH2N4CpiyzgQ" type="Class_NameLabel"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_R9TAQZ7AEfCH2N4CpiyzgQ" type="Class_FloatingNameLabel">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_R9TAQp7AEfCH2N4CpiyzgQ" y="15"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_R9TAQ57AEfCH2N4CpiyzgQ" type="Class_AttributeCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_R9TARJ7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_R9TARZ7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_R9TARp7AEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_R9TAR57AEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_R9TASJ7AEfCH2N4CpiyzgQ" type="Class_OperationCompartment">
+      <children xmi:type="notation:Shape" xmi:id="_WHfIwJ7AEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_WHa3UJ7AEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_WHfIwZ7AEfCH2N4CpiyzgQ"/>
+      </children>
+      <styles xmi:type="notation:TitleStyle" xmi:id="_R9TASZ7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_R9TASp7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_R9TAS57AEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_R9TATJ7AEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_R9TATZ7AEfCH2N4CpiyzgQ" type="Class_NestedClassifierCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_R9TATp7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_R9TAT57AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_R9TAUJ7AEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_R9TAUZ7AEfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Class" href="gestione-dipendenti-azienda.uml#_R9RLEJ7AEfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_R9SZMZ7AEfCH2N4CpiyzgQ" x="120" y="120" width="159" height="164"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_aNiYIJ7AEfCH2N4CpiyzgQ" type="Class_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_aNiYIp7AEfCH2N4CpiyzgQ" type="Class_NameLabel"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_aNiYI57AEfCH2N4CpiyzgQ" type="Class_FloatingNameLabel">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_aNiYJJ7AEfCH2N4CpiyzgQ" y="15"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_aNiYJZ7AEfCH2N4CpiyzgQ" type="Class_AttributeCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_aNiYJp7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_aNiYJ57AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_aNiYKJ7AEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aNiYKZ7AEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_aNiYKp7AEfCH2N4CpiyzgQ" type="Class_OperationCompartment">
+      <children xmi:type="notation:Shape" xmi:id="_gZ7B4J7AEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_gZ1iUJ7AEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_gZ7B4Z7AEfCH2N4CpiyzgQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_lQDqYJ7AEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_lP-K0J7AEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_lQDqYZ7AEfCH2N4CpiyzgQ"/>
+      </children>
+      <styles xmi:type="notation:TitleStyle" xmi:id="_aNiYK57AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_aNiYLJ7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_aNiYLZ7AEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aNiYLp7AEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_aNiYL57AEfCH2N4CpiyzgQ" type="Class_NestedClassifierCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_aNiYMJ7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_aNiYMZ7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_aNiYMp7AEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aNiYM57AEfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Class" href="gestione-dipendenti-azienda.uml#_aNhKAJ7AEfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aNiYIZ7AEfCH2N4CpiyzgQ" x="360" y="500" width="201" height="201"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_pOufYJ7AEfCH2N4CpiyzgQ" type="Class_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_pOufYp7AEfCH2N4CpiyzgQ" type="Class_NameLabel"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_pOufY57AEfCH2N4CpiyzgQ" type="Class_FloatingNameLabel">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_pOufZJ7AEfCH2N4CpiyzgQ" y="15"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_pOufZZ7AEfCH2N4CpiyzgQ" type="Class_AttributeCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_pOufZp7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_pOufZ57AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_pOufaJ7AEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pOufaZ7AEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_pOvGcJ7AEfCH2N4CpiyzgQ" type="Class_OperationCompartment">
+      <children xmi:type="notation:Shape" xmi:id="_sQ_WgJ7AEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_sQ528J7AEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_sQ_WgZ7AEfCH2N4CpiyzgQ"/>
+      </children>
+      <styles xmi:type="notation:TitleStyle" xmi:id="_pOvGcZ7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_pOvGcp7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_pOvGc57AEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pOvGdJ7AEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_pOvGdZ7AEfCH2N4CpiyzgQ" type="Class_NestedClassifierCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_pOvGdp7AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_pOvGd57AEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_pOvGeJ7AEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pOvGeZ7AEfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Class" href="gestione-dipendenti-azienda.uml#_pOtRQJ7AEfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pOufYZ7AEfCH2N4CpiyzgQ" x="100" y="320" width="181" height="201"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_H_vVgJ7BEfCH2N4CpiyzgQ" type="Class_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_H_vVgp7BEfCH2N4CpiyzgQ" type="Class_NameLabel"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_H_v8kJ7BEfCH2N4CpiyzgQ" type="Class_FloatingNameLabel">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_H_v8kZ7BEfCH2N4CpiyzgQ" y="15"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_H_v8kp7BEfCH2N4CpiyzgQ" type="Class_AttributeCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_H_v8k57BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_H_v8lJ7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_H_v8lZ7BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_H_v8lp7BEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_H_v8l57BEfCH2N4CpiyzgQ" type="Class_OperationCompartment">
+      <children xmi:type="notation:Shape" xmi:id="_Ot4BcJ7BEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_OtwssJ7BEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_Ot4BcZ7BEfCH2N4CpiyzgQ"/>
+      </children>
+      <styles xmi:type="notation:TitleStyle" xmi:id="_H_v8mJ7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_H_v8mZ7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_H_v8mp7BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_H_v8m57BEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_H_v8nJ7BEfCH2N4CpiyzgQ" type="Class_NestedClassifierCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_H_v8nZ7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_H_v8np7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_H_v8n57BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_H_v8oJ7BEfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Class" href="gestione-dipendenti-azienda.uml#_H_uucJ7BEfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_H_vVgZ7BEfCH2N4CpiyzgQ" x="1000"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_fymtwJ7BEfCH2N4CpiyzgQ" type="Class_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_fynU0J7BEfCH2N4CpiyzgQ" type="Class_NameLabel"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_fynU0Z7BEfCH2N4CpiyzgQ" type="Class_FloatingNameLabel">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_fynU0p7BEfCH2N4CpiyzgQ" y="15"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_fynU057BEfCH2N4CpiyzgQ" type="Class_AttributeCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_fynU1J7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_fynU1Z7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_fynU1p7BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fynU157BEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_fynU2J7BEfCH2N4CpiyzgQ" type="Class_OperationCompartment">
+      <children xmi:type="notation:Shape" xmi:id="_h59b0J7BEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_h52HEJ7BEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_h59b0Z7BEfCH2N4CpiyzgQ"/>
+      </children>
+      <styles xmi:type="notation:TitleStyle" xmi:id="_fynU2Z7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_fynU2p7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_fynU257BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fynU3J7BEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_fynU3Z7BEfCH2N4CpiyzgQ" type="Class_NestedClassifierCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_fynU3p7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_fynU357BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_fynU4J7BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fynU4Z7BEfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Class" href="gestione-dipendenti-azienda.uml#_fymGsJ7BEfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fymtwZ7BEfCH2N4CpiyzgQ" x="960" y="380"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_lssGkJ7BEfCH2N4CpiyzgQ" type="Class_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_lssGkp7BEfCH2N4CpiyzgQ" type="Class_NameLabel"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_lssGk57BEfCH2N4CpiyzgQ" type="Class_FloatingNameLabel">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_lssGlJ7BEfCH2N4CpiyzgQ" y="15"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_lssGlZ7BEfCH2N4CpiyzgQ" type="Class_AttributeCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_lssGlp7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_lssGl57BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_lssGmJ7BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_lssGmZ7BEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_lssGmp7BEfCH2N4CpiyzgQ" type="Class_OperationCompartment">
+      <children xmi:type="notation:Shape" xmi:id="_oMYcIJ7BEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_oMRHYJ7BEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_oMYcIZ7BEfCH2N4CpiyzgQ"/>
+      </children>
+      <styles xmi:type="notation:TitleStyle" xmi:id="_lssGm57BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_lssGnJ7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_lssGnZ7BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_lssGnp7BEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_lssGn57BEfCH2N4CpiyzgQ" type="Class_NestedClassifierCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_lssGoJ7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_lssGoZ7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_lssGop7BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_lssGo57BEfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Class" href="gestione-dipendenti-azienda.uml#_lsrfgJ7BEfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_lssGkZ7BEfCH2N4CpiyzgQ" x="940" y="260"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_s32FsJ7BEfCH2N4CpiyzgQ" type="Class_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_s32Fsp7BEfCH2N4CpiyzgQ" type="Class_NameLabel"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_s32Fs57BEfCH2N4CpiyzgQ" type="Class_FloatingNameLabel">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_s32FtJ7BEfCH2N4CpiyzgQ" y="15"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_s32FtZ7BEfCH2N4CpiyzgQ" type="Class_AttributeCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_s32Ftp7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_s32Ft57BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_s32FuJ7BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_s32FuZ7BEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_s32Fup7BEfCH2N4CpiyzgQ" type="Class_OperationCompartment">
+      <children xmi:type="notation:Shape" xmi:id="_u44wYJ7BEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_u4wNgJ7BEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_u44wYZ7BEfCH2N4CpiyzgQ"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_wmb3UJ7BEfCH2N4CpiyzgQ" type="Operation_ClassOperationLabel">
+        <element xmi:type="uml:Operation" href="gestione-dipendenti-azienda.uml#_wmT7gJ7BEfCH2N4CpiyzgQ"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_wmb3UZ7BEfCH2N4CpiyzgQ"/>
+      </children>
+      <styles xmi:type="notation:TitleStyle" xmi:id="_s32Fu57BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_s32FvJ7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_s32FvZ7BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_s32Fvp7BEfCH2N4CpiyzgQ"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_s32Fv57BEfCH2N4CpiyzgQ" type="Class_NestedClassifierCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_s32FwJ7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_s32FwZ7BEfCH2N4CpiyzgQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_s32Fwp7BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_s32Fw57BEfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Class" href="gestione-dipendenti-azienda.uml#_s31eoJ7BEfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_s32FsZ7BEfCH2N4CpiyzgQ" x="940" y="500"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_6GIE4J7BEfCH2N4CpiyzgQ" type="Package_Shape">
+    <children xmi:type="notation:DecorationNode" xmi:id="_6GIE4p7BEfCH2N4CpiyzgQ" type="Package_NameLabel"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_6GIE457BEfCH2N4CpiyzgQ" type="Package_PackagedElementCompartment">
+      <styles xmi:type="notation:TitleStyle" xmi:id="_6GIE5J7BEfCH2N4CpiyzgQ"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6GIE5Z7BEfCH2N4CpiyzgQ"/>
+    </children>
+    <element xmi:type="uml:Package" href="gestione-dipendenti-azienda.uml#_6GHd0J7BEfCH2N4CpiyzgQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_6GIE4Z7BEfCH2N4CpiyzgQ" x="900" y="140"/>
+  </children>
+  <styles xmi:type="notation:StringValueStyle" xmi:id="_ijL70Z69EfCH2N4CpiyzgQ" name="diagram_compatibility_version" stringValue="1.4.0"/>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_ijL70p69EfCH2N4CpiyzgQ"/>
+  <styles xmi:type="style:PapyrusDiagramStyle" xmi:id="_ijL70569EfCH2N4CpiyzgQ" diagramKindId="org.eclipse.papyrus.uml.diagram.class">
+    <owner xmi:type="uml:Model" href="gestione-dipendenti-azienda.uml#_idp7kJ69EfCH2N4CpiyzgQ"/>
+  </styles>
+  <element xmi:type="uml:Model" href="gestione-dipendenti-azienda.uml#_idp7kJ69EfCH2N4CpiyzgQ"/>
+  <edges xmi:type="notation:Connector" xmi:id="_7KL_YJ7AEfCH2N4CpiyzgQ" type="Dependency_Edge" source="_Owtk8J6_EfCH2N4CpiyzgQ" target="_YnW58J6_EfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_7KL_Y57AEfCH2N4CpiyzgQ" type="Dependency_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_GVWQQJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_7KL_ZJ7AEfCH2N4CpiyzgQ" y="40"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_7KL_ZZ7AEfCH2N4CpiyzgQ" type="Dependency_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_GVcW4J7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_7KL_Zp7AEfCH2N4CpiyzgQ" y="60"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_7KL_YZ7AEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Dependency" href="gestione-dipendenti-azienda.uml#_7KGf0J7AEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_7KL_Yp7AEfCH2N4CpiyzgQ" points="[220, 100, -643984, -643984]$[220, 140, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_7K6YIJ7AEfCH2N4CpiyzgQ" id="(0.8,1.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_7K6YIZ7AEfCH2N4CpiyzgQ" id="(0.8290155440414507,0.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_9IYKYJ7AEfCH2N4CpiyzgQ" type="Dependency_Edge" source="_8MzvcJ6_EfCH2N4CpiyzgQ" target="_Owtk8J6_EfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_9IYKY57AEfCH2N4CpiyzgQ" type="Dependency_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_HDbeQJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_9IYKZJ7AEfCH2N4CpiyzgQ" x="-1" y="38"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_9IYKZZ7AEfCH2N4CpiyzgQ" type="Dependency_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_HDg90J7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_9IYKZp7AEfCH2N4CpiyzgQ" x="1" y="59"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_9IYKYZ7AEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Dependency" href="gestione-dipendenti-azienda.uml#_9IWVMJ7AEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_9IYKYp7AEfCH2N4CpiyzgQ" points="[380, 140, -643984, -643984]$[160, 100, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_9IpQIJ7AEfCH2N4CpiyzgQ" id="(0.23391812865497075,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_9IpQIZ7AEfCH2N4CpiyzgQ" id="(0.5,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_-N5A8J7AEfCH2N4CpiyzgQ" type="Dependency_Edge" source="_R9SZMJ7AEfCH2N4CpiyzgQ" target="_Owtk8J6_EfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_-N5A857AEfCH2N4CpiyzgQ" type="Dependency_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_HWe9IJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_-N5A9J7AEfCH2N4CpiyzgQ" x="-1" y="38"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_-N5A9Z7AEfCH2N4CpiyzgQ" type="Dependency_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_HWkcsJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_-N5A9p7AEfCH2N4CpiyzgQ" x="1" y="58"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_-N5A8Z7AEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Dependency" href="gestione-dipendenti-azienda.uml#_-N3y0J7AEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_-N5A8p7AEfCH2N4CpiyzgQ" points="[644, 140, -643984, -643984]$[160, 100, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_-OKtwJ7AEfCH2N4CpiyzgQ" id="(0.27672955974842767,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_-OKtwZ7AEfCH2N4CpiyzgQ" id="(0.5,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="__rfAUJ7AEfCH2N4CpiyzgQ" type="Dependency_Edge" source="_aNiYIJ7AEfCH2N4CpiyzgQ" target="_Owtk8J6_EfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="__rfAU57AEfCH2N4CpiyzgQ" type="Dependency_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_GD0bYJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="__rfAVJ7AEfCH2N4CpiyzgQ" x="-1" y="38"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="__rfAVZ7AEfCH2N4CpiyzgQ" type="Dependency_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_GD6iAJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="__rfAVp7AEfCH2N4CpiyzgQ" x="-1" y="58"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="__rfAUZ7AEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Dependency" href="gestione-dipendenti-azienda.uml#__rdLIJ7AEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="__rfAUp7AEfCH2N4CpiyzgQ" points="[261, 400, -643984, -643984]$[220, 100, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="__rwGEJ7AEfCH2N4CpiyzgQ" id="(1.0,0.19900497512437812)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="__rwGEZ7AEfCH2N4CpiyzgQ" id="(0.8,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_BHYWkJ7BEfCH2N4CpiyzgQ" type="Dependency_Edge" source="_pOufYJ7AEfCH2N4CpiyzgQ" target="_Owtk8J6_EfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_BHY9oJ7BEfCH2N4CpiyzgQ" type="Dependency_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_F6NzcJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_BHY9oZ7BEfCH2N4CpiyzgQ" x="-1" y="38"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_BHY9op7BEfCH2N4CpiyzgQ" type="Dependency_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_F6UhIJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_BHY9o57BEfCH2N4CpiyzgQ" x="-1" y="58"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_BHYWkZ7BEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Dependency" href="gestione-dipendenti-azienda.uml#_BHXIcJ7BEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_BHYWkp7BEfCH2N4CpiyzgQ" points="[380, 360, -643984, -643984]$[220, 100, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_BHpcUJ7BEfCH2N4CpiyzgQ" id="(0.22099447513812154,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_BHpcUZ7BEfCH2N4CpiyzgQ" id="(0.8,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_Rs3iIJ7BEfCH2N4CpiyzgQ" type="Association_Edge" source="_dXh50J6-EfCH2N4CpiyzgQ" target="_H_vVgJ7BEfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Rs4JMJ7BEfCH2N4CpiyzgQ" type="Association_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_0YgawJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Rs4JMZ7BEfCH2N4CpiyzgQ" y="-20"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Rs4JMp7BEfCH2N4CpiyzgQ" type="Association_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_0YoWkJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Rs4JM57BEfCH2N4CpiyzgQ" y="20"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Rs4JNJ7BEfCH2N4CpiyzgQ" type="Association_TargetRoleLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_0YudMJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Rs4JNZ7BEfCH2N4CpiyzgQ" x="15" y="-20"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Rs4JNp7BEfCH2N4CpiyzgQ" type="Association_SourceRoleLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_0Y0j0J7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Rs4JN57BEfCH2N4CpiyzgQ" x="-15" y="20"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Rs4JOJ7BEfCH2N4CpiyzgQ" type="Association_SourceMultiplicityLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_0Y7RgJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Rs4JOZ7BEfCH2N4CpiyzgQ" x="15" y="20"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Rs4JOp7BEfCH2N4CpiyzgQ" type="Association_TargetMultiplicityLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_0ZCmQJ7BEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Rs4JO57BEfCH2N4CpiyzgQ" x="-15" y="-20"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_Rs3iIZ7BEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Association" href="gestione-dipendenti-azienda.uml#_Rs2UAJ7BEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Rs3iIp7BEfCH2N4CpiyzgQ" points="[640, 40, -643984, -643984]$[740, 40, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_RtZGkJ7BEfCH2N4CpiyzgQ" id="(1.0,0.4)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_RtZGkZ7BEfCH2N4CpiyzgQ" id="(0.0,0.4)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_9qb5IJ7BEfCH2N4CpiyzgQ" type="Dependency_Edge" source="_fymtwJ7BEfCH2N4CpiyzgQ" target="_6GIE4J7BEfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_9qcgMJ7BEfCH2N4CpiyzgQ" type="Dependency_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_FR1vYJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_9qcgMZ7BEfCH2N4CpiyzgQ" x="-1" y="38"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_9qcgMp7BEfCH2N4CpiyzgQ" type="Dependency_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_FR9EIJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_9qcgM57BEfCH2N4CpiyzgQ" x="-1" y="57"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_9qb5IZ7BEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Dependency" href="gestione-dipendenti-azienda.uml#_9qarAJ7BEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_9qb5Ip7BEfCH2N4CpiyzgQ" points="[667, 400, -643984, -643984]$[640, 300, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_9qu0EJ7BEfCH2N4CpiyzgQ" id="(0.0,0.4)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_9qu0EZ7BEfCH2N4CpiyzgQ" id="(0.0,0.6)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_-ah5UJ7BEfCH2N4CpiyzgQ" type="Dependency_Edge" source="_s32FsJ7BEfCH2N4CpiyzgQ" target="_6GIE4J7BEfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_-ah5U57BEfCH2N4CpiyzgQ" type="Dependency_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_FSDx0J7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_-ah5VJ7BEfCH2N4CpiyzgQ" y="39"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_-ah5VZ7BEfCH2N4CpiyzgQ" type="Dependency_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_FSLGkJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_-ah5Vp7BEfCH2N4CpiyzgQ" y="59"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_-ah5UZ7BEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Dependency" href="gestione-dipendenti-azienda.uml#_-agrMJ7BEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_-ah5Up7BEfCH2N4CpiyzgQ" points="[680, 500, -643984, -643984]$[960, 440, -643984, -643984]$[1240, 400, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_-ay_EJ7BEfCH2N4CpiyzgQ" id="(0.24539877300613497,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_-ay_EZ7BEfCH2N4CpiyzgQ" id="(0.0,0.6)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="__3FW4J7BEfCH2N4CpiyzgQ" type="Dependency_Edge" source="_lssGkJ7BEfCH2N4CpiyzgQ" target="_6GIE4J7BEfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="__3F98J7BEfCH2N4CpiyzgQ" type="Dependency_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_FSR0QJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="__3F98Z7BEfCH2N4CpiyzgQ" x="-1" y="39"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="__3F98p7BEfCH2N4CpiyzgQ" type="Dependency_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_FSYh8J7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="__3F9857BEfCH2N4CpiyzgQ" y="59"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="__3FW4Z7BEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Dependency" href="gestione-dipendenti-azienda.uml#__3EIwJ7BEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="__3FW4p7BEfCH2N4CpiyzgQ" points="[820, 480, -643984, -643984]$[800, 340, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="__3XqwJ7BEfCH2N4CpiyzgQ" id="(0.3007518796992481,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="__3XqwZ7BEfCH2N4CpiyzgQ" id="(0.8,1.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_DD0_sJ7CEfCH2N4CpiyzgQ" type="Dependency_Edge" source="_6GIE4J7BEfCH2N4CpiyzgQ" target="_dXh50J6-EfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_DD0_s57CEfCH2N4CpiyzgQ" type="Dependency_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_FRnF4J7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_DD0_tJ7CEfCH2N4CpiyzgQ" x="1" y="39"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_DD1mwJ7CEfCH2N4CpiyzgQ" type="Dependency_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_FRuaoJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_DD1mwZ7CEfCH2N4CpiyzgQ" x="1" y="59"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_DD0_sZ7CEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Dependency" href="gestione-dipendenti-azienda.uml#_DDr1wJ7CEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_DD0_sp7CEfCH2N4CpiyzgQ" points="[680, 240, -643984, -643984]$[700, 120, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_DEK98J7CEfCH2N4CpiyzgQ" id="(0.2,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_DEK98Z7CEfCH2N4CpiyzgQ" id="(1.0,0.8)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_Mr3Q8J7CEfCH2N4CpiyzgQ" type="Association_Edge" source="_fymtwJ7BEfCH2N4CpiyzgQ" target="_YnW58J6_EfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Mr34AJ7CEfCH2N4CpiyzgQ" type="Association_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_NTM9wJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Mr34AZ7CEfCH2N4CpiyzgQ" y="-19"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Mr34Ap7CEfCH2N4CpiyzgQ" type="Association_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_NTVgoJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Mr34A57CEfCH2N4CpiyzgQ" x="-1" y="18"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Mr34BJ7CEfCH2N4CpiyzgQ" type="Association_TargetRoleLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_NTcOUJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Mr34BZ7CEfCH2N4CpiyzgQ" x="323" y="-18"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Mr34Bp7CEfCH2N4CpiyzgQ" type="Association_SourceRoleLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_NTjjEJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Mr34B57CEfCH2N4CpiyzgQ" x="-325" y="18"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Mr34CJ7CEfCH2N4CpiyzgQ" type="Association_SourceMultiplicityLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_NTsF8J7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Mr34CZ7CEfCH2N4CpiyzgQ" x="324" y="19"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Mr34Cp7CEfCH2N4CpiyzgQ" type="Association_TargetMultiplicityLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_NTyzoJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_Mr34C57CEfCH2N4CpiyzgQ" x="-326" y="-19"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_Mr3Q8Z7CEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Association" href="gestione-dipendenti-azienda.uml#_Mr2C0J7CEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Mr3Q8p7CEfCH2N4CpiyzgQ" points="[1340, 460, -643984, -643984]$[272, 260, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_MsOdUJ7CEfCH2N4CpiyzgQ" id="(0.5,0.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_MsOdUZ7CEfCH2N4CpiyzgQ" id="(1.0,0.4166666666666667)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_RNNVMJ7CEfCH2N4CpiyzgQ" type="Association_Edge" source="_lssGkJ7BEfCH2N4CpiyzgQ" target="_8MzvcJ6_EfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_RNNVM57CEfCH2N4CpiyzgQ" type="Association_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_SlxDkJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_RNNVNJ7CEfCH2N4CpiyzgQ" y="-19"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_RNNVNZ7CEfCH2N4CpiyzgQ" type="Association_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_Sl4_YJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_RNNVNp7CEfCH2N4CpiyzgQ" x="-1" y="18"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_RNNVN57CEfCH2N4CpiyzgQ" type="Association_TargetRoleLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_SmAUIJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_RNNVOJ7CEfCH2N4CpiyzgQ" x="320" y="-19"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_RNNVOZ7CEfCH2N4CpiyzgQ" type="Association_SourceRoleLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_SmIP8J7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_RNNVOp7CEfCH2N4CpiyzgQ" x="-320" y="18"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_RNNVO57CEfCH2N4CpiyzgQ" type="Association_SourceMultiplicityLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_SmPksJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_RNNVPJ7CEfCH2N4CpiyzgQ" x="321" y="18"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_RNNVPZ7CEfCH2N4CpiyzgQ" type="Association_TargetMultiplicityLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_SmW5cJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_RNNVPp7CEfCH2N4CpiyzgQ" x="-320" y="-19"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_RNNVMZ7CEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Association" href="gestione-dipendenti-azienda.uml#_RNMHEJ7CEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_RNNVMp7CEfCH2N4CpiyzgQ" points="[1500, 560, -643984, -643984]$[500, 180, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_RNkhkJ7CEfCH2N4CpiyzgQ" id="(0.0,0.4)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_RNkhkZ7CEfCH2N4CpiyzgQ" id="(0.7017543859649122,0.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_W9RPUJ7CEfCH2N4CpiyzgQ" type="Dependency_Edge" source="_Owtk8J6_EfCH2N4CpiyzgQ" target="_dXh50J6-EfCH2N4CpiyzgQ">
+    <children xmi:type="notation:DecorationNode" xmi:id="_W9R2YJ7CEfCH2N4CpiyzgQ" type="Dependency_NameLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_aDhOkJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_W9R2YZ7CEfCH2N4CpiyzgQ" x="-1" y="39"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_W9R2Yp7CEfCH2N4CpiyzgQ" type="Dependency_StereotypeLabel">
+      <styles xmi:type="notation:BooleanValueStyle" xmi:id="_aDpKYJ7CEfCH2N4CpiyzgQ" name="IS_UPDATED_POSITION" booleanValue="true"/>
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_W9R2Y57CEfCH2N4CpiyzgQ" y="59"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_W9RPUZ7CEfCH2N4CpiyzgQ"/>
+    <element xmi:type="uml:Dependency" href="gestione-dipendenti-azienda.uml#_W9IFYJ7CEfCH2N4CpiyzgQ"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_W9RPUp7CEfCH2N4CpiyzgQ" points="[560, 120, -643984, -643984]$[1100, 80, -643984, -643984]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_W9i8IJ7CEfCH2N4CpiyzgQ" id="(1.0,0.6)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_W9i8IZ7CEfCH2N4CpiyzgQ" id="(0.0,0.4)"/>
+  </edges>
+</notation:Diagram>

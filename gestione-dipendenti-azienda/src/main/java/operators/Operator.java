@@ -14,7 +14,8 @@ abstract class Operator {
 
 	/**
 	 * 
-	 * this constructor is used by Root to create an user, but not its self
+	 * this constructor is used by Root to create an user, but not its self there
+	 * are 3 access level
 	 * 
 	 * @param name
 	 * @param password
@@ -27,8 +28,7 @@ abstract class Operator {
 			throw new IllegalArgumentException(
 					"impossibile creare un utente con livello accesso negativo o superiore a 3");
 		}
-		
-		
+
 		this.name = name;
 		this.password = password;
 		this.accessLevel = accessLevel;
@@ -82,6 +82,11 @@ abstract class Operator {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Operator [name=" + name + ", accessLevel=" + accessLevel + ", id=" + id + "]";
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -110,8 +115,16 @@ abstract class Operator {
 		return allOperators;
 	}
 
-	public static void setAllOperators(List<Operator> allOperators) {
-		Operator.allOperators = allOperators;
+	public static void deleteSpecificOperatorFromAllOperators(Operator o) {
+		try {
+			if(!allOperators.isEmpty()) {
+		allOperators.remove(o);}
+			else {
+				System.out.println("Impossibile manomettere lista operatori, non ce ne sono...");
+			}
+		} catch (Error e) {
+			System.out.println(e);
+		}
 	}
 
 	public void setPassword(String password) {

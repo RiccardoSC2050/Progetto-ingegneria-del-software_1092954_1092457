@@ -63,6 +63,40 @@ public class Root extends Operator implements DataControl {
 			System.out.println("ERRORE: non è stato possibile creare l'utente");
 		}
 	}
+	
+	/**
+	 * the main method to delete user
+	 */
+	public void deleteUser() {
+
+		String n = userNameControl();
+		String id = userIdControl(n);
+		delUser(n, id);
+
+	}
+	
+	@Override
+	public void readDataFile() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void createDataFile() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deleteDataFile() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	
+	
+	
+	
 
 	/**
 	 * it's an under method used by deleteUser()
@@ -201,33 +235,8 @@ public class Root extends Operator implements DataControl {
 
 	}
 
-	/**
-	 * the main method to delete user
-	 */
-	public void deleteUser() {
+	
 
-		String n = userNameControl();
-		String id = userIdControl(n);
-		delUser(n, id);
 
-	}
-
-	@Override
-	public void readDataFile() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void createDataFile() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deleteDataFile() {
-		// TODO Auto-generated method stub
-
-	}
 
 }

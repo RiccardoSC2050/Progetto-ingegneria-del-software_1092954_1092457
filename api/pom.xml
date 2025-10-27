@@ -1,50 +1,44 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>it.unibg.progetto</groupId>
+  <parent>
+<groupId>it.unibg.progetto</groupId>
 		<artifactId>gestione-dipendenti-azienda</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../gestione-dipendenti-azienda/pom.xml</relativePath>
-	</parent>
+  </parent>
 
-	<groupId>it.unibg.progetto</groupId>
-	<artifactId>api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+  <artifactId>api</artifactId>
+  <packaging>jar</packaging>
 
-	<name>api</name>
-	<url>http://maven.apache.org</url>
+  <name>api</name>
+  <url>http://maven.apache.org</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>17</java.version>
+  </properties>
 
-	<dependencies>
+  <dependencies>
+    <!-- Dependency on service-layer -->
+    <dependency>
+      <groupId>it.unibg.progetto</groupId>
+      <artifactId>service</artifactId>
+    </dependency>
 
-		<!-- spring boot web-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<version>4.0.0-RC1</version>
-		</dependency>
+    <!-- Spring Boot Web for REST API -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
 
-		<!-- connection to service-->
-		<dependency>
-			<groupId>it.unibg.progetto</groupId>
-			<artifactId>service</artifactId>
-			<version>${project.version}</version>
-
-		</dependency>
-
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>

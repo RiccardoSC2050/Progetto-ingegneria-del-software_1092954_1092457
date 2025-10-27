@@ -36,8 +36,7 @@
 		<dependency>
 			<groupId>it.unibg.progetto</groupId>
 			<artifactId>data</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+			</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>

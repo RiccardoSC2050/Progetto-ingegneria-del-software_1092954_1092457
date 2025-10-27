@@ -2,8 +2,6 @@ package it.unibg.progetto.data;
 
 import java.security.PrivateKey;
 
-import org.hibernate.dialect.type.SQLServerCastingXmlArrayJdbcType;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 

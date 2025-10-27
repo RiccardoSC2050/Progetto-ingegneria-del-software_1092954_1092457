@@ -1,14 +1,12 @@
 package operators;
 
-import java.util.Scanner;
-
 import mainAPP.GlobalScaner;
 import mainAPP.Quit;
 
 /**
  * Root administrator class extending Operator with maximum privileges.
- * Implements singleton pattern to ensure only one root user exists.
- * Has fixed ID "0" and access level 5 for administrative operations.
+ * Implements singleton pattern to ensure only one root user exists. Has fixed
+ * ID "0" and access level 5 for administrative operations.
  * 
  * @author Employee Management System
  * @version 1.0
@@ -18,10 +16,10 @@ public class Root extends Operator implements DataControl {
 	private static Root root = null;
 
 	/**
-	 * Constructs a Root operator with administrator privileges.
-	 * Sets fixed ID "0" and access level 5 through parent constructor.
+	 * Constructs a Root operator with administrator privileges. Sets fixed ID "0"
+	 * and access level 5 through parent constructor.
 	 * 
-	 * @param name the username for the root administrator
+	 * @param name     the username for the root administrator
 	 * @param password the password for root authentication
 	 */
 	public Root(String name, String password) {
@@ -52,7 +50,7 @@ public class Root extends Operator implements DataControl {
 	 * @param pw
 	 * @param al
 	 * @return
-	 * @throws InvalidAccessLevelException 
+	 * @throws InvalidAccessLevelException
 	 */
 	public void createUser(String name, String pw, int al) throws InvalidAccessLevelException {
 		try {
@@ -63,7 +61,7 @@ public class Root extends Operator implements DataControl {
 			System.out.println("ERRORE: non è stato possibile creare l'utente");
 		}
 	}
-	
+
 	/**
 	 * the main method to delete user
 	 */
@@ -74,7 +72,7 @@ public class Root extends Operator implements DataControl {
 		delUser(n, id);
 
 	}
-	
+
 	@Override
 	public void readDataFile() {
 		// TODO Auto-generated method stub
@@ -92,11 +90,6 @@ public class Root extends Operator implements DataControl {
 		// TODO Auto-generated method stub
 
 	}
-	
-	
-	
-	
-	
 
 	/**
 	 * it's an under method used by deleteUser()
@@ -234,9 +227,5 @@ public class Root extends Operator implements DataControl {
 		return id;
 
 	}
-
-	
-
-
 
 }

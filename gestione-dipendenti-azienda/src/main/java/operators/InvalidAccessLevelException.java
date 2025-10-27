@@ -13,7 +13,7 @@ package operators;
  */
 public class InvalidAccessLevelException extends Exception {
 
-    /**
+	/**
      * Constructs a new InvalidAccessLevelException with the specified detail message.
      * 
      * @param message the detail message explaining why the access level is invalid

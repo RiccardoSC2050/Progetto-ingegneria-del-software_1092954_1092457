@@ -22,6 +22,7 @@ abstract class Operator {
 	private String id;
 	private boolean flagLogin;
 	private static List<Operator> allOperators = new ArrayList<>();
+	private static List<Operator> allUsers = new ArrayList<>();
 
 	/**
 	 * Constructor for creating regular users with specified access level. Used by
@@ -49,6 +50,7 @@ abstract class Operator {
 		this.flagLogin = false;
 
 		allOperators.add(this);
+		allUsers.add(this);
 	}
 
 	public boolean hasAtLeast(int lv, AccessLevel level) {
@@ -186,7 +188,8 @@ abstract class Operator {
 	 */
 	public static void deleteSpecificOperatorFromAllOperators(Operator o) {
 		try {
-			if (!allOperators.isEmpty()) {
+			if (!allUsers.isEmpty()) {
+				allUsers.remove(o);
 				allOperators.remove(o);
 			} else {
 				System.out.println("Cannot modify operator list - no operators exist.");
@@ -224,4 +227,11 @@ abstract class Operator {
 	public void setFlagLogin(boolean flagLogin) {
 		this.flagLogin = flagLogin;
 	}
+
+	public static List<Operator> getAllUsers() {
+		return allUsers;
+	}
+	
+	
+	
 }

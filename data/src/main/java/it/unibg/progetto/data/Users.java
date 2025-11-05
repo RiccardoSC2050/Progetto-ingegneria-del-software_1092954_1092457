@@ -11,13 +11,15 @@ public class Users {
 	private String uui;
 	private String name;
 	private String password;
+	private String accessLevel;
 
 	public Users() {
 	}
 
-	public Users(String name, String password) {
+	public Users(String name, String password, String accessLevel) {
 		this.name = name;
 		this.password = password;
+		this.accessLevel = accessLevel;
 	}
 
 	public String getUui() {
@@ -44,4 +46,13 @@ public class Users {
 		this.password = password;
 	}
 
+	public String getAccessLevel() {
+		return accessLevel;
+	}
+
+	public void setAccessLevel(String accessLevel) {
+		this.accessLevel = accessLevel;
+	}
+
+	
 }

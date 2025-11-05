@@ -20,6 +20,7 @@ abstract class Operator {
 	private String password;
 	private int accessLevel;
 	private String id;
+	private boolean flagLogin;
 	private static List<Operator> allOperators = new ArrayList<>();
 
 	/**
@@ -35,7 +36,7 @@ abstract class Operator {
 	 */
 	public Operator(String name, String password, int accessLevel) throws InvalidAccessLevelException {
 
-		if (hasAtLeast(accessLevel, AccessLevel.AL1)) {
+		if (!hasAtLeast(accessLevel, AccessLevel.AL1)) {
 
 			throw new InvalidAccessLevelException(
 					"impossibile creare un utente con livello accesso negativo o superiore a 3");
@@ -45,6 +46,7 @@ abstract class Operator {
 		this.password = password;
 		this.accessLevel = accessLevel;
 		this.id = UUID.randomUUID().toString().substring(0, 8);
+		this.flagLogin = false;
 
 		allOperators.add(this);
 	}
@@ -68,6 +70,7 @@ abstract class Operator {
 		this.password = password;
 		this.id = "0";
 		this.accessLevel = 5;
+		this.flagLogin = false;
 
 		allOperators.add(this);
 	}
@@ -78,17 +81,14 @@ abstract class Operator {
 	 * and password.
 	 * 
 	 * @param name     the username to authenticate
-	 * @param password the password to verify
-	 * @return true if credentials match an existing operator, false otherwise
+	 * @param password the password to verify true if credentials match an existing
+	 *                 operator, false otherwise
 	 */
-	public boolean login(String name, String password) {
+	public void login(String name, String password) {
 
-		for (Operator op : allOperators) {
-			if (op.getName().equals(name) && op.getPassword().equals(password)) {
-				return true;
+			if (getName().equals(name) && getPassword().equals(password)) {
+				flagLogin = true;
 			}
-		}
-		return false;
 	}
 
 	/**
@@ -97,10 +97,10 @@ abstract class Operator {
 	 * 
 	 * @return true indicating successful logout
 	 */
-	public boolean logout() {
+	public void logout() {
 
 		System.out.println("User disconnected");
-		return true;
+		flagLogin = false;
 	}
 
 	/**
@@ -217,4 +217,11 @@ abstract class Operator {
 		return password;
 	}
 
+	public boolean isFlagLogin() {
+		return flagLogin;
+	}
+
+	public void setFlagLogin(boolean flagLogin) {
+		this.flagLogin = flagLogin;
+	}
 }

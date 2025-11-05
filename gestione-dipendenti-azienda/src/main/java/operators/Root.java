@@ -99,7 +99,7 @@ public class Root extends Operator implements DataControl {
 	 */
 	private void delUser(String name, String id) {
 		try {
-			for (Operator o : getAllOperators()) {
+			for (Operator o : getAllUsers()) {
 				if (o.getName().equals(name) && o.getId().equals(id)) {
 					deleteSpecificOperatorFromAllOperators(o);
 					System.out.print("Utente identificato:");
@@ -129,13 +129,13 @@ public class Root extends Operator implements DataControl {
 						 */
 					k = "";
 					System.out.println("che utente intedi eliminare?");
-					for (Operator o : getAllOperators()) {
+					for (Operator o : getAllUsers()) {
 						System.out.println("- " + o.getName());
 					}
 					name = GlobalScaner.scanner.nextLine();
 					Quit.quit(name);
 
-					for (Operator o : getAllOperators()) {
+					for (Operator o : getAllUsers()) {
 						if (o.getName().equals(name)) {
 							k = "ok";
 						}
@@ -184,7 +184,7 @@ public class Root extends Operator implements DataControl {
 			} while (!(k.equals("y") | k.equals("n")));
 			if (k.equals("n")) {
 				System.out.println("ecco descrizione Utente|Utenti " + name + ":\n");
-				for (Operator o : getAllOperators()) {
+				for (Operator o : getAllUsers()) {
 					if (o.getName().equals(name)) {
 						System.out.println(o.toString());
 					}
@@ -212,7 +212,7 @@ public class Root extends Operator implements DataControl {
 				id = GlobalScaner.scanner.nextLine();
 				Quit.quit(id);
 
-				for (Operator o : getAllOperators()) {
+				for (Operator o : getAllUsers()) {
 					if (o.getId().equals(id)) {
 						k = "ok";
 					}

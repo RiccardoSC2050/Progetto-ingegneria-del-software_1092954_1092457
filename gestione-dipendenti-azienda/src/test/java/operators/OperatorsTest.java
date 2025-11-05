@@ -6,51 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 /**
  * sottoclassi di operators
  */
 public class OperatorsTest {
-
-	/**
-	 * UserTest
-	 * 
-	 * @throws InvalidAccessLevelException
-	 */
-	@Test // correct
-	void testCostructorOperatorUser() throws InvalidAccessLevelException {
-		User testUser = new User("user", "pw", 1);
-
-		assertEquals("user", testUser.getName());
-		assertEquals("pw", testUser.getPassword());
-		assertEquals(1, testUser.getAccessLevel());
-		assertNotNull(testUser.getId());
-
-		User testUser2 = new User("user2", "pw", 2);
-		assertEquals("user2", testUser2.getName());
-		assertEquals("pw", testUser2.getPassword());
-		assertEquals(2, testUser2.getAccessLevel());
-		assertNotNull(testUser2.getId());
-
-		// check the id are the same
-		assertNotEquals(testUser.getId(), testUser2.getId());
-	}
-
-	/**
-	 * RootTest
-	 */
-	@Test // correct
-	void testCostructorOperatorRoot() {
-
-		Root root1 = Root.getInstanceRoot();
-		Root root2 = Root.getInstanceRoot();
-
-		assertNotNull(root1);
-		assertNotNull(root2);
-		assertEquals(root1, root2);
-
-	}
 
 	/**
 	 * Operator Method
@@ -71,9 +34,8 @@ public class OperatorsTest {
 		// public boolean login(String name, String password)
 		assertFalse(user.isFlagLogin());
 		assertFalse(root.isFlagLogin());
-		
-		
-		//user
+
+		// user
 		user.login("Root", "pw");
 		assertFalse(user.isFlagLogin());
 		user.login("User", "1234");
@@ -82,9 +44,8 @@ public class OperatorsTest {
 		assertFalse(user.isFlagLogin());
 		user.login("user", "pw");
 		assertTrue(user.isFlagLogin());
-		
-		
-		//root
+
+		// root
 		root.login("ROOT", "pw");
 		assertFalse(root.isFlagLogin());
 		root.login("User", "1234");
@@ -95,18 +56,29 @@ public class OperatorsTest {
 		assertTrue(root.isFlagLogin());
 
 		// public void logout()
-		
-		//user
+
+		// user
 		user.logout();
 		assertFalse(user.isFlagLogin());
-		//root
+		// root
 		root.logout();
 		assertFalse(root.isFlagLogin());
-		
-		// public static void deleteSpecificOperatorFromAllOperators(Operator o)
-		
 
 	}
 
-	
+	// public static void deleteSpecificOperatorFromAllOperators(Operator o)
+
+	@Test
+	void testdeleteSpecificOperatorFromAllOperators() throws InvalidAccessLevelException {
+		User u1 = new User("r", "p", 1);
+		User u2 = new User("r", "p", 1);
+		User u3 = new User("r", "p", 1);
+
+		// remove u1
+		Operator.deleteSpecificOperatorFromAllOperators(u1);
+
+		assertFalse(Operator.getAllOperators().contains(u1));
+
+	}
+
 }

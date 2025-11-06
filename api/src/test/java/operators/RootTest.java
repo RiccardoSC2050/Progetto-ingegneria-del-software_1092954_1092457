@@ -7,15 +7,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import it.unibg.progetto.service.UsersService;
+import mapper.UserMapper;
+
 public class RootTest {
 	/**
 	 * RootTest
 	 */
 	@Test // correct
-	void testCostructorOperatorRoot() {
+	void testCostructorOperatorRoot(UsersService service, UserMapper userMapper) {
 
-		Root root1 = Root.getInstanceRoot();
-		Root root2 = Root.getInstanceRoot();
+		Root root1 = Root.getInstanceRoot(userMapper, service);
+		Root root2 = Root.getInstanceRoot(userMapper, service);
 
 		assertNotNull(root1);
 		assertNotNull(root2);
@@ -26,7 +29,7 @@ public class RootTest {
 	@Test
 	void TestcreateUser() throws InvalidAccessLevelException {
 		
-		Root root = Root.getInstanceRoot();
+		Root root = Root.getInstanceRoot(null, null);
 		
 		root.createUser("pippo", "pallino", 2);
 		
@@ -40,9 +43,9 @@ public class RootTest {
 	}
 	
 	@Test
-	void TestdeleteUser() throws InvalidAccessLevelException {
+	void TestdeleteUser(UsersService service, UserMapper userMapper) throws InvalidAccessLevelException {
 		
-		Root root = Root.getInstanceRoot();
+		Root root = Root.getInstanceRoot(userMapper, service);
 		
 		root.createUser("n", "pw", 1);
 		

@@ -10,6 +10,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import it.unibg.progetto.service.UsersService;
+import mapper.UserMapper;
+
 /**
  * sottoclassi di operators
  */
@@ -21,10 +24,10 @@ public class OperatorsTest {
 	 * @throws InvalidAccessLevelException
 	 */
 	@Test
-	void operatorMethodTest() throws InvalidAccessLevelException {
+	void operatorMethodTest(UsersService service, UserMapper userMapper) throws InvalidAccessLevelException {
 
 		User user = new User("user", "pw", 2);
-		Root root = Root.getInstanceRoot();
+		Root root = Root.getInstanceRoot(userMapper, service);
 
 		// public boolean hasAtLeast(int lv, AccessLevel level)
 		assertTrue(user.hasAtLeast(1, AccessLevel.AL1));

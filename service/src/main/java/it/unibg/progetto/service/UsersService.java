@@ -20,4 +20,8 @@ public class UsersService {
 	public List<Users> getAllUsersFromDataBase() {
 		return repository.findAll();
 	}
+	
+	public Users createUser(Users user) {
+	    return repository.save(user);
+	}
 }

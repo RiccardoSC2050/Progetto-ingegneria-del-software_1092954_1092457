@@ -1,4 +1,4 @@
-package mainAPP;
+package components;
 
 /**
  * Utility class for handling application exit functionality.

@@ -8,26 +8,27 @@ import jakarta.persistence.Id;
 @Entity
 public class Users {
 	@Id
-	private String uui;
+	private String uuid;
 	private String name;
 	private String password;
-	private String accessLevel;
+	private int accessLevel;
 
 	public Users() {
 	}
 
-	public Users(String name, String password, String accessLevel) {
+	public Users(String uuid, String name, String password, int accessLevel) {
+		this.uuid = uuid;
 		this.name = name;
 		this.password = password;
 		this.accessLevel = accessLevel;
 	}
 
 	public String getUui() {
-		return uui;
+		return uuid;
 	}
 
 	public void setUui(String uui) {
-		this.uui = uui;
+		this.uuid = uui;
 	}
 
 	public String getName() {
@@ -46,13 +47,12 @@ public class Users {
 		this.password = password;
 	}
 
-	public String getAccessLevel() {
+	public int getAccessLevel() {
 		return accessLevel;
 	}
 
-	public void setAccessLevel(String accessLevel) {
+	public void setAccessLevel(int accessLevel) {
 		this.accessLevel = accessLevel;
 	}
 
-	
 }

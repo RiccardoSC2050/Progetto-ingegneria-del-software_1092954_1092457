@@ -1,7 +1,16 @@
 package operators;
 
-import mainAPP.GlobalScaner;
-import mainAPP.Quit;
+import java.security.PrivateKey;
+import java.security.Provider.Service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import components.GlobalScaner;
+import components.Quit;
+import dto.Userdto;
+import it.unibg.progetto.data.Users;
+import it.unibg.progetto.service.UsersService;
+import mapper.UserMapper;
 
 /**
  * Root administrator class extending Operator with maximum privileges.
@@ -14,6 +23,10 @@ import mainAPP.Quit;
 public class Root extends Operator implements DataControl {
 
 	private static Root root = null;
+	
+	
+	private final UserMapper userMapper;
+	private final UsersService service;
 
 	/**
 	 * Constructs a Root operator with administrator privileges. Sets fixed ID "0"
@@ -22,8 +35,10 @@ public class Root extends Operator implements DataControl {
 	 * @param name     the username for the root administrator
 	 * @param password the password for root authentication
 	 */
-	public Root(String name, String password) {
+	public Root(String name, String password, UserMapper userMapper, UsersService service) {
 		super(name, password);
+		this.userMapper = userMapper;
+		this.service = service;
 	}
 
 	/**
@@ -32,10 +47,10 @@ public class Root extends Operator implements DataControl {
 	 * 
 	 * @return Root instance
 	 */
-	public static Root getInstanceRoot() {
+	public static Root getInstanceRoot(UserMapper userMapper, UsersService service) {
 		try {
 			if (root == null) {
-				root = new Root("ROOT", "1234");
+				root = new Root("ROOT", "1234", userMapper, service);
 			}
 		} catch (Exception e) {
 			System.err.println("Error creating Root instance: " + e.getMessage());
@@ -55,6 +70,11 @@ public class Root extends Operator implements DataControl {
 	public void createUser(String name, String pw, int al) throws InvalidAccessLevelException {
 		try {
 			User user = new User(name, pw, al);
+			Userdto userdto=userMapper.toUserdto(user.getId(), user.getName(), user.getPassword(), user.getAccessLevel());
+			Users usersData= userMapper.toEntityUsers(userdto);
+			service.createUser(usersData);
+			
+
 			System.out.println("utente creato con successo:");
 			System.out.println(user.toString());
 		} catch (ExceptionInInitializerError e) {

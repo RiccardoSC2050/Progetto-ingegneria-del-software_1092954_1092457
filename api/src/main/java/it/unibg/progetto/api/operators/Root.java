@@ -2,7 +2,9 @@ package it.unibg.progetto.api.operators;
 
 import java.security.PrivateKey;
 import java.security.Provider.Service;
+import java.util.List;
 
+import org.hibernate.query.NativeQuery.ReturnableResultNode;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import it.unibg.progetto.api.components.GlobalScaner;
@@ -23,10 +25,10 @@ import it.unibg.progetto.service.UsersService;
 public class Root extends Operator implements DataControl {
 
 	private static Root root = null;
-	
-	
+
 	private final UserMapper userMapper;
 	private final UsersService service;
+	private final ConversionUseRS conversionUseRS;
 
 	/**
 	 * Constructs a Root operator with administrator privileges. Sets fixed ID "0"
@@ -35,10 +37,12 @@ public class Root extends Operator implements DataControl {
 	 * @param name     the username for the root administrator
 	 * @param password the password for root authentication
 	 */
-	public Root(String name, String password, UserMapper userMapper, UsersService service) {
+	public Root(String name, String password, UserMapper userMapper, UsersService service,
+			ConversionUseRS conversionUseRS) {
 		super(name, password);
 		this.userMapper = userMapper;
 		this.service = service;
+		this.conversionUseRS = conversionUseRS;
 	}
 
 	/**
@@ -47,10 +51,10 @@ public class Root extends Operator implements DataControl {
 	 * 
 	 * @return Root instance
 	 */
-	public static Root getInstanceRoot(UserMapper userMapper, UsersService service) {
+	public static Root getInstanceRoot(UserMapper userMapper, UsersService service, ConversionUseRS conversionUseRS) {
 		try {
 			if (root == null) {
-				root = new Root("ROOT", "1234", userMapper, service);
+				root = new Root("ROOT", "1234", userMapper, service, conversionUseRS);
 			}
 		} catch (Exception e) {
 			System.err.println("Error creating Root instance: " + e.getMessage());
@@ -70,10 +74,10 @@ public class Root extends Operator implements DataControl {
 	public void createUser(String name, String pw, int al) throws InvalidAccessLevelException {
 		try {
 			User user = new User(name, pw, al);
-			Userdto userdto=userMapper.toUserdtoFromUser(user.getId(), user.getName(), user.getPassword(), user.getAccessLevel());
-			Users usersData= userMapper.toEntityUsersFromUserdto(userdto);
-			service.createUser(usersData);
-			
+			Userdto userdto = userMapper.toUserdtoFromUser(user.getId(), user.getName(), user.getPassword(),
+					user.getAccessLevel());
+			Users usersData = userMapper.toEntityUsersFromUserdto(userdto);
+			service.addUsersIntoDataUsers(usersData);
 
 			System.out.println("utente creato con successo:");
 			System.out.println(user.toString());
@@ -119,19 +123,41 @@ public class Root extends Operator implements DataControl {
 	 */
 	private void delUser(String name, String id) {
 		try {
-			for (Operator o : getAllUsers()) {
-				if (o.getName().equals(name) && o.getId().equals(id)) {
-					deleteSpecificOperatorFromAllOperators(o);
-					Userdto userdto = userMapper.toUserdtoFromUser(o.getId(), o.getName(), o.getPassword(), o.getAccessLevel());
-					Users usersData = userMapper.toEntityUsersFromUserdto(userdto);
-					service.deleteUsers(usersData);
-					
+
+			List<User> userList = conversionUseRS.convertListUsersIntoListUser(service, userMapper);
+
+			if (userList == null) {
+				System.out.println("nessun utente da eliminare");
+				return;
+			}
+
+			for (User u : userList) {
+				if (u.getName().equals(name) && u.getId().equals(id)) {
+
+					deleteUserInDataUsers(u); // update the database Users
+
 					System.out.print("Utente identificato:");
-					System.out.println(o.toString());
+					System.out.println(u.toString());
 					System.out.println("eliminato con successo");
 				}
 			}
 		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * Removes a specific operator from the global operator list. Performs safety
+	 * checks to prevent manipulation of empty lists.
+	 * 
+	 * @param o the operator to remove from the system
+	 */
+	private void deleteUserInDataUsers(User u) {
+		try {
+			Users users = conversionUseRS.convertUserIntoUsersEntity(u, userMapper);
+			service.deleteUsers(users);
+
+		} catch (Error e) {
 			System.out.println(e);
 		}
 	}
@@ -153,14 +179,22 @@ public class Root extends Operator implements DataControl {
 						 */
 					k = "";
 					System.out.println("che utente intedi eliminare?");
-					for (Operator o : getAllUsers()) {
-						System.out.println("- " + o.getName());
+					
+					List<User> userList = conversionUseRS.convertListUsersIntoListUser(service, userMapper);
+					
+					//no one to delete
+					if (userList == null) {
+						return null;
+					}
+					
+					for (User u : userList) {
+						System.out.println("- " + u.getName());
 					}
 					name = GlobalScaner.scanner.nextLine();
 					Quit.quit(name);
 
-					for (Operator o : getAllUsers()) {
-						if (o.getName().equals(name)) {
+					for (User u : userList) {
+						if (u.getName().equals(name)) {
 							k = "ok";
 						}
 					}
@@ -199,6 +233,13 @@ public class Root extends Operator implements DataControl {
 		String id = "";
 		String k = "";
 		try {
+			
+			if(name == null) {
+				return null;
+			}
+			
+			List<User> userList = conversionUseRS.convertListUsersIntoListUser(service, userMapper);
+			
 			do {
 
 				System.out.println("conosci già l'id dell'utente? [y|n]");
@@ -208,17 +249,17 @@ public class Root extends Operator implements DataControl {
 			} while (!(k.equals("y") | k.equals("n")));
 			if (k.equals("n")) {
 				System.out.println("ecco descrizione Utente|Utenti " + name + ":\n");
-				for (Operator o : getAllUsers()) {
-					if (o.getName().equals(name)) {
-						System.out.println(o.toString());
+				for (User u : userList) {
+					if (u.getName().equals(name)) {
+						System.out.println(u.toString());
 					}
 				}
 
-				id = checkDeleteId();
+				id = checkDeleteId(userList);
 
 			} else if (k.equals("y")) {
 
-				id = checkDeleteId();
+				id = checkDeleteId(userList);
 
 			}
 		} catch (Exception e) {
@@ -226,7 +267,7 @@ public class Root extends Operator implements DataControl {
 		return id;
 	}
 
-	private String checkDeleteId() {
+	private String checkDeleteId(List<User> userList) {
 		String k;
 		String id = "";
 		try {
@@ -236,8 +277,8 @@ public class Root extends Operator implements DataControl {
 				id = GlobalScaner.scanner.nextLine();
 				Quit.quit(id);
 
-				for (Operator o : getAllUsers()) {
-					if (o.getId().equals(id)) {
+				for (User u : userList) {
+					if (u.getId().equals(id)) {
 						k = "ok";
 					}
 				}

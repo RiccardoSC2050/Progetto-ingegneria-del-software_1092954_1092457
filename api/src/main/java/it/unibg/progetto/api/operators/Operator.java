@@ -1,8 +1,10 @@
 package it.unibg.progetto.api.operators;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.UUID;
+
+import it.unibg.progetto.api.dto.Userdto;
+import it.unibg.progetto.data.Users;
 
 /**
  * Abstract base class for all system operators. Provides common functionality
@@ -21,8 +23,6 @@ abstract class Operator {
 	private int accessLevel;
 	private String id;
 	private boolean flagLogin;
-	private static List<Operator> allOperators = new ArrayList<>();
-	private static List<Operator> allUsers = new ArrayList<>();
 
 	/**
 	 * Constructor for creating regular users with specified access level. Used by
@@ -49,8 +49,7 @@ abstract class Operator {
 		this.id = UUID.randomUUID().toString().substring(0, 8);
 		this.flagLogin = false;
 
-		allOperators.add(this);
-		allUsers.add(this);
+
 	}
 
 	public boolean hasAtLeast(int lv, AccessLevel level) {
@@ -58,6 +57,7 @@ abstract class Operator {
 		return (lv >= level.getLevel() && lv <= AccessLevel.AL3.getLevel() && lv > 0);
 
 	}
+
 	/**
 	 * 
 	 * @param id
@@ -66,7 +66,7 @@ abstract class Operator {
 	 * @param accessLevel
 	 * @throws InvalidAccessLevelException
 	 */
-	public Operator(String id,String name, String password, int accessLevel) throws InvalidAccessLevelException {
+	public Operator(String id, String name, String password, int accessLevel) throws InvalidAccessLevelException {
 
 		if (!hasAtLeast(accessLevel, AccessLevel.AL1)) {
 
@@ -96,9 +96,9 @@ abstract class Operator {
 		this.accessLevel = 5;
 		this.flagLogin = false;
 
-		allOperators.add(this);
+
 	}
-	
+
 	/**
 	 * Authenticates an operator by comparing credentials against all registered
 	 * operators. Searches through the global operator list to find matching name
@@ -198,28 +198,8 @@ abstract class Operator {
 	 * 
 	 * @return list containing all operators in the system
 	 */
-	public static List<Operator> getAllOperators() {
-		return allOperators;
-	}
 
-	/**
-	 * Removes a specific operator from the global operator list. Performs safety
-	 * checks to prevent manipulation of empty lists.
-	 * 
-	 * @param o the operator to remove from the system
-	 */
-	public static void deleteSpecificOperatorFromAllOperators(Operator o) {
-		try {
-			if (!allUsers.isEmpty()) {
-				allUsers.remove(o);
-				allOperators.remove(o);
-			} else {
-				System.out.println("Cannot modify operator list - no operators exist.");
-			}
-		} catch (Error e) {
-			System.out.println(e);
-		}
-	}
+	
 
 	/**
 	 * Sets a new password for the operator. Updates the operator's authentication
@@ -248,10 +228,6 @@ abstract class Operator {
 
 	public void setFlagLogin(boolean flagLogin) {
 		this.flagLogin = flagLogin;
-	}
-
-	public static List<Operator> getAllUsers() {
-		return allUsers;
 	}
 
 }

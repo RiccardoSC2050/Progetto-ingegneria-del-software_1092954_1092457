@@ -1,6 +1,5 @@
 package it.unibg.progetto.api.mapper;
 
-import java.security.Provider.Service;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +13,9 @@ import it.unibg.progetto.data.Users;
 @Component
 public class UserMapper {
 
+	//user -> userdto -> users
+	//users -> userdto -> user
+	
 	/**
 	 * 
 	 * @param id
@@ -68,7 +70,7 @@ public class UserMapper {
 	 * @throws InvalidAccessLevelException
 	 */
 	public List<User> getAllUsersInUserFormat(List<Users> usersList) throws InvalidAccessLevelException {
-		List<User> userList = null;
+		List<User> userList = new ArrayList<>();
 
 		if (!usersList.isEmpty()) {
 			for (Users u : usersList) {

@@ -30,7 +30,7 @@ public class UsersController {
 	@PostMapping
 	public Userdto create(@RequestBody Userdto userdto) {
 		Users users = userMapper.toEntityUsersFromUserdto(userdto);
-		Users saved = service.createUser(users);
+		Users saved = service.addUsersIntoDataUsers(users);
 		return userdto = userMapper.toUserdtoFromUsers(saved);
 	}
 

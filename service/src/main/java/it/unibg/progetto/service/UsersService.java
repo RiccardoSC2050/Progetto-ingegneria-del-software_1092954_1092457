@@ -21,7 +21,7 @@ public class UsersService {
 		return repository.findAll();
 	}
 	
-	public Users createUser(Users user) {
+	public Users addUsersIntoDataUsers(Users user) {
 	    return repository.save(user);
 	}
 	

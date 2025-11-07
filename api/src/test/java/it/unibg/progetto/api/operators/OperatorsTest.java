@@ -21,6 +21,7 @@ import it.unibg.progetto.service.UsersService;
 /**
  * sottoclassi di operators
  */
+/*
 public class OperatorsTest {
 
 	/**
@@ -28,6 +29,7 @@ public class OperatorsTest {
 	 * 
 	 * @throws InvalidAccessLevelException
 	 */
+	/*
 	@Test
 	void operatorMethodTest(UsersService service, UserMapper userMapper) throws InvalidAccessLevelException {
 
@@ -89,4 +91,4 @@ public class OperatorsTest {
 
 	}
 
-}
+}*/

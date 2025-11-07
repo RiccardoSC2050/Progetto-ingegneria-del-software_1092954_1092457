@@ -7,9 +7,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 
+import it.unibg.progetto.api.mapper.UserMapper;
+import it.unibg.progetto.api.operators.Root;
 import it.unibg.progetto.service.UsersService;
-import mapper.UserMapper;
-import operators.Root;
 
 @SpringBootApplication(scanBasePackages = "it.unibg.progetto")
 @EnableJpaRepositories(basePackages = "it.unibg.progetto.data") 
@@ -23,15 +23,18 @@ public class ApiMain {
     @Bean
     public CommandLineRunner createDefaultUser(UserMapper userMapper, UsersService service) {
         return args -> {
-            System.out.println("⚙️  Creazione utente di default...");
+            System.out.println("Creazione utente di default...");
             
             Root root = Root.getInstanceRoot(userMapper, service);
             
             root.createUser("rick", "1234", 2);
+            root.createUser("ciccio", "1234", 2);
+            root.createUser("bro", "1234", 2);
+            
+            root.deleteUser();
             
             
             
         };
     }
-
 }

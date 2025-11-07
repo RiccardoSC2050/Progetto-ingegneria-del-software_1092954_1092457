@@ -1,10 +1,13 @@
-package operators;
+package it.unibg.progetto.api.operators;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
+
+import it.unibg.progetto.api.operators.InvalidAccessLevelException;
+import it.unibg.progetto.api.operators.User;
 
 public class UsersTest {
 
@@ -18,7 +21,7 @@ public class UsersTest {
 		User testUser = new User("user", "pw", 1);
 
 		assertEquals("user", testUser.getName());
-		assertEquals("pw", testUser.getPassword());
+		assertEquals("pw", testUser);
 		assertEquals(1, testUser.getAccessLevel());
 		assertNotNull(testUser.getId());
 

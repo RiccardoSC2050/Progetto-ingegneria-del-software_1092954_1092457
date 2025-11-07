@@ -1,4 +1,4 @@
-package operators;
+package it.unibg.progetto.api.operators;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +58,28 @@ abstract class Operator {
 		return (lv >= level.getLevel() && lv <= AccessLevel.AL3.getLevel() && lv > 0);
 
 	}
+	/**
+	 * 
+	 * @param id
+	 * @param name
+	 * @param password
+	 * @param accessLevel
+	 * @throws InvalidAccessLevelException
+	 */
+	public Operator(String id,String name, String password, int accessLevel) throws InvalidAccessLevelException {
+
+		if (!hasAtLeast(accessLevel, AccessLevel.AL1)) {
+
+			throw new InvalidAccessLevelException(
+					"impossibile creare un utente con livello accesso negativo o superiore a 3");
+		}
+
+		this.name = name;
+		this.password = password;
+		this.accessLevel = accessLevel;
+		this.id = id;
+		this.flagLogin = false;
+	}
 
 	/**
 	 * Constructor for creating the Root operator. Creates the administrator with
@@ -76,7 +98,7 @@ abstract class Operator {
 
 		allOperators.add(this);
 	}
-
+	
 	/**
 	 * Authenticates an operator by comparing credentials against all registered
 	 * operators. Searches through the global operator list to find matching name
@@ -88,9 +110,9 @@ abstract class Operator {
 	 */
 	public void login(String name, String password) {
 
-			if (getName().equals(name) && getPassword().equals(password)) {
-				flagLogin = true;
-			}
+		if (getName().equals(name) && getPassword().equals(password)) {
+			flagLogin = true;
+		}
 	}
 
 	/**
@@ -231,7 +253,5 @@ abstract class Operator {
 	public static List<Operator> getAllUsers() {
 		return allUsers;
 	}
-	
-	
-	
+
 }

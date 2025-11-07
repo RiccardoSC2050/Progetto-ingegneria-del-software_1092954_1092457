@@ -4,8 +4,10 @@ import java.security.PrivateKey;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "users")
 public class Users {
 	@Id
 	private String uuid;
@@ -23,12 +25,12 @@ public class Users {
 		this.accessLevel = accessLevel;
 	}
 
-	public String getUui() {
+	public String getUuid() {
 		return uuid;
 	}
 
-	public void setUui(String uui) {
-		this.uuid = uui;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public String getName() {

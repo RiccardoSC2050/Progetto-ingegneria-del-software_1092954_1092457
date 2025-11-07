@@ -1,4 +1,4 @@
-package components;
+package it.unibg.progetto.api.components;
 
 import java.util.Scanner;
 

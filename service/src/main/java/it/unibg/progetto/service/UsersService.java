@@ -24,4 +24,8 @@ public class UsersService {
 	public Users createUser(Users user) {
 	    return repository.save(user);
 	}
+	
+	public void deleteUsers(Users user) {
+		repository.delete(user);
+	}
 }

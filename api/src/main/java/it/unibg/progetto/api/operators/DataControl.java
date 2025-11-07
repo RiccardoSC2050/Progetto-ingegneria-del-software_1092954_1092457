@@ -1,4 +1,4 @@
-package operators;
+package it.unibg.progetto.api.operators;
 
 /**
  * Interface defining data file management operations.

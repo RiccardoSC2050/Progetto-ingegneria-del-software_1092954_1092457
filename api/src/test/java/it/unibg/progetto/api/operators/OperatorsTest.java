@@ -1,4 +1,4 @@
-package operators;
+package it.unibg.progetto.api.operators;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -10,8 +10,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import it.unibg.progetto.api.mapper.UserMapper;
+import it.unibg.progetto.api.operators.AccessLevel;
+import it.unibg.progetto.api.operators.InvalidAccessLevelException;
+import it.unibg.progetto.api.operators.Operator;
+import it.unibg.progetto.api.operators.Root;
+import it.unibg.progetto.api.operators.User;
 import it.unibg.progetto.service.UsersService;
-import mapper.UserMapper;
 
 /**
  * sottoclassi di operators

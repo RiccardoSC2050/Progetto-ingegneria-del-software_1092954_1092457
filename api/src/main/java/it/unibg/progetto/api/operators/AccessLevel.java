@@ -1,4 +1,4 @@
-package operators;
+package it.unibg.progetto.api.operators;
 
 public enum AccessLevel {
 	AL1(1), AL2(2), AL3(3);

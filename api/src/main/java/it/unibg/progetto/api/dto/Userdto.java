@@ -1,4 +1,4 @@
-package dto;
+package it.unibg.progetto.api.dto;
 
 public class Userdto {
 

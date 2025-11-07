@@ -1,4 +1,4 @@
-package operators;
+package it.unibg.progetto.api.operators;
 
 /**
  * Regular user implementation extending the Operator base class. Provides
@@ -23,6 +23,17 @@ public class User extends Operator implements DataControl {
 		super(name, password, accessLevel);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param name
+	 * @param password
+	 * @param accessLevel
+	 * @throws InvalidAccessLevelException
+	 */
+	public User(String id, String name, String password, int accessLevel) throws InvalidAccessLevelException {
+		super(id, name, password, accessLevel);
+	}
 
 	/**
 	 * Reads data from the user's associated data file. Implementation pending -
@@ -30,14 +41,13 @@ public class User extends Operator implements DataControl {
 	 */
 	@Override
 	public void readDataFile() {
-		
-		if(hasAtLeast(getAccessLevel(), AccessLevel.AL3)) {
-			//method for level 3
+
+		if (hasAtLeast(getAccessLevel(), AccessLevel.AL3)) {
+			// method for level 3
+		} else {
+			// method for level 1-2
 		}
-		else {
-			//method for level 1-2
-		}
-		
+
 	}
 
 	/**
@@ -46,11 +56,10 @@ public class User extends Operator implements DataControl {
 	 */
 	@Override
 	public void createDataFile() {
-		if(hasAtLeast(getAccessLevel(), AccessLevel.AL2)) {
-			//method for level 2-3
-		}
-		else {
-			//error
+		if (hasAtLeast(getAccessLevel(), AccessLevel.AL2)) {
+			// method for level 2-3
+		} else {
+			// error
 		}
 	}
 
@@ -60,11 +69,10 @@ public class User extends Operator implements DataControl {
 	 */
 	@Override
 	public void deleteDataFile() {
-		if(hasAtLeast(getAccessLevel(), AccessLevel.AL2)) {
-			//method for level 2-3
-		}
-		else {
-			//error
+		if (hasAtLeast(getAccessLevel(), AccessLevel.AL2)) {
+			// method for level 2-3
+		} else {
+			// error
 		}
 	}
 }

@@ -1,16 +1,16 @@
-package operators;
+package it.unibg.progetto.api.operators;
 
 import java.security.PrivateKey;
 import java.security.Provider.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import components.GlobalScaner;
-import components.Quit;
-import dto.Userdto;
+import it.unibg.progetto.api.components.GlobalScaner;
+import it.unibg.progetto.api.components.Quit;
+import it.unibg.progetto.api.dto.Userdto;
+import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.data.Users;
 import it.unibg.progetto.service.UsersService;
-import mapper.UserMapper;
 
 /**
  * Root administrator class extending Operator with maximum privileges.
@@ -70,8 +70,8 @@ public class Root extends Operator implements DataControl {
 	public void createUser(String name, String pw, int al) throws InvalidAccessLevelException {
 		try {
 			User user = new User(name, pw, al);
-			Userdto userdto=userMapper.toUserdto(user.getId(), user.getName(), user.getPassword(), user.getAccessLevel());
-			Users usersData= userMapper.toEntityUsers(userdto);
+			Userdto userdto=userMapper.toUserdtoFromUser(user.getId(), user.getName(), user.getPassword(), user.getAccessLevel());
+			Users usersData= userMapper.toEntityUsersFromUserdto(userdto);
 			service.createUser(usersData);
 			
 
@@ -122,6 +122,10 @@ public class Root extends Operator implements DataControl {
 			for (Operator o : getAllUsers()) {
 				if (o.getName().equals(name) && o.getId().equals(id)) {
 					deleteSpecificOperatorFromAllOperators(o);
+					Userdto userdto = userMapper.toUserdtoFromUser(o.getId(), o.getName(), o.getPassword(), o.getAccessLevel());
+					Users usersData = userMapper.toEntityUsersFromUserdto(userdto);
+					service.deleteUsers(usersData);
+					
 					System.out.print("Utente identificato:");
 					System.out.println(o.toString());
 					System.out.println("eliminato con successo");

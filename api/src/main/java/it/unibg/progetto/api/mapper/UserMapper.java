@@ -69,6 +69,25 @@ public class UserMapper {
 	 * @return
 	 * @throws InvalidAccessLevelException
 	 */
+	public List<User> getAllUsersInUserFormatWithoutPassword(List<Users> usersList) throws InvalidAccessLevelException {
+		List<User> userList = new ArrayList<>();
+
+		if (!usersList.isEmpty()) {
+			for (Users u : usersList) {
+				Userdto userdto = toUserdtoFromUser(u.getUuid(), u.getName(), "*********", u.getAccessLevel());
+				User user = toUserFromUserDTO(userdto);
+				userList.add(user);
+			}
+			return userList;
+		}
+		return null;
+	}
+	/**
+	 * 
+	 * @param usersList
+	 * @return
+	 * @throws InvalidAccessLevelException
+	 */
 	public List<User> getAllUsersInUserFormat(List<Users> usersList) throws InvalidAccessLevelException {
 		List<User> userList = new ArrayList<>();
 

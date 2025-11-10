@@ -1,10 +1,13 @@
 package it.unibg.progetto.api.operators;
 
-
+import java.util.List;
 import java.util.UUID;
 
+import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.dto.Userdto;
+import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.data.Users;
+import it.unibg.progetto.service.UsersService;
 
 /**
  * Abstract base class for all system operators. Provides common functionality
@@ -23,6 +26,7 @@ abstract class Operator {
 	private int accessLevel;
 	private String id;
 	private boolean flagLogin;
+	private final ActionOnUseRS conversionUseRS;
 
 	/**
 	 * Constructor for creating regular users with specified access level. Used by
@@ -48,7 +52,7 @@ abstract class Operator {
 		this.accessLevel = accessLevel;
 		this.id = UUID.randomUUID().toString().substring(0, 8);
 		this.flagLogin = false;
-
+		this.conversionUseRS = null;
 
 	}
 
@@ -79,6 +83,7 @@ abstract class Operator {
 		this.accessLevel = accessLevel;
 		this.id = id;
 		this.flagLogin = false;
+		this.conversionUseRS = null;
 	}
 
 	/**
@@ -89,13 +94,13 @@ abstract class Operator {
 	 * @param name     the username for the root operator
 	 * @param password the password for root authentication
 	 */
-	public Operator(String name, String password) {
+	public Operator(String name, String password, ActionOnUseRS conversionUseRS) {
 		this.name = name;
 		this.password = password;
 		this.id = "0";
 		this.accessLevel = 5;
 		this.flagLogin = false;
-
+		this.conversionUseRS = conversionUseRS;
 
 	}
 
@@ -107,11 +112,18 @@ abstract class Operator {
 	 * @param name     the username to authenticate
 	 * @param password the password to verify true if credentials match an existing
 	 *                 operator, false otherwise
+	 * @throws InvalidAccessLevelException
 	 */
-	public void login(String name, String password) {
+	public void login(String name, String password) throws InvalidAccessLevelException {
 
-		if (getName().equals(name) && getPassword().equals(password)) {
-			flagLogin = true;
+		while (true) {
+			boolean value = getConversionUseRS().LoginAuthenticator(name, password);
+
+			if (value) {
+				setFlagLogin(true);
+			} else {
+				System.out.println("Non è stato possibile loggarsi, riprovare:");
+			}
 		}
 	}
 
@@ -122,9 +134,15 @@ abstract class Operator {
 	 * @return true indicating successful logout
 	 */
 	public void logout() {
+		try {
+			if (this.isFlagLogin()) {
+				System.out.println("Ti sei disconnesso");
+				this.setFlagLogin(false);
 
-		System.out.println("User disconnected");
-		flagLogin = false;
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	/**
@@ -199,8 +217,6 @@ abstract class Operator {
 	 * @return list containing all operators in the system
 	 */
 
-	
-
 	/**
 	 * Sets a new password for the operator. Updates the operator's authentication
 	 * credentials.
@@ -218,7 +234,7 @@ abstract class Operator {
 	 * 
 	 * @return the operator's current password
 	 */
-	protected String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 
@@ -228,6 +244,10 @@ abstract class Operator {
 
 	public void setFlagLogin(boolean flagLogin) {
 		this.flagLogin = flagLogin;
+	}
+
+	public ActionOnUseRS getConversionUseRS() {
+		return conversionUseRS;
 	}
 
 }

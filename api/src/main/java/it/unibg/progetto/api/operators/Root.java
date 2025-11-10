@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.query.NativeQuery.ReturnableResultNode;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.components.GlobalScaner;
 import it.unibg.progetto.api.components.Quit;
 import it.unibg.progetto.api.dto.Userdto;
@@ -26,10 +27,6 @@ public class Root extends Operator implements DataControl {
 
 	private static Root root = null;
 
-	private final UserMapper userMapper;
-	private final UsersService service;
-	private final ConversionUseRS conversionUseRS;
-
 	/**
 	 * Constructs a Root operator with administrator privileges. Sets fixed ID "0"
 	 * and access level 5 through parent constructor.
@@ -37,12 +34,8 @@ public class Root extends Operator implements DataControl {
 	 * @param name     the username for the root administrator
 	 * @param password the password for root authentication
 	 */
-	public Root(String name, String password, UserMapper userMapper, UsersService service,
-			ConversionUseRS conversionUseRS) {
-		super(name, password);
-		this.userMapper = userMapper;
-		this.service = service;
-		this.conversionUseRS = conversionUseRS;
+	public Root(String name, String password, ActionOnUseRS conversionUseRS) {
+		super(name, password, conversionUseRS);
 	}
 
 	/**
@@ -51,10 +44,10 @@ public class Root extends Operator implements DataControl {
 	 * 
 	 * @return Root instance
 	 */
-	public static Root getInstanceRoot(UserMapper userMapper, UsersService service, ConversionUseRS conversionUseRS) {
+	public static Root getInstanceRoot(ActionOnUseRS conversionUseRS) {
 		try {
 			if (root == null) {
-				root = new Root("ROOT", "1234", userMapper, service, conversionUseRS);
+				root = new Root("ROOT", "1234", conversionUseRS);
 			}
 		} catch (Exception e) {
 			System.err.println("Error creating Root instance: " + e.getMessage());
@@ -74,13 +67,11 @@ public class Root extends Operator implements DataControl {
 	public void createUser(String name, String pw, int al) throws InvalidAccessLevelException {
 		try {
 			User user = new User(name, pw, al);
-			Userdto userdto = userMapper.toUserdtoFromUser(user.getId(), user.getName(), user.getPassword(),
-					user.getAccessLevel());
-			Users usersData = userMapper.toEntityUsersFromUserdto(userdto);
-			service.addUsersIntoDataUsers(usersData);
+			getConversionUseRS().addUserOnData(user);
 
 			System.out.println("utente creato con successo:");
 			System.out.println(user.toString());
+
 		} catch (ExceptionInInitializerError e) {
 			System.out.println("ERRORE: non è stato possibile creare l'utente");
 		}
@@ -88,8 +79,16 @@ public class Root extends Operator implements DataControl {
 
 	/**
 	 * the main method to delete user
+	 * @throws InvalidAccessLevelException 
 	 */
-	public void deleteUser() {
+	public void deleteUser() throws InvalidAccessLevelException {
+		
+		List<User> userList = getConversionUseRS().trasformListUsersIntoListUserWithoutPassword();
+
+		if (userList == null) {
+			System.out.println("nessun utente da eliminare");
+			return;
+		}
 
 		String n = userNameControl();
 		String id = userIdControl(n);
@@ -124,12 +123,7 @@ public class Root extends Operator implements DataControl {
 	private void delUser(String name, String id) {
 		try {
 
-			List<User> userList = conversionUseRS.convertListUsersIntoListUser(service, userMapper);
-
-			if (userList == null) {
-				System.out.println("nessun utente da eliminare");
-				return;
-			}
+			List<User> userList = getConversionUseRS().trasformListUsersIntoListUserWithoutPassword();
 
 			for (User u : userList) {
 				if (u.getName().equals(name) && u.getId().equals(id)) {
@@ -154,8 +148,7 @@ public class Root extends Operator implements DataControl {
 	 */
 	private void deleteUserInDataUsers(User u) {
 		try {
-			Users users = conversionUseRS.convertUserIntoUsersEntity(u, userMapper);
-			service.deleteUsers(users);
+			getConversionUseRS().deleteUser(u);
 
 		} catch (Error e) {
 			System.out.println(e);
@@ -179,14 +172,9 @@ public class Root extends Operator implements DataControl {
 						 */
 					k = "";
 					System.out.println("che utente intedi eliminare?");
-					
-					List<User> userList = conversionUseRS.convertListUsersIntoListUser(service, userMapper);
-					
-					//no one to delete
-					if (userList == null) {
-						return null;
-					}
-					
+
+					List<User> userList = getConversionUseRS().trasformListUsersIntoListUserWithoutPassword();
+
 					for (User u : userList) {
 						System.out.println("- " + u.getName());
 					}
@@ -233,13 +221,9 @@ public class Root extends Operator implements DataControl {
 		String id = "";
 		String k = "";
 		try {
-			
-			if(name == null) {
-				return null;
-			}
-			
-			List<User> userList = conversionUseRS.convertListUsersIntoListUser(service, userMapper);
-			
+
+			List<User> userList = getConversionUseRS().trasformListUsersIntoListUserWithoutPassword();
+
 			do {
 
 				System.out.println("conosci già l'id dell'utente? [y|n]");

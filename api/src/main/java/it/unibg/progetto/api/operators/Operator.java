@@ -56,7 +56,7 @@ abstract class Operator {
 
 	}
 
-	public boolean hasAtLeast(int lv, AccessLevel level) {
+	boolean hasAtLeast(int lv, AccessLevel level) {
 
 		return (lv >= level.getLevel() && lv <= AccessLevel.AL3.getLevel() && lv > 0);
 

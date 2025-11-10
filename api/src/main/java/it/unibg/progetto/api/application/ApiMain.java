@@ -26,10 +26,6 @@ public class ApiMain {
 			ActionOnUseRS conversionUseRS) {
 		return args -> {
 
-			Root root = Root.getInstanceRoot(conversionUseRS);
-			root.createUser("nico", "puzza", 1);
-
-			root.deleteUser();
 
 		};
 	}

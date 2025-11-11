@@ -4,6 +4,7 @@ import java.security.PrivateKey;
 import java.security.Provider.Service;
 import java.util.List;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.hibernate.query.NativeQuery.ReturnableResultNode;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -64,9 +65,30 @@ public class Root extends Operator implements DataControl {
 	 * @return
 	 * @throws InvalidAccessLevelException
 	 */
-	public void createUser(String name, String pw, int al) throws InvalidAccessLevelException {
+	private boolean isPossibleTocreateUser(String name) throws InvalidAccessLevelException {
 		try {
-			User user = new User(name, pw, al);
+
+			List<User> userList = getConversionUseRS().trasformListUsersIntoListUserWithoutPassword();
+			for (User u : userList) {
+				if (u.getName().equals(name)) {
+
+					System.err.println("ERRORE di inserimento: il nome " + name
+							+ " utente già esiste, si prega di inserirne uno nuovo");
+					return false;
+				}
+			}
+
+			System.out.println("inserire password utente: ");
+			String pw = GlobalScaner.scanner.nextLine();
+			int aclv;
+			do {
+				System.out.println("inserire il livello di accesso utente [1-3]: ");
+				String al = GlobalScaner.scanner.nextLine();
+				aclv = Integer.parseInt(al);
+
+			} while (!(aclv > 0 && aclv <= 3));
+
+			User user = new User(name, pw, aclv);
 			getConversionUseRS().addUserOnData(user);
 
 			System.out.println("utente creato con successo:");
@@ -75,14 +97,29 @@ public class Root extends Operator implements DataControl {
 		} catch (ExceptionInInitializerError e) {
 			System.out.println("ERRORE: non è stato possibile creare l'utente");
 		}
+		return true;
+	}
+
+	public void createUser() throws InvalidAccessLevelException {
+		boolean action = false;
+		do {
+
+			System.out.println("inserire nome utente: ");
+			String name = GlobalScaner.scanner.nextLine().toLowerCase();
+
+			action = isPossibleTocreateUser(name);
+
+		} while (!action);
+
 	}
 
 	/**
 	 * the main method to delete user
-	 * @throws InvalidAccessLevelException 
+	 * 
+	 * @throws InvalidAccessLevelException
 	 */
 	public void deleteUser() throws InvalidAccessLevelException {
-		
+
 		List<User> userList = getConversionUseRS().trasformListUsersIntoListUserWithoutPassword();
 
 		if (userList == null) {

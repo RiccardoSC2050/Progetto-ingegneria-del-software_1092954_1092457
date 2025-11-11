@@ -1,5 +1,6 @@
 package it.unibg.progetto.api.action_on;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ActionOnUseRS {
 		this.usersService = usersService;
 	}
 //conversion from Users to User
-	
+
 	/**
 	 * 
 	 * @param usersService
@@ -49,9 +50,6 @@ public class ActionOnUseRS {
 
 		return null;
 	}
-	
-	
-	
 
 	/**
 	 * 
@@ -64,25 +62,37 @@ public class ActionOnUseRS {
 		return userList;
 	}
 
+	/**
+	 * 
+	 * @param usersService
+	 * @param userMapper
+	 * @return
+	 * @throws InvalidAccessLevelException
+	 */
 	private List<User> converterListUsersToListUserNotProtected(UsersService usersService, UserMapper userMapper)
 			throws InvalidAccessLevelException {
-		
+
 		List<Users> UsersListFromDataUsers = usersService.getAllUsersFromDataBase();
 		if (!UsersListFromDataUsers.isEmpty()) {
 			List<User> userList = userMapper.getAllUsersInUserFormat(UsersListFromDataUsers);
-			
+
 			return userList;
 		}
-		
+
 		return null;
 	}
-	
+
+	/**
+	 * 
+	 * @return
+	 * @throws InvalidAccessLevelException
+	 */
 	private List<User> trasformListUsersIntoListUser() throws InvalidAccessLevelException {
-		
+
 		List<User> userList = converterListUsersToListUserNotProtected(usersService, userMapper);
 		return userList;
 	}
-	
+
 //conversion from User to Users
 	/**
 	 * 
@@ -120,17 +130,38 @@ public class ActionOnUseRS {
 		Users users = trasformUserIntoUsersEntity(u);
 		usersService.deleteUsers(users);
 	}
+
+//login user
 	
 	public boolean LoginAuthenticator(String name, String pw) throws InvalidAccessLevelException {
 		List<User> userList = new ArrayList<>();
-		userList=trasformListUsersIntoListUser();
-		
-		for(User u : userList) {
-			if(u.getName().equals(name) && u.getPassword().equals(pw)) {
+		userList = trasformListUsersIntoListUser();
+
+		for (User u : userList) {
+			if (u.getName().equals(name) && u.getPassword().equals(pw)) {
+				returnUserLog(u);
 				return true;
+
 			}
 		}
 		return false;
 	}
+
+	private List<String> returnUserLog(User u) {
+		String uuid = u.getId();
+		String acLv = u.getId();
+		List<String> userItems= new ArrayList<>();
+		
+		userItems.add(uuid);
+		userItems.add(acLv);
+		
+		return userItems;
+		
+	}
+	
+	public List<String> returnUserItemsLogged(){
+		return userItems = 
+	}
+	
 
 }

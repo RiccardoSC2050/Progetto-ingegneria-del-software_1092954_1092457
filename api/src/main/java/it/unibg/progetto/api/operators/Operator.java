@@ -47,7 +47,7 @@ abstract class Operator {
 					"impossibile creare un utente con livello accesso negativo o superiore a 3");
 		}
 
-		this.name = name;
+		this.name = name.toLowerCase();
 		this.password = password;
 		this.accessLevel = accessLevel;
 		this.id = UUID.randomUUID().toString().substring(0, 8);
@@ -78,7 +78,7 @@ abstract class Operator {
 					"impossibile creare un utente con livello accesso negativo o superiore a 3");
 		}
 
-		this.name = name;
+		this.name = name.toLowerCase();
 		this.password = password;
 		this.accessLevel = accessLevel;
 		this.id = id;
@@ -103,6 +103,9 @@ abstract class Operator {
 		this.conversionUseRS = conversionUseRS;
 
 	}
+	
+	
+	
 
 	/**
 	 * Authenticates an operator by comparing credentials against all registered
@@ -114,17 +117,20 @@ abstract class Operator {
 	 *                 operator, false otherwise
 	 * @throws InvalidAccessLevelException
 	 */
-	public void login(String name, String password) throws InvalidAccessLevelException {
+	public String login(String name, String password) throws InvalidAccessLevelException { //return uuid aclv
 
 		while (true) {
 			boolean value = getConversionUseRS().LoginAuthenticator(name, password);
-
+			
 			if (value) {
 				setFlagLogin(true);
+				break;
 			} else {
 				System.out.println("Non è stato possibile loggarsi, riprovare:");
 			}
 		}
+		User user = 
+		return 
 	}
 
 	/**

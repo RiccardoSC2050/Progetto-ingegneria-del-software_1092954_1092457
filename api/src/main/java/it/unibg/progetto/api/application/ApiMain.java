@@ -26,6 +26,10 @@ public class ApiMain {
 			ActionOnUseRS conversionUseRS) {
 		return args -> {
 
+			Root root =Root.getInstanceRoot(conversionUseRS);
+			
+			root.createUser();
+			root.createUser();
 
 		};
 	}

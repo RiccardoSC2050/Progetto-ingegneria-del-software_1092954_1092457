@@ -48,7 +48,7 @@ void setUp() throws InvalidAccessLevelException {
   // create object for each test
 	
   root = Root.getInstanceRoot(conversionUseRS);
-  root.createUser("user", "pw", 2);
+  root.createUser();
   
 }
 

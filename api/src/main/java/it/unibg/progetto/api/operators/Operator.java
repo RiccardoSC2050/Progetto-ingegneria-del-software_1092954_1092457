@@ -3,6 +3,7 @@ package it.unibg.progetto.api.operators;
 import java.util.List;
 import java.util.UUID;
 
+import it.unibg.progetto.api.access_session.ManageSession;
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.dto.Userdto;
 import it.unibg.progetto.api.mapper.UserMapper;
@@ -23,9 +24,8 @@ abstract class Operator {
 
 	private String name;
 	private String password;
-	private int accessLevel;
+	private int accessLevelValue;
 	private String id;
-	private boolean flagLogin;
 	private final ActionOnUseRS conversionUseRS;
 
 	/**
@@ -39,20 +39,16 @@ abstract class Operator {
 	 * @throws InvalidAccessLevelException if accessLevel is outside valid range
 	 *                                     (0-3)
 	 */
-	public Operator(String name, String password, int accessLevel) throws InvalidAccessLevelException {
-
-		if (!hasAtLeast(accessLevel, AccessLevel.AL1)) {
-
-			throw new InvalidAccessLevelException(
-					"impossibile creare un utente con livello accesso negativo o superiore a 3");
-		}
-
+	public Operator(String name, String password, AccessLevel accessLevel) {
+try {
 		this.name = name.toLowerCase();
 		this.password = password;
-		this.accessLevel = accessLevel;
+		this.accessLevelValue = accessLevel.getLevel();
 		this.id = UUID.randomUUID().toString().substring(0, 8);
-		this.flagLogin = false;
 		this.conversionUseRS = null;
+}catch (Exception e) {
+	System.err.println(e+"");
+}
 
 	}
 
@@ -70,7 +66,7 @@ abstract class Operator {
 	 * @param accessLevel
 	 * @throws InvalidAccessLevelException
 	 */
-	public Operator(String id, String name, String password, int accessLevel) throws InvalidAccessLevelException {
+	public Operator(String id, String name, String password, AccessLevel accessLevel) throws InvalidAccessLevelException {
 
 		if (!hasAtLeast(accessLevel, AccessLevel.AL1)) {
 
@@ -80,9 +76,8 @@ abstract class Operator {
 
 		this.name = name.toLowerCase();
 		this.password = password;
-		this.accessLevel = accessLevel;
+		this.accessLevelValue = accessLevel.getLevel();
 		this.id = id;
-		this.flagLogin = false;
 		this.conversionUseRS = null;
 	}
 
@@ -98,8 +93,7 @@ abstract class Operator {
 		this.name = name;
 		this.password = password;
 		this.id = "0";
-		this.accessLevel = 5;
-		this.flagLogin = false;
+		this.accessLevelValue = 5;
 		this.conversionUseRS = conversionUseRS;
 
 	}
@@ -117,20 +111,13 @@ abstract class Operator {
 	 *                 operator, false otherwise
 	 * @throws InvalidAccessLevelException
 	 */
-	public String login(String name, String password) throws InvalidAccessLevelException { //return uuid aclv
+	public void login(String name, String password) throws InvalidAccessLevelException {
 
-		while (true) {
-			boolean value = getConversionUseRS().LoginAuthenticator(name, password);
-			
-			if (value) {
-				setFlagLogin(true);
-				break;
-			} else {
-				System.out.println("Non è stato possibile loggarsi, riprovare:");
-			}
-		}
-		User user = 
-		return 
+		User u = conversionUseRS.LoginAuthenticator(name, password);
+		
+		ManageSession.login(u.getId(), u.getAccessLevel());
+		
+		
 	}
 
 	/**
@@ -140,15 +127,7 @@ abstract class Operator {
 	 * @return true indicating successful logout
 	 */
 	public void logout() {
-		try {
-			if (this.isFlagLogin()) {
-				System.out.println("Ti sei disconnesso");
-				this.setFlagLogin(false);
-
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		
 	}
 
 	/**
@@ -242,14 +221,6 @@ abstract class Operator {
 	 */
 	public String getPassword() {
 		return password;
-	}
-
-	public boolean isFlagLogin() {
-		return flagLogin;
-	}
-
-	public void setFlagLogin(boolean flagLogin) {
-		this.flagLogin = flagLogin;
 	}
 
 	public ActionOnUseRS getConversionUseRS() {

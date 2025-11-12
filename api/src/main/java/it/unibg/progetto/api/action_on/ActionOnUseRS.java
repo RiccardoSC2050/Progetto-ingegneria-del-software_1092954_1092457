@@ -87,7 +87,7 @@ public class ActionOnUseRS {
 	 * @return
 	 * @throws InvalidAccessLevelException
 	 */
-	private List<User> trasformListUsersIntoListUser() throws InvalidAccessLevelException {
+	private List<User> trasformListUsersIntoListUserComplite() throws InvalidAccessLevelException {
 
 		List<User> userList = converterListUsersToListUserNotProtected(usersService, userMapper);
 		return userList;
@@ -132,36 +132,24 @@ public class ActionOnUseRS {
 	}
 
 //login user
-	
-	public boolean LoginAuthenticator(String name, String pw) throws InvalidAccessLevelException {
+
+	public User LoginAuthenticator(String name, String pw) throws InvalidAccessLevelException {
 		List<User> userList = new ArrayList<>();
-		userList = trasformListUsersIntoListUser();
+		userList = trasformListUsersIntoListUserComplite();
 
 		for (User u : userList) {
 			if (u.getName().equals(name) && u.getPassword().equals(pw)) {
-				returnUserLog(u);
-				return true;
+				return returnProtectedUser(u);
 
 			}
 		}
-		return false;
+		System.err.println("nessun utente trovato con " + name);
+		return null;
 	}
 
-	private List<String> returnUserLog(User u) {
-		String uuid = u.getId();
-		String acLv = u.getId();
-		List<String> userItems= new ArrayList<>();
-		
-		userItems.add(uuid);
-		userItems.add(acLv);
-		
-		return userItems;
-		
+	private User returnProtectedUser(User u) throws InvalidAccessLevelException {
+		User user = new User(u.getId(), u.getName(), "*********", u.getAccessLevel());
+		return user;
 	}
-	
-	public List<String> returnUserItemsLogged(){
-		return userItems = 
-	}
-	
 
 }

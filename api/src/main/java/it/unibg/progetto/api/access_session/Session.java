@@ -11,7 +11,6 @@ public final class Session {
 	private final Instant loginTime = Instant.now();
 
 	public Session(String uuid, int accessLevel) {
-		super();
 		this.uuid = uuid;
 		this.accessLevel = accessLevel;
 	}
@@ -20,7 +19,7 @@ public final class Session {
 		return uuid;
 	}
 
-	public AccessLevel getAccessLevel() {
+	public int getAccessLevel() {
 		return accessLevel;
 	}
 

@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
+import it.unibg.progetto.api.components.GlobalScaner;
 import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.api.operators.Root;
 import it.unibg.progetto.service.UsersService;
@@ -26,10 +27,13 @@ public class ApiMain {
 			ActionOnUseRS conversionUseRS) {
 		return args -> {
 
-			Root root =Root.getInstanceRoot(conversionUseRS);
-			
-			root.createUser();
-			root.createUser();
+		AppBlocks ab = new AppBlocks();
+		
+		ab.loginSession();
+		
+		
+		
+		GlobalScaner.scanner.close();
 
 		};
 	}

@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import it.unibg.progetto.api.mapper.UserMapper;
-import it.unibg.progetto.api.operators.InvalidAccessLevelException;
 import it.unibg.progetto.api.operators.Operator;
 import it.unibg.progetto.api.operators.Root;
 import it.unibg.progetto.service.UsersService;

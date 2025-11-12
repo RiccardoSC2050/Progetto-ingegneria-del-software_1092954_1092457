@@ -23,7 +23,7 @@ public final class ManageSession {
 		current = null;
 	}
 
-	public static boolean isLoggedIn() {
+	private static boolean isLoggedIn() {
 		return current != null;
 	}
 

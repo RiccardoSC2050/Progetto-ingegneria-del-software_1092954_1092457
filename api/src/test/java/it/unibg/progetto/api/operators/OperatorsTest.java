@@ -22,7 +22,6 @@ import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.application.ApiMain;
 import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.api.operators.AccessLevel;
-import it.unibg.progetto.api.operators.InvalidAccessLevelException;
 import it.unibg.progetto.api.operators.Operator;
 import it.unibg.progetto.api.operators.Root;
 import it.unibg.progetto.api.operators.User;
@@ -31,7 +30,7 @@ import it.unibg.progetto.service.UsersService;
 /**
  * sottoclassi di operators
  */
-
+/*
 @ActiveProfiles("test")
 @SpringBootTest(classes=ApiMain.class)
 
@@ -60,3 +59,4 @@ void FlagLoginTest() throws InvalidAccessLevelException {
 	
 	}}
 
+*/

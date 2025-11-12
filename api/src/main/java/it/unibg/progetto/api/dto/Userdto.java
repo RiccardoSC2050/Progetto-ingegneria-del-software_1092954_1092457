@@ -1,5 +1,7 @@
 package it.unibg.progetto.api.dto;
 
+import it.unibg.progetto.api.operators.AccessLevel;
+
 public class Userdto {
 
 	private String uuid;
@@ -7,18 +9,16 @@ public class Userdto {
 	private String password;
 	private int accessLevel;
 
-	public Userdto() {}
-	
-	
-	public Userdto(String uuid, String username, String password, int accessLevel) {
+	public Userdto() {
+	}
+
+	public Userdto(String uuid, String username, String password, AccessLevel accessLevel) {
 		super();
 		this.uuid = uuid;
 		this.username = username;
 		this.password = password;
-		this.accessLevel = accessLevel;
+		this.accessLevel = accessLevel.getLevel();
 	}
-	
-	
 
 	public String getUuid() {
 		return uuid;
@@ -51,6 +51,12 @@ public class Userdto {
 	public void setAccessLevel(int accessLevel) {
 		this.accessLevel = accessLevel;
 	}
+	
+	public AccessLevel getAccessLevelvalue() {
+		return AccessLevel.fromLevel(accessLevel);
+	}
 
 	
+	
+
 }

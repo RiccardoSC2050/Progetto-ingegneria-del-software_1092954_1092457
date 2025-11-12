@@ -25,8 +25,8 @@ abstract class Operator {
 	private String name;
 	private String password;
 	private int accessLevelValue;
+	private AccessLevel accessLevel;
 	private String id;
-	private final ActionOnUseRS conversionUseRS;
 
 	/**
 	 * Constructor for creating regular users with specified access level. Used by
@@ -40,21 +40,16 @@ abstract class Operator {
 	 *                                     (0-3)
 	 */
 	public Operator(String name, String password, AccessLevel accessLevel) {
-try {
-		this.name = name.toLowerCase();
-		this.password = password;
-		this.accessLevelValue = accessLevel.getLevel();
-		this.id = UUID.randomUUID().toString().substring(0, 8);
-		this.conversionUseRS = null;
-}catch (Exception e) {
-	System.err.println(e+"");
-}
+		try {
+			this.name = name.toLowerCase();
+			this.password = password;
+			this.accessLevel = accessLevel;
+			this.accessLevelValue = accessLevel.getLevel();
+			this.id = UUID.randomUUID().toString().substring(0, 8);
 
-	}
-
-	boolean hasAtLeast(int lv, AccessLevel level) {
-
-		return (lv >= level.getLevel() && lv <= AccessLevel.AL3.getLevel() && lv > 0);
+		} catch (Exception e) {
+			System.err.println(e + ": errore creazione User");
+		}
 
 	}
 
@@ -63,22 +58,21 @@ try {
 	 * @param id
 	 * @param name
 	 * @param password
-	 * @param accessLevel
-	 * @throws InvalidAccessLevelException
+	 * @param accessLevel this method is used by userdto to convert users in user
 	 */
-	public Operator(String id, String name, String password, AccessLevel accessLevel) throws InvalidAccessLevelException {
+	public Operator(String id, String name, String password, AccessLevel accessLevel) {
 
-		if (!hasAtLeast(accessLevel, AccessLevel.AL1)) {
+		try {
 
-			throw new InvalidAccessLevelException(
-					"impossibile creare un utente con livello accesso negativo o superiore a 3");
+			this.id = id;
+			this.name = name.toLowerCase();
+			this.password = password;
+			this.accessLevel = accessLevel;
+			this.accessLevelValue = accessLevel.getLevel();
+
+		} catch (Exception e) {
+			System.err.println(e + ": errore creazione User");
 		}
-
-		this.name = name.toLowerCase();
-		this.password = password;
-		this.accessLevelValue = accessLevel.getLevel();
-		this.id = id;
-		this.conversionUseRS = null;
 	}
 
 	/**
@@ -89,45 +83,12 @@ try {
 	 * @param name     the username for the root operator
 	 * @param password the password for root authentication
 	 */
-	public Operator(String name, String password, ActionOnUseRS conversionUseRS) {
+	public Operator(String name, String password) {
 		this.name = name;
 		this.password = password;
 		this.id = "0";
 		this.accessLevelValue = 5;
-		this.conversionUseRS = conversionUseRS;
 
-	}
-	
-	
-	
-
-	/**
-	 * Authenticates an operator by comparing credentials against all registered
-	 * operators. Searches through the global operator list to find matching name
-	 * and password.
-	 * 
-	 * @param name     the username to authenticate
-	 * @param password the password to verify true if credentials match an existing
-	 *                 operator, false otherwise
-	 * @throws InvalidAccessLevelException
-	 */
-	public void login(String name, String password) throws InvalidAccessLevelException {
-
-		User u = conversionUseRS.LoginAuthenticator(name, password);
-		
-		ManageSession.login(u.getId(), u.getAccessLevel());
-		
-		
-	}
-
-	/**
-	 * Logs out the current operator from the system. Displays a disconnection
-	 * message and performs cleanup operations.
-	 * 
-	 * @return true indicating successful logout
-	 */
-	public void logout() {
-		
 	}
 
 	/**
@@ -138,7 +99,7 @@ try {
 	 */
 	@Override
 	public String toString() {
-		return "Operator [name=" + name + ", accessLevel=" + accessLevel + ", id=" + id + "]";
+		return "Operatore [name=" + name + ", accessLevelValue=" + accessLevelValue + ", id=" + id + "]";
 	}
 
 	/**
@@ -160,21 +121,19 @@ try {
 	}
 
 	/**
-	 * Gets the operator's access level.
 	 * 
-	 * @return the current access level (0-3 for users, 5 for root)
+	 * @return
 	 */
-	public int getAccessLevel() {
-		return accessLevel;
+	public int getAccessLevelValue() {
+		return accessLevelValue;
 	}
 
 	/**
-	 * Sets the operator's access level.
 	 * 
-	 * @param accessLevel the new access level to assign
+	 * @param accessLevelValue
 	 */
-	public void setAccessLevel(int accessLevel) {
-		this.accessLevel = accessLevel;
+	public void setAccessLevelValue(int accessLevelValue) {
+		this.accessLevelValue = accessLevelValue;
 	}
 
 	/**
@@ -194,13 +153,6 @@ try {
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	/**
-	 * Returns the complete list of all registered operators. Provides access to the
-	 * global operator registry.
-	 * 
-	 * @return list containing all operators in the system
-	 */
 
 	/**
 	 * Sets a new password for the operator. Updates the operator's authentication
@@ -223,8 +175,12 @@ try {
 		return password;
 	}
 
-	public ActionOnUseRS getConversionUseRS() {
-		return conversionUseRS;
+	public AccessLevel getAccessLevel() {
+		return accessLevel;
+	}
+
+	public void setAccessLevel(AccessLevel accessLevel) {
+		this.accessLevel = accessLevel;
 	}
 
 }

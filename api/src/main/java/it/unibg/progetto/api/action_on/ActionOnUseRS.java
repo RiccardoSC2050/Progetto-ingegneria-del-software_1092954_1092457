@@ -6,13 +6,13 @@ import java.util.List;
 
 import org.antlr.v4.runtime.atn.SemanticContext.Operator;
 import org.hibernate.query.NativeQuery.ReturnableResultNode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.HikariCheckpointRestoreLifecycle;
 import org.springframework.stereotype.Component;
 
 import ch.qos.logback.core.net.LoginAuthenticator;
 import it.unibg.progetto.api.dto.Userdto;
 import it.unibg.progetto.api.mapper.UserMapper;
-import it.unibg.progetto.api.operators.InvalidAccessLevelException;
 import it.unibg.progetto.api.operators.Root;
 import it.unibg.progetto.api.operators.User;
 import it.unibg.progetto.data.Users;
@@ -21,14 +21,22 @@ import it.unibg.progetto.service.UsersService;
 @Component
 public class ActionOnUseRS {
 
+	private static ActionOnUseRS instance;
 	private final UserMapper userMapper;
 	private final UsersService usersService;
 
+	@Autowired
 	public ActionOnUseRS(UserMapper userMapper, UsersService usersService) {
 
 		this.userMapper = userMapper;
 		this.usersService = usersService;
+		instance = this;
 	}
+
+	public static ActionOnUseRS getInstance() {
+		return instance;
+	}
+
 //conversion from Users to User
 
 	/**
@@ -38,8 +46,7 @@ public class ActionOnUseRS {
 	 * @return a List of User without password, to protect their account
 	 * @throws InvalidAccessLevelException
 	 */
-	private List<User> converterListUsersToListUserProtected(UsersService usersService, UserMapper userMapper)
-			throws InvalidAccessLevelException {
+	private List<User> converterListUsersToListUserProtected(UsersService usersService, UserMapper userMapper) {
 
 		List<Users> UsersListFromDataUsers = usersService.getAllUsersFromDataBase();
 		if (!UsersListFromDataUsers.isEmpty()) {
@@ -54,9 +61,9 @@ public class ActionOnUseRS {
 	/**
 	 * 
 	 * @return an List of User with out password
-	 * @throws InvalidAccessLevelException
+	 * 
 	 */
-	public List<User> trasformListUsersIntoListUserWithoutPassword() throws InvalidAccessLevelException {
+	public List<User> trasformListUsersIntoListUserWithoutPassword() {
 
 		List<User> userList = converterListUsersToListUserProtected(usersService, userMapper);
 		return userList;
@@ -67,10 +74,9 @@ public class ActionOnUseRS {
 	 * @param usersService
 	 * @param userMapper
 	 * @return
-	 * @throws InvalidAccessLevelException
+	 * 
 	 */
-	private List<User> converterListUsersToListUserNotProtected(UsersService usersService, UserMapper userMapper)
-			throws InvalidAccessLevelException {
+	private List<User> converterListUsersToListUserNotProtected(UsersService usersService, UserMapper userMapper) {
 
 		List<Users> UsersListFromDataUsers = usersService.getAllUsersFromDataBase();
 		if (!UsersListFromDataUsers.isEmpty()) {
@@ -85,9 +91,9 @@ public class ActionOnUseRS {
 	/**
 	 * 
 	 * @return
-	 * @throws InvalidAccessLevelException
+	 * 
 	 */
-	private List<User> trasformListUsersIntoListUserComplite() throws InvalidAccessLevelException {
+	private List<User> trasformListUsersIntoListUserComplite() {
 
 		List<User> userList = converterListUsersToListUserNotProtected(usersService, userMapper);
 		return userList;
@@ -133,7 +139,7 @@ public class ActionOnUseRS {
 
 //login user
 
-	public User LoginAuthenticator(String name, String pw) throws InvalidAccessLevelException {
+	public User LoginAuthenticator(String name, String pw) {
 		List<User> userList = new ArrayList<>();
 		userList = trasformListUsersIntoListUserComplite();
 
@@ -143,11 +149,11 @@ public class ActionOnUseRS {
 
 			}
 		}
-		System.err.println("nessun utente trovato con " + name);
+		System.out.println("nessun utente trovato come " + name + " o password errata");
 		return null;
 	}
 
-	private User returnProtectedUser(User u) throws InvalidAccessLevelException {
+	private User returnProtectedUser(User u) {
 		User user = new User(u.getId(), u.getName(), "*********", u.getAccessLevel());
 		return user;
 	}

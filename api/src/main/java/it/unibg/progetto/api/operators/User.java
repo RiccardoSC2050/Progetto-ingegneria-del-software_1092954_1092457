@@ -19,9 +19,11 @@ public class User extends Operator implements DataControl {
 	 * @param accessLevel the permission level (must be 0-3)
 	 * @throws InvalidAccessLevelException if accessLevel is outside valid range
 	 */
-	public User(String name, String password, int accessLevel) throws InvalidAccessLevelException {
+	public User(String name, String password, AccessLevel accessLevel) {
 		super(name, password, accessLevel);
+		
 	}
+
 
 	/**
 	 * 
@@ -31,9 +33,13 @@ public class User extends Operator implements DataControl {
 	 * @param accessLevel
 	 * @throws InvalidAccessLevelException
 	 */
-	public User(String id, String name, String password, int accessLevel) throws InvalidAccessLevelException {
+	public User(String id, String name, String password, AccessLevel accessLevel) {
 		super(id, name, password, accessLevel);
+		// TODO Auto-generated constructor stub
 	}
+
+
+
 
 	/**
 	 * Reads data from the user's associated data file. Implementation pending -
@@ -42,13 +48,8 @@ public class User extends Operator implements DataControl {
 	@Override
 	public void readDataFile() {
 
-		if (hasAtLeast(getAccessLevel(), AccessLevel.AL3)) {
-			// method for level 3
-		} else {
-			// method for level 1-2
-		}
-
 	}
+
 
 	/**
 	 * Creates a new data file for storing user information. Implementation pending
@@ -56,11 +57,7 @@ public class User extends Operator implements DataControl {
 	 */
 	@Override
 	public void createDataFile() {
-		if (hasAtLeast(getAccessLevel(), AccessLevel.AL2)) {
-			// method for level 2-3
-		} else {
-			// error
-		}
+		
 	}
 
 	/**
@@ -69,10 +66,6 @@ public class User extends Operator implements DataControl {
 	 */
 	@Override
 	public void deleteDataFile() {
-		if (hasAtLeast(getAccessLevel(), AccessLevel.AL2)) {
-			// method for level 2-3
-		} else {
-			// error
-		}
+		
 	}
 }

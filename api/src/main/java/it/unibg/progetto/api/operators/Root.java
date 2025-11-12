@@ -35,8 +35,8 @@ public class Root extends Operator implements DataControl {
 	 * @param name     the username for the root administrator
 	 * @param password the password for root authentication
 	 */
-	public Root(String name, String password, ActionOnUseRS conversionUseRS) {
-		super(name, password, conversionUseRS);
+	public Root(String name, String password) {
+		super(name, password);
 	}
 
 	/**
@@ -45,10 +45,10 @@ public class Root extends Operator implements DataControl {
 	 * 
 	 * @return Root instance
 	 */
-	public static Root getInstanceRoot(ActionOnUseRS conversionUseRS) {
+	public static Root getInstanceRoot() {
 		try {
 			if (root == null) {
-				root = new Root("ROOT", "1234", conversionUseRS);
+				root = new Root("ROOT", "1234");
 			}
 		} catch (Exception e) {
 			System.err.println("Error creating Root instance: " + e.getMessage());
@@ -65,10 +65,10 @@ public class Root extends Operator implements DataControl {
 	 * @return
 	 * @throws InvalidAccessLevelException
 	 */
-	private boolean isPossibleTocreateUser(String name) throws InvalidAccessLevelException {
+	private boolean isPossibleTocreateUser(String name) {
 		try {
 
-			List<User> userList = getConversionUseRS().trasformListUsersIntoListUserWithoutPassword();
+			List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
 			for (User u : userList) {
 				if (u.getName().equals(name)) {
 
@@ -88,8 +88,10 @@ public class Root extends Operator implements DataControl {
 
 			} while (!(aclv > 0 && aclv <= 3));
 
-			User user = new User(name, pw, aclv);
-			getConversionUseRS().addUserOnData(user);
+			AccessLevel alv = AccessLevel.fromLevel(aclv);
+
+			User user = new User(name, pw, alv);
+			ActionOnUseRS.getInstance().addUserOnData(user);
 
 			System.out.println("utente creato con successo:");
 			System.out.println(user.toString());
@@ -100,7 +102,7 @@ public class Root extends Operator implements DataControl {
 		return true;
 	}
 
-	public void createUser() throws InvalidAccessLevelException {
+	public void createUser() {
 		boolean action = false;
 		do {
 
@@ -118,9 +120,9 @@ public class Root extends Operator implements DataControl {
 	 * 
 	 * @throws InvalidAccessLevelException
 	 */
-	public void deleteUser() throws InvalidAccessLevelException {
+	public void deleteUser() {
 
-		List<User> userList = getConversionUseRS().trasformListUsersIntoListUserWithoutPassword();
+		List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
 		if (userList == null) {
 			System.out.println("nessun utente da eliminare");
@@ -160,7 +162,7 @@ public class Root extends Operator implements DataControl {
 	private void delUser(String name, String id) {
 		try {
 
-			List<User> userList = getConversionUseRS().trasformListUsersIntoListUserWithoutPassword();
+			List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
 			for (User u : userList) {
 				if (u.getName().equals(name) && u.getId().equals(id)) {
@@ -185,7 +187,7 @@ public class Root extends Operator implements DataControl {
 	 */
 	private void deleteUserInDataUsers(User u) {
 		try {
-			getConversionUseRS().deleteUser(u);
+			ActionOnUseRS.getInstance().deleteUser(u);
 
 		} catch (Error e) {
 			System.out.println(e);
@@ -210,7 +212,7 @@ public class Root extends Operator implements DataControl {
 					k = "";
 					System.out.println("che utente intedi eliminare?");
 
-					List<User> userList = getConversionUseRS().trasformListUsersIntoListUserWithoutPassword();
+					List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
 					for (User u : userList) {
 						System.out.println("- " + u.getName());
@@ -259,7 +261,7 @@ public class Root extends Operator implements DataControl {
 		String k = "";
 		try {
 
-			List<User> userList = getConversionUseRS().trasformListUsersIntoListUserWithoutPassword();
+			List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
 			do {
 

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.components.GlobalScaner;
-import it.unibg.progetto.api.components.Quit;
+import it.unibg.progetto.api.components.Exit;
 import it.unibg.progetto.api.dto.Userdto;
 import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.data.Users;
@@ -218,7 +218,7 @@ public class Root extends Operator implements DataControl {
 						System.out.println("- " + u.getName());
 					}
 					name = GlobalScaner.scanner.nextLine();
-					Quit.quit(name);
+					Exit.exit(name);
 
 					for (User u : userList) {
 						if (u.getName().equals(name)) {
@@ -237,7 +237,7 @@ public class Root extends Operator implements DataControl {
 						 */
 					System.out.println(name + " è l'utente corretto che vuoi eliminare? [y|n]");
 					String r = GlobalScaner.scanner.nextLine();
-					Quit.quit(r);
+					Exit.exit(r);
 					k = r;
 				} while (!(k.equals("y") | k.equals("n")));
 
@@ -267,7 +267,7 @@ public class Root extends Operator implements DataControl {
 
 				System.out.println("conosci già l'id dell'utente? [y|n]");
 				String r = GlobalScaner.scanner.nextLine();
-				Quit.quit(r);
+				Exit.exit(r);
 				k = r;
 			} while (!(k.equals("y") | k.equals("n")));
 			if (k.equals("n")) {
@@ -298,7 +298,7 @@ public class Root extends Operator implements DataControl {
 				k = "";
 				System.out.println("Inserisci l'id utente per completare l'eliminazione");
 				id = GlobalScaner.scanner.nextLine();
-				Quit.quit(id);
+				Exit.exit(id);
 
 				for (User u : userList) {
 					if (u.getId().equals(id)) {

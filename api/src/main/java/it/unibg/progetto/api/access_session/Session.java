@@ -7,12 +7,15 @@ import it.unibg.progetto.api.operators.AccessLevel;
 public final class Session {
 
 	private final String uuid;
+	private final String name;
 	private final int accessLevel;
 	private final Instant loginTime = Instant.now();
 
-	public Session(String uuid, int accessLevel) {
+	public Session(String uuid, String name, int accessLevel) {
 		this.uuid = uuid;
+		this.name = name;
 		this.accessLevel = accessLevel;
+
 	}
 
 	public String getUuid() {
@@ -27,5 +30,8 @@ public final class Session {
 		return loginTime;
 	}
 
-	
+	public String getName() {
+		return name;
+	}
+
 }

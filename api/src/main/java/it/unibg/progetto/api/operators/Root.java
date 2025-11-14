@@ -69,6 +69,7 @@ public class Root extends Operator implements DataControl {
 		try {
 
 			List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
+			if(userList!=null) {
 			for (User u : userList) {
 				if (u.getName().equals(name)) {
 
@@ -77,7 +78,7 @@ public class Root extends Operator implements DataControl {
 					return false;
 				}
 			}
-
+			}
 			System.out.println("inserire password utente: ");
 			String pw = GlobalScaner.scanner.nextLine();
 			int aclv;
@@ -162,6 +163,7 @@ public class Root extends Operator implements DataControl {
 	private void delUser(String name, String id) {
 		try {
 
+			name = name.toLowerCase();
 			List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
 			for (User u : userList) {

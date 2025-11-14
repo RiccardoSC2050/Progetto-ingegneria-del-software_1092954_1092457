@@ -1,10 +1,34 @@
 package it.unibg.progetto.api.operators;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Scanner;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
+import it.unibg.progetto.api.action_on.ActionOnUseRS;
+import it.unibg.progetto.api.application.ApiMain;
+import it.unibg.progetto.api.components.GlobalScaner;
 
+@SpringBootTest(classes = ApiMain.class)
+@ActiveProfiles("test")
 class RootTest {
+
+	private Root root;
+
+	@BeforeEach
+	void setUp() {
+		// create object for each test
+
+		root = Root.getInstanceRoot();
+
+	}
 
 	// ---------- 1. Costruttore e singleton ----------
 
@@ -19,7 +43,6 @@ class RootTest {
 
 	@Test
 	void getInstanceRootInitializesRootWithFixedValues() {
-		Root root = Root.getInstanceRoot();
 
 		// Valori fissati nel metodo getInstanceRoot / costruttore di Operator
 		assertEquals("ROOT", root.getName());
@@ -46,19 +69,68 @@ class RootTest {
 
 	@Test
 	void readDataFileDoesNotThrow() {
-		Root root = Root.getInstanceRoot();
+
 		assertDoesNotThrow(root::readDataFile);
 	}
 
 	@Test
 	void createDataFileDoesNotThrow() {
-		Root root = Root.getInstanceRoot();
+
 		assertDoesNotThrow(root::createDataFile);
 	}
 
 	@Test
 	void deleteDataFileDoesNotThrow() {
-		Root root = Root.getInstanceRoot();
+
 		assertDoesNotThrow(root::deleteDataFile);
 	}
+
+	// ------------------method create user --------------------
+	@Test
+	void isPossibleTocreateUserTest() {
+
+		String fakeInput = String.join("\n", "tester", // name
+				"secret", // password
+				"2" // level
+		) + "\n";
+
+		ByteArrayInputStream in = new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8));
+
+		// finto stdin
+		System.setIn(in);
+
+		GlobalScaner.scanner = new Scanner(System.in);
+
+		root.createUser();
+	}
+
+	// ------------------method delete user --------------------
+	@Test
+	void delUserTest() {
+		String id = null;
+		List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
+		if(userList!=null) {
+		for (User u : userList) {
+			if (u.getName().toLowerCase().equals("tester")) {
+				id = u.getId();
+			}
+		}
+
+		String fakeInput = String.join("\n", "tester", // name
+				"y", // password
+				"y", // level
+				id // level
+		) + "\n";
+
+		ByteArrayInputStream in = new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8));
+
+		// finto stdin
+		System.setIn(in);
+
+		GlobalScaner.scanner = new Scanner(System.in);
+		}
+		root.deleteUser();
+		root.deleteUser();
+	}
+
 }

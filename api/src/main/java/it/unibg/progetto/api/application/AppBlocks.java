@@ -15,10 +15,10 @@ public class AppBlocks {
 	public void loginSession() {
 		boolean flag = false;
 		do {
-			System.out.println("inserire nome utente: ");
+			System.out.println("[LOGIN] Inserire nome utente: ");
 			String name = GlobalScaner.scanner.nextLine();
 			Exit.exit(name); // exit
-			System.out.println("inserire password: ");
+			System.out.println("[LOGIN] Inserire password: ");
 			String pw = GlobalScaner.scanner.nextLine();
 			Exit.exit(pw); // exit
 

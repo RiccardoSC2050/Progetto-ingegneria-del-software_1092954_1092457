@@ -7,6 +7,10 @@ import java.util.Scanner;
  */
 public class GlobalScaner {
 
-	public static final Scanner scanner = new Scanner(System.in);
+	public static Scanner scanner = new Scanner(System.in);
+	
+	public static void setScanner(Scanner sc) {
+        scanner = sc;
+    }
 
 }

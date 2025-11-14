@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import it.unibg.progetto.api.access_session.ManagerSession;
 import it.unibg.progetto.api.access_session.Session;
@@ -27,6 +28,7 @@ public class ApiMain {
 	}
 
 	@Bean
+	@Profile("!test")
 	public CommandLineRunner createDefaultUser(UserMapper userMapper, UsersService service,
 			ActionOnUseRS conversionUseRS) {
 		return args -> {

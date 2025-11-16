@@ -1,5 +1,7 @@
 package it.unibg.progetto.api.operators;
 
+import it.unibg.progetto.api.conditions.AccessLevel;
+
 /**
  * Regular user implementation extending the Operator base class. Provides
  * standard user functionality with access level validation (0-3). Implements

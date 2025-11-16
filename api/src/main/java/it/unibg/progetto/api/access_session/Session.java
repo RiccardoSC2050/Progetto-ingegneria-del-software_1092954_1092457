@@ -2,7 +2,7 @@ package it.unibg.progetto.api.access_session;
 
 import java.time.Instant;
 
-import it.unibg.progetto.api.operators.AccessLevel;
+import it.unibg.progetto.api.conditions.AccessLevel;
 
 public final class Session {
 

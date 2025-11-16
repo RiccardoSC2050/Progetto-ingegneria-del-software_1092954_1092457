@@ -11,6 +11,7 @@ import org.springframework.boot.jdbc.HikariCheckpointRestoreLifecycle;
 import org.springframework.stereotype.Component;
 
 import ch.qos.logback.core.net.LoginAuthenticator;
+import it.unibg.progetto.api.conditions.StrangeValues;
 import it.unibg.progetto.api.dto.Userdto;
 import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.api.operators.Root;
@@ -142,7 +143,7 @@ public class ActionOnUseRS {
 	public User LoginAuthenticator(String name, String pw) {
 		List<User> userList = new ArrayList<>();
 		userList = trasformListUsersIntoListUserComplite();
-
+		if(userList!=null) {
 		for (User u : userList) {
 			if (u.getName().equals(name) && u.getPassword().equals(pw)) {
 				return returnProtectedUser(u);
@@ -151,6 +152,12 @@ public class ActionOnUseRS {
 		}
 		System.out.println("nessun utente trovato come " + name + " o password errata");
 		return null;
+	}
+	else {
+		System.out.println("nessun utente nella lista");
+		User u = new User(StrangeValues.secret.toString(), StrangeValues.secret.toString(), StrangeValues.secret.toString(), null);
+		return u;
+	}
 	}
 
 	private User returnProtectedUser(User u) {

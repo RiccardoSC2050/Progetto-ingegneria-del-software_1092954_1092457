@@ -1,6 +1,6 @@
 package it.unibg.progetto.api.dto;
 
-import it.unibg.progetto.api.operators.AccessLevel;
+import it.unibg.progetto.api.conditions.AccessLevel;
 
 public class Userdto {
 

@@ -14,6 +14,7 @@ import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.components.ClearTerminal;
 import it.unibg.progetto.api.components.Exit;
 import it.unibg.progetto.api.components.GlobalScaner;
+import it.unibg.progetto.api.mapper.RootMapper;
 import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.api.operators.Root;
 import it.unibg.progetto.service.UsersService;
@@ -30,17 +31,22 @@ public class ApiMain {
 	@Bean
 	@Profile("!test")
 	public CommandLineRunner createDefaultUser(UserMapper userMapper, UsersService service,
-			ActionOnUseRS conversionUseRS) {
+			ActionOnUseRS conversionUseRS, RootMapper rootMapper) {
 		return args -> {
 
+			
 		AppBlocks ab = new AppBlocks();
 		String input;
 		
+		Root.configurationOfRoot();
 		ab.loginSession();
 		
 		do {
 			System.out.print(ManagerSession.getCurrent().getName()+"> ");
 			input = GlobalScaner.scanner.nextLine();
+			
+			
+			
 			
 			Exit.exit(input);
 			ClearTerminal.clearTerminal(input);

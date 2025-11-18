@@ -9,12 +9,18 @@ import org.hibernate.query.NativeQuery.ReturnableResultNode;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
+import it.unibg.progetto.api.application.AppBlocks;
 import it.unibg.progetto.api.components.GlobalScaner;
+import it.unibg.progetto.api.components.Quit;
 import it.unibg.progetto.api.conditions.AccessLevel;
+import it.unibg.progetto.api.conditions.Checks;
+import it.unibg.progetto.api.conditions.StrangeValues;
 import it.unibg.progetto.api.components.Exit;
+import it.unibg.progetto.api.dto.Rootdto;
 import it.unibg.progetto.api.dto.Userdto;
 import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.data.Users;
+import it.unibg.progetto.hashcode.Hash;
 import it.unibg.progetto.service.UsersService;
 
 /**
@@ -36,8 +42,8 @@ public class Root extends Operator implements DataControl {
 	 * @param name     the username for the root administrator
 	 * @param password the password for root authentication
 	 */
-	public Root(String name, String password) {
-		super(name, password);
+	public Root(String password) {
+		super(password);
 	}
 
 	/**
@@ -47,14 +53,13 @@ public class Root extends Operator implements DataControl {
 	 * @return Root instance
 	 */
 	public static Root getInstanceRoot() {
-		try {
-			if (root == null) {
-				root = new Root("ROOT", "1234");
-			}
-		} catch (Exception e) {
-			System.err.println("Error creating Root instance: " + e.getMessage());
-		}
+
 		return root;
+	}
+
+	public static void configurationOfRoot() {
+		AppBlocks ap = new AppBlocks();
+		ap.RootConfiguration(root);
 	}
 
 	/**
@@ -66,26 +71,31 @@ public class Root extends Operator implements DataControl {
 	 * @return
 	 * @throws InvalidAccessLevelException
 	 */
-	private boolean isPossibleTocreateUser(String name) {
+	private Checks isPossibleTocreateUser(String name) {
 		try {
 
 			List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
-			if(userList!=null) {
-			for (User u : userList) {
-				if (u.getName().equals(name)) {
+			if (userList != null) {
+				for (User u : userList) {
+					if (u.getName().equals(name)) {
 
-					System.err.println("ERRORE di inserimento: il nome " + name
-							+ " utente già esiste, si prega di inserirne uno nuovo");
-					return false;
+						System.err.println("ERRORE di inserimento: il nome " + name
+								+ " utente già esiste, si prega di inserirne uno nuovo");
+						return Checks.negative;
+					}
 				}
 			}
-			}
-			System.out.println("inserire password utente: ");
+			System.out.println("Inserire password utente: ");
 			String pw = GlobalScaner.scanner.nextLine();
+			if (Quit.quit(pw))
+				return Checks.neutral;
+			pw = Hash.hash(pw);
 			int aclv;
 			do {
-				System.out.println("inserire il livello di accesso utente [1-3]: ");
+				System.out.println("Inserire il livello di accesso utente [1-3]: ");
 				String al = GlobalScaner.scanner.nextLine();
+				if (Quit.quit(pw))
+					return Checks.neutral;
 				aclv = Integer.parseInt(al);
 
 			} while (!(aclv > 0 && aclv <= 3));
@@ -95,25 +105,30 @@ public class Root extends Operator implements DataControl {
 			User user = new User(name, pw, alv);
 			ActionOnUseRS.getInstance().addUserOnData(user);
 
-			System.out.println("utente creato con successo:");
+			System.out.println("Utente creato con successo:");
 			System.out.println(user.toString());
 
 		} catch (ExceptionInInitializerError e) {
 			System.out.println("ERRORE: non è stato possibile creare l'utente");
 		}
-		return true;
+		return Checks.affermative;
 	}
 
-	public void createUser() {
-		boolean action = false;
+	public boolean createUser() {
+		Checks action = Checks.negative;
 		do {
 
-			System.out.println("inserire nome utente: ");
+			System.out.println("Inserire nome utente: ");
 			String name = GlobalScaner.scanner.nextLine().toLowerCase();
+			if (Quit.quit(name))
+				return false;
 
 			action = isPossibleTocreateUser(name);
+			if (action == Checks.neutral)
+				return false;
 
-		} while (!action);
+		} while (action == Checks.negative);
+		return true;
 
 	}
 
@@ -127,7 +142,7 @@ public class Root extends Operator implements DataControl {
 		List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
 		if (userList == null) {
-			System.out.println("nessun utente da eliminare");
+			System.out.println("Nessun utente da eliminare");
 			return;
 		}
 
@@ -174,7 +189,7 @@ public class Root extends Operator implements DataControl {
 
 					System.out.print("Utente identificato:");
 					System.out.println(u.toString());
-					System.out.println("eliminato con successo");
+					System.out.println("Eliminato con successo");
 				}
 			}
 		} catch (Exception e) {
@@ -213,7 +228,7 @@ public class Root extends Operator implements DataControl {
 						 * lista operatori
 						 */
 					k = "";
-					System.out.println("che utente intedi eliminare?");
+					System.out.println("Che utente intedi eliminare?");
 
 					List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
@@ -229,7 +244,7 @@ public class Root extends Operator implements DataControl {
 						}
 					}
 					if (!k.equals("ok")) {
-						System.out.println("nome errato o non esistenete");
+						System.out.println("Nome errato o non esistenete");
 					}
 
 				} while (!k.equals("ok"));
@@ -268,13 +283,13 @@ public class Root extends Operator implements DataControl {
 
 			do {
 
-				System.out.println("conosci già l'id dell'utente? [y|n]");
+				System.out.println("Conosci già l'id dell'utente? [y|n]");
 				String r = GlobalScaner.scanner.nextLine();
 				Exit.exit(r);
 				k = r;
 			} while (!(k.equals("y") | k.equals("n")));
 			if (k.equals("n")) {
-				System.out.println("ecco descrizione Utente|Utenti " + name + ":\n");
+				System.out.println("Ecco descrizione Utente|Utenti " + name + ":\n");
 				for (User u : userList) {
 					if (u.getName().equals(name)) {
 						System.out.println(u.toString());

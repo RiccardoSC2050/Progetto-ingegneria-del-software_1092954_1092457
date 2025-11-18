@@ -54,10 +54,10 @@ class RootTest {
 
 	@Test
 	void manualRootConstructorSetsIdZeroAndLevelFive() {
-		Root customRoot = new Root("ADMIN", "pwd");
+		Root customRoot = new Root("pwd");
 
 		// Nome e password presi dal costruttore
-		assertEquals("ADMIN", customRoot.getName());
+		assertEquals("ROOT", customRoot.getName());
 		assertEquals("pwd", customRoot.getPassword());
 
 		// Id e livello di accesso fissati per Root

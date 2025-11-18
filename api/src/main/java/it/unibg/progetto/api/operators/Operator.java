@@ -6,6 +6,7 @@ import java.util.UUID;
 import it.unibg.progetto.api.access_session.ManagerSession;
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.conditions.AccessLevel;
+import it.unibg.progetto.api.conditions.StrangeValues;
 import it.unibg.progetto.api.dto.Userdto;
 import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.data.Users;
@@ -41,18 +42,17 @@ abstract class Operator {
 	 *                                     (0-3)
 	 */
 	public Operator(String name, String password, AccessLevel accessLevel) {
-	    this.name = name.toLowerCase();
-	    this.password = password;
-	    this.accessLevel = accessLevel;
-	    this.id = java.util.UUID.randomUUID().toString().substring(0, 8);
+		this.name = name.toLowerCase();
+		this.password = password;
+		this.accessLevel = accessLevel;
+		this.id = java.util.UUID.randomUUID().toString().substring(0, 8);
 
-	    if (accessLevel != null) {
-	        this.accessLevelValue = accessLevel.getLevel();
-	    } else {
-	        this.accessLevelValue = 0;
-	    }
+		if (accessLevel != null) {
+			this.accessLevelValue = accessLevel.getLevel();
+		} else {
+			this.accessLevelValue = AccessLevel.AL1.getLevel();
+		}
 	}
-
 
 	/**
 	 * 
@@ -62,19 +62,18 @@ abstract class Operator {
 	 * @param accessLevel this method is used by userdto to convert users in user
 	 */
 	public Operator(String id, String name, String password, AccessLevel accessLevel) {
-	    this.id = id;
-	    this.name = name.toLowerCase();
-	    this.password = password;
-	    this.accessLevel = accessLevel;
+		this.id = id;
+		this.name = name.toLowerCase();
+		this.password = password;
+		this.accessLevel = accessLevel;
 
-	    if (accessLevel != null) {
-	        this.accessLevelValue = accessLevel.getLevel();
-	    } else {
-	        // caso "speciale" (es. utente secret): nessun livello definito
-	        this.accessLevelValue = 0; // o un valore neutro a tua scelta
-	    }
+		if (accessLevel != null) {
+			this.accessLevelValue = accessLevel.getLevel();
+		} else {
+			// caso "speciale" (es. utente secret): nessun livello definito
+			this.accessLevelValue = AccessLevel.AL1.getLevel(); // o un valore neutro a tua scelta
+		}
 	}
-
 
 	/**
 	 * Constructor for creating the Root operator. Creates the administrator with
@@ -84,11 +83,11 @@ abstract class Operator {
 	 * @param name     the username for the root operator
 	 * @param password the password for root authentication
 	 */
-	public Operator(String name, String password) {
-		this.name = name;
+	public Operator(String password) {
+		this.name = String.valueOf(StrangeValues.ROOT);
 		this.password = password;
-		this.id = "0";
-		this.accessLevelValue = 5;
+		this.id = String.valueOf(StrangeValues.ROOTid.getLevel());
+		this.accessLevelValue = AccessLevel.AL5.getLevel();
 
 	}
 

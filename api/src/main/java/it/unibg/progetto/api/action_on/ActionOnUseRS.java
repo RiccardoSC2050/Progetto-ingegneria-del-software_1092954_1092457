@@ -11,12 +11,16 @@ import org.springframework.boot.jdbc.HikariCheckpointRestoreLifecycle;
 import org.springframework.stereotype.Component;
 
 import ch.qos.logback.core.net.LoginAuthenticator;
+import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.conditions.StrangeValues;
+import it.unibg.progetto.api.dto.Rootdto;
 import it.unibg.progetto.api.dto.Userdto;
+import it.unibg.progetto.api.mapper.RootMapper;
 import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.api.operators.Root;
 import it.unibg.progetto.api.operators.User;
 import it.unibg.progetto.data.Users;
+import it.unibg.progetto.hashcode.Hash;
 import it.unibg.progetto.service.UsersService;
 
 @Component
@@ -25,17 +29,43 @@ public class ActionOnUseRS {
 	private static ActionOnUseRS instance;
 	private final UserMapper userMapper;
 	private final UsersService usersService;
+	private final RootMapper rootMapper;
 
 	@Autowired
-	public ActionOnUseRS(UserMapper userMapper, UsersService usersService) {
+	public ActionOnUseRS(UserMapper userMapper, UsersService usersService, RootMapper rootMapper) {
 
 		this.userMapper = userMapper;
 		this.usersService = usersService;
+		this.rootMapper = rootMapper;
 		instance = this;
 	}
 
 	public static ActionOnUseRS getInstance() {
 		return instance;
+	}
+
+	// ROOT
+	public Rootdto rootIsOnData() {
+		List<User> userList = trasformListUsersIntoListUserComplite();
+		if (userList != null) {
+			for (User u : userList) {
+				if (u.getId().equals(String.valueOf(StrangeValues.ROOTid.getLevel()))
+						&& u.getName().equals(StrangeValues.ROOT.toString().toLowerCase())
+						&& u.getAccessLevelValue() == AccessLevel.AL5.getLevel()) {
+					Rootdto rootdto = rootMapper.fromUser(u);
+					return rootdto;
+				}
+			}
+		}
+		return null;
+	}
+
+	public void addRootOnData(Root root) {
+		Rootdto rootdto = rootMapper.toRootdtoFromRoot(root.getId(), root.getName(), root.getPassword(),
+				AccessLevel.fromLevel(root.getAccessLevelValue()));
+		Users users = rootMapper.toUsersfromRootdto(rootdto);
+		usersService.addUsersIntoDataUsers(users);
+
 	}
 
 //conversion from Users to User
@@ -143,25 +173,25 @@ public class ActionOnUseRS {
 	public User LoginAuthenticator(String name, String pw) {
 		List<User> userList = new ArrayList<>();
 		userList = trasformListUsersIntoListUserComplite();
-		if(userList!=null) {
-		for (User u : userList) {
-			if (u.getName().equals(name) && u.getPassword().equals(pw)) {
-				return returnProtectedUser(u);
+		if (userList != null) {
+			for (User u : userList) {
+				if (u.getName().equals(name) && Hash.verify(pw, u.getPassword())) {
+					return returnProtectedUser(u);
 
+				}
 			}
+			System.out.println("nessun utente trovato come " + name + " o password errata");
+			return null;
+		} else {
+			System.out.println("nessun utente nella lista");
+			User u = new User(StrangeValues.secret.toString(), StrangeValues.secret.toString(),
+					StrangeValues.secret.toString(), null);
+			return u;
 		}
-		System.out.println("nessun utente trovato come " + name + " o password errata");
-		return null;
-	}
-	else {
-		System.out.println("nessun utente nella lista");
-		User u = new User(StrangeValues.secret.toString(), StrangeValues.secret.toString(), StrangeValues.secret.toString(), null);
-		return u;
-	}
 	}
 
 	private User returnProtectedUser(User u) {
-		User user = new User(u.getId(), u.getName(), "*********", u.getAccessLevel());
+		User user = new User(u.getId(), u.getName(), StrangeValues.secret.toString(), u.getAccessLevel());
 		return user;
 	}
 

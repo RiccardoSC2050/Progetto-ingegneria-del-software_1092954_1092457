@@ -41,18 +41,18 @@ abstract class Operator {
 	 *                                     (0-3)
 	 */
 	public Operator(String name, String password, AccessLevel accessLevel) {
-		try {
-			this.name = name.toLowerCase();
-			this.password = password;
-			this.accessLevel = accessLevel;
-			this.accessLevelValue = accessLevel.getLevel();
-			this.id = UUID.randomUUID().toString().substring(0, 8);
+	    this.name = name.toLowerCase();
+	    this.password = password;
+	    this.accessLevel = accessLevel;
+	    this.id = java.util.UUID.randomUUID().toString().substring(0, 8);
 
-		} catch (Exception e) {
-			System.err.println(e + ": errore creazione User");
-		}
-
+	    if (accessLevel != null) {
+	        this.accessLevelValue = accessLevel.getLevel();
+	    } else {
+	        this.accessLevelValue = 0;
+	    }
 	}
+
 
 	/**
 	 * 
@@ -62,19 +62,19 @@ abstract class Operator {
 	 * @param accessLevel this method is used by userdto to convert users in user
 	 */
 	public Operator(String id, String name, String password, AccessLevel accessLevel) {
+	    this.id = id;
+	    this.name = name.toLowerCase();
+	    this.password = password;
+	    this.accessLevel = accessLevel;
 
-		try {
-
-			this.id = id;
-			this.name = name.toLowerCase();
-			this.password = password;
-			this.accessLevel = accessLevel;
-			this.accessLevelValue = accessLevel.getLevel();
-
-		} catch (Exception e) {
-			System.err.println(e + ": errore creazione User");
-		}
+	    if (accessLevel != null) {
+	        this.accessLevelValue = accessLevel.getLevel();
+	    } else {
+	        // caso "speciale" (es. utente secret): nessun livello definito
+	        this.accessLevelValue = 0; // o un valore neutro a tua scelta
+	    }
 	}
+
 
 	/**
 	 * Constructor for creating the Root operator. Creates the administrator with

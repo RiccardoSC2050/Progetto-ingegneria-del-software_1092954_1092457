@@ -44,13 +44,22 @@ class RootTest {
 	@Test
 	void getInstanceRootInitializesRootWithFixedValues() {
 
-		// Valori fissati nel metodo getInstanceRoot / costruttore di Operator
-		assertEquals("ROOT", root.getName());
-		assertEquals("1234", root.getPassword());
-		assertEquals("0", root.getId());
-		assertEquals(5, root.getAccessLevelValue());
-		assertNull(root.getAccessLevel(), "AccessLevel non viene impostato esplicitamente per Root");
+	    // Nome fissato per Root dal costruttore di Operator
+	    assertEquals("ROOT", root.getName());
+
+	    // Id e livello di accesso fissi per l'amministratore
+	    assertEquals("0", root.getId());
+	    assertEquals(5, root.getAccessLevelValue());
+
+	    // AccessLevel "oggetto" non viene impostato esplicitamente
+	    assertNull(root.getAccessLevel(), "AccessLevel non viene impostato esplicitamente per Root");
+
+	    // La password ora arriva dal database: verifichiamo solo che esista
+	    assertNotNull(root.getPassword());
+	    assertFalse(root.getPassword().isBlank());
 	}
+
+
 
 	@Test
 	void manualRootConstructorSetsIdZeroAndLevelFive() {

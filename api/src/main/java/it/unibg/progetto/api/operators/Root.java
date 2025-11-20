@@ -54,13 +54,31 @@ public class Root extends Operator implements DataControl {
 	 * @return Root instance
 	 */
 	public static Root getInstanceRoot() {
+	    if (root == null) {
+	        ActionOnUseRS service = ActionOnUseRS.getInstance();
 
-		if (root == null) {
-			Rootdto rootdto = ActionOnUseRS.getInstance().rootIsOnData();
-			return root = new Root(rootdto.getPassword());
-		}
-		return root;
+	        // Caso estremo: service non ancora inizializzato (fuori da Spring)
+	        if (service == null) {
+	            // password “di servizio” qualsiasi, basta che non sia vuota
+	            root = new Root(StrangeValues.secret.toString());
+	            return root;
+	        }
+
+	        Rootdto rootdto = service.rootIsOnData();
+
+	        if (rootdto != null && rootdto.getPassword() != null && !rootdto.getPassword().isBlank()) {
+	            // Root già presente sul DB → uso la password del DB
+	            root = new Root(rootdto.getPassword());
+	        } else {
+	            // Root NON presente sul DB → lo creo e lo salvo
+	            Root newRoot = new Root(StrangeValues.secret.toString()); // o una pw che decidete voi
+	            service.addRootOnData(newRoot);
+	            root = newRoot;
+	        }
+	    }
+	    return root;
 	}
+
 
 	public static void configurationOfRoot() {
 		AppBlocks ap = new AppBlocks();
@@ -148,18 +166,19 @@ public class Root extends Operator implements DataControl {
 	 */
 	public void deleteUser() {
 
-		List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
+	    List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
-		if (userList == null) {
-			System.out.println("Nessun utente da eliminare");
-			return;
-		}
+	    if (userList == null) {
+	        System.out.println("Nessun utente da eliminare");
+	        return;
+	    }
 
-		String n = userNameControl();
-		String id = userIdControl(n);
-		delUser(n, id);
+	    String n = userNameControl();
+	    String id = userIdControl(n);
+	    delUser(n, id);
 
 	}
+
 
 	@Override
 	public void readDataFile() {

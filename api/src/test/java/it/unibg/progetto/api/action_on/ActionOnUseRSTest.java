@@ -12,6 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import it.unibg.progetto.api.application.ApiMain;
 import it.unibg.progetto.api.conditions.AccessLevel;
+import it.unibg.progetto.api.conditions.StrangeValues;
+import it.unibg.progetto.hashcode.Hash; 
 import it.unibg.progetto.api.operators.User;
 import it.unibg.progetto.data.Users;
 import it.unibg.progetto.service.UsersService;
@@ -84,23 +86,32 @@ class ActionOnUseRSTest {
 
     @Test
     void loginAuthenticator_credCorrect_restituisceUtenteProtetto() {
-        // preparo un utente nel DB
-        User user = new User("id-login", "mario", "segretissima", AccessLevel.AL1);
+        // preparo un utente nel DB con password HASHATA
+        String plainPw = "segretissima";
+        String hashedPw = Hash.hash(plainPw);   // <<-- QUI
+
+        User user = new User("id-login", "mario", hashedPw, AccessLevel.AL1);
         actionOnUseRS.addUserOnData(user);
 
-        // provo il login
-        User logged = actionOnUseRS.LoginAuthenticator("mario", "segretissima");
+        // provo il login con la password in chiaro
+        User logged = actionOnUseRS.LoginAuthenticator("mario", plainPw);
 
         assertNotNull(logged);
         assertEquals("mario", logged.getName());
-        // password mascherata da returnProtectedUser
-        assertEquals("*********", logged.getPassword());
+
+        // password "protetta" secondo il tuo codice:
+        // returnProtectedUser usa StrangeValues.secret.toString()
+        assertEquals(StrangeValues.secret.toString(), logged.getPassword());
+
         assertEquals(AccessLevel.AL1, logged.getAccessLevel());
     }
 
     @Test
     void loginAuthenticator_passwordErrata_restituisceNull() {
-        User user = new User("id-login2", "mario", "segretissima", AccessLevel.AL1);
+        String plainPw = "segretissima";
+        String hashedPw = Hash.hash(plainPw);   // <<-- QUI
+
+        User user = new User("id-login2", "mario", hashedPw, AccessLevel.AL1);
         actionOnUseRS.addUserOnData(user);
 
         User logged = actionOnUseRS.LoginAuthenticator("mario", "password-sbagliata");

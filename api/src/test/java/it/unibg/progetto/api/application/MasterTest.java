@@ -15,6 +15,7 @@ import it.unibg.progetto.api.access_session.Session;
 import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.conditions.Checks;
 import it.unibg.progetto.data.Users;
+import it.unibg.progetto.hashcode.Hash;
 import it.unibg.progetto.service.UsersService;
 
 @ActiveProfiles("test")
@@ -46,16 +47,19 @@ class MasterTest {
     @Test
     void login_conCredenzialiCorrette_restituisceAffermativeESettaLaSessione() {
         // preparo un utente nel DB (entity Users -> tabella "users")
+        String plainPw = "segretissima";
+        String hashedPw = Hash.hash(plainPw);   // <-- HASH CORRETTO
+
         Users entity = new Users(
                 "id-master-login",
                 "franco",
-                "segretissima",
+                hashedPw,
                 AccessLevel.AL1.getLevel()
         );
         usersService.addUsersIntoDataUsers(entity);
 
         // eseguo il login tramite Master (che internamente usa ActionOnUseRS + ManagerSession)
-        Checks result = master.login("franco", "segretissima");
+        Checks result = master.login("franco", plainPw);
 
         // 1) controllo il valore di ritorno
         assertEquals(Checks.affermative, result);
@@ -64,7 +68,7 @@ class MasterTest {
         Session current = ManagerSession.getCurrent();
         assertNotNull(current, "Dopo login affermative la sessione non dovrebbe essere null");
         assertEquals("id-master-login", current.getUuid());
-        assertEquals("mario", current.getName());
+        assertEquals("franco", current.getName());  // <-- il nome deve essere lo stesso salvato nel DB
         assertEquals(AccessLevel.AL1.getLevel(), current.getAccessLevel());
     }
 
@@ -73,10 +77,13 @@ class MasterTest {
     @Test
     void login_passwordErrata_restituisceNegativeENonSettaSessione() {
         // utente valido nel DB
+        String plainPw = "segretissima";
+        String hashedPw = Hash.hash(plainPw);  // <-- HASH CORRETTO
+
         Users entity = new Users(
                 "id-master-login2",
                 "franco",
-                "segretissima",
+                hashedPw,
                 AccessLevel.AL1.getLevel()
         );
         usersService.addUsersIntoDataUsers(entity);
@@ -112,16 +119,19 @@ class MasterTest {
     @Test
     void logout_azzeraLaSessioneCorrente() {
         // preparo utente nel DB
+        String plainPw = "ciao";
+        String hashedPw = Hash.hash(plainPw);  // <-- HASH CORRETTO
+
         Users entity = new Users(
                 "id-master-logout",
                 "luca",
-                "ciao",
+                hashedPw,
                 AccessLevel.AL2.getLevel()
         );
         usersService.addUsersIntoDataUsers(entity);
 
         // faccio login per creare la sessione
-        Checks result = master.login("luca", "ciao");
+        Checks result = master.login("luca", plainPw);
         assertEquals(Checks.affermative, result);
         assertNotNull(ManagerSession.getCurrent(), "Dopo login ci deve essere una sessione");
 
@@ -132,7 +142,7 @@ class MasterTest {
         assertNull(ManagerSession.getCurrent(), "Dopo logout la sessione deve essere null");
     }
 
-    // ---------- 5) (facoltativo) RootInData non lancia eccezioni ----------
+    // ---------- 5) RootInData non lancia eccezioni ----------
 
     @Test
     void rootInData_nonLanciaEccezioni() {

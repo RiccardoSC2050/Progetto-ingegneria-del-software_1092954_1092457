@@ -34,25 +34,36 @@ public class ApiMain {
 			ActionOnUseRS conversionUseRS, RootMapper rootMapper) {
 		return args -> {
 
-			
-		AppBlocks ab = new AppBlocks();
-		String input;
-		
-		Root.configurationOfRoot();
-		ab.loginSession();
-		
-		do {
-			System.out.print(ManagerSession.getCurrent().getName()+"> ");
-			input = GlobalScaner.scanner.nextLine();
-			
-			
-			
-			
-			Exit.exit(input);
-			ClearTerminal.clearTerminal(input);
-			
-		}while(true);
-		
+			AppBlocks ab = new AppBlocks();
+			String input;
+
+			Root.configurationOfRoot();
+			ab.loginSession();
+
+			do {
+				System.out.print(ManagerSession.getCurrent().getName() + "> ");
+				input = GlobalScaner.scanner.nextLine();
+
+				switch (input) {
+
+				case "exit":
+					Exit.exit(input);
+					break;
+
+				case "clear":
+					ClearTerminal.clearTerminal(input);
+					break;
+
+				case "out":
+					ab.logoutSession();
+					break;
+
+				default:
+					System.out.print("Comando errato o non esistente\n\n");
+					break;
+				}
+
+			} while (true);
 
 		};
 	}

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.application.AppBlocks;
 import it.unibg.progetto.api.components.GlobalScaner;
+import it.unibg.progetto.api.components.Input;
 import it.unibg.progetto.api.components.Quit;
 import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.conditions.Checks;
@@ -54,6 +55,10 @@ public class Root extends Operator implements DataControl {
 	 */
 	public static Root getInstanceRoot() {
 
+		if (root == null) {
+			Rootdto rootdto = ActionOnUseRS.getInstance().rootIsOnData();
+			return root = new Root(rootdto.getPassword());
+		}
 		return root;
 	}
 
@@ -92,11 +97,15 @@ public class Root extends Operator implements DataControl {
 			pw = Hash.hash(pw);
 			int aclv;
 			do {
+
 				System.out.println("Inserire il livello di accesso utente [1-3]: ");
 				String al = GlobalScaner.scanner.nextLine();
 				if (Quit.quit(pw))
 					return Checks.neutral;
-				aclv = Integer.parseInt(al);
+				if (Input.isNumeric(al) && !al.isEmpty())
+					aclv = Integer.parseInt(al);
+				else
+					aclv = 0;
 
 			} while (!(aclv > 0 && aclv <= 3));
 

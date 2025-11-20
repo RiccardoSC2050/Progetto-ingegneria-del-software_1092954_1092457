@@ -45,6 +45,18 @@ public class ActionOnUseRS {
 	}
 
 	// ROOT
+
+	public int numberOfAllOperators() {
+		List<User> userList = trasformListUsersIntoListUserComplite();
+		int i = 0;
+		for (User u : userList) {
+
+			i++;
+		}
+		return i;
+
+	}
+
 	public Rootdto rootIsOnData() {
 		List<User> userList = trasformListUsersIntoListUserComplite();
 		if (userList != null) {

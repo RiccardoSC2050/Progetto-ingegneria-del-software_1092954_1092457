@@ -17,6 +17,7 @@ public class AppBlocks {
 
 	public void RootConfiguration(Root root) {
 		try {
+			boolean f = true;
 			Rootdto rootdto = ActionOnUseRS.getInstance().rootIsOnData();
 			if (rootdto == null) {
 				System.out.println("BENVENUTO, SI CONFIGURI IL PROGRAMMA");
@@ -28,13 +29,28 @@ public class AppBlocks {
 				System.out.println();
 				System.out.println("PASSWORD SALVATA CON SUCCESSO");
 
-				changeRootOrCreateUsere();
+				do {
+					if (createUserSession()) {
+						f = false;
+						return;
+					} else {
+						System.out.println("Spiecente: è obbligatorio creare un utente nel proceso di configurazione");
+					}
+				} while (f);
 			} else {
-				root = new Root(rootdto.getPassword());
+				Root.getInstanceRoot();
 			}
 		} catch (Exception e) {
 			System.err.println("Error creating Root instance: " + e.getMessage());
 		}
+	}
+
+	private boolean rootIsAlone() {
+		if (ActionOnUseRS.getInstance().numberOfAllOperators() > 1) {
+			return false;
+		}
+		return true;
+
 	}
 
 	/**
@@ -43,6 +59,19 @@ public class AppBlocks {
 	public void loginSession() {
 		Checks flag;
 		do {
+
+			if (rootIsAlone()) {
+				Checks c = changeRootOrCreateUsere();
+				do {
+					if (c.equals(Checks.neutral))
+						System.out.println("Spiacente è importante scegliere");
+
+				} while (c.equals(Checks.neutral));
+
+				if (c.equals(Checks.rootLog)) {
+					return;
+				}
+			}
 			System.out.print("[LOGIN] Inserire nome utente: ");
 			String name = GlobalScaner.scanner.nextLine().toLowerCase();
 			Exit.exit(name); // exit
@@ -56,7 +85,7 @@ public class AppBlocks {
 				return;
 
 			flag = Master.getIstance().login(name, pw);
-		} while (flag == Checks.negative);
+		} while (flag.equals(Checks.negative));
 
 		switch (flag) {
 		case affermative:
@@ -64,8 +93,8 @@ public class AppBlocks {
 			break;
 
 		case neutral:
-			System.out.println("Come vuoi procedere?");
-			changeRootOrCreateUsere();
+			System.out.println("Errore, nessun utente nel database, riconfigurare macchina");
+			Root.configurationOfRoot();
 			break;
 
 		default:
@@ -94,40 +123,41 @@ public class AppBlocks {
 		return Root.getInstanceRoot().createUser();
 	}
 
-	public void changeRootOrCreateUsere() {
+	public Checks changeRootOrCreateUsere() {
 		boolean f = true;
-		while (f) {
+		do {
 			System.out.println("Vuoi accedere come Root o vuoi creare un nuovo utente? [1|2]");
 			System.out.println("- 1 per accere come ROOT");
 			System.out.println("- 2 per creare nuovo utente");
 			String answare = GlobalScaner.scanner.nextLine();
 			if (Quit.quit(answare))
-				return;
+				return Checks.neutral;
 			switch (answare) {
 			case "1":
 				boolean n = RootLoginSession();
-				if (!n)
-					break; // quit
-				f = false;
+				if (n)
+					return Checks.rootLog;
+
 				break;
 
 			case "2":
 				boolean n1 = createUserSession();
-				if (!n1)
-					break; // quit
-				f = false;
+				if (n1)
+					return Checks.creationUser;
+
 				break;
 
 			default:
+				break;
 			}
-		}
-
+		} while (f);
+		return Checks.negative;
 	}
 
-	public void logoutSession(String logout) {
-		if (logout.equals("out")) {
-			Master.getIstance().logout();
-		}
+	public void logoutSession() {
+
+		Master.getIstance().logout();
+
 		loginSession();
 	}
 }

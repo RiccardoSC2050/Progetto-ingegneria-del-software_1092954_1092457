@@ -1,6 +1,6 @@
 package it.unibg.progetto.api.conditions;
 
 public enum Checks {
-	affermative, negative, neutral;
+	affermative, negative, neutral, rootLog, creationUser;
 
 }

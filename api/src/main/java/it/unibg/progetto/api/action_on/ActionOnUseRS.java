@@ -48,6 +48,8 @@ public class ActionOnUseRS {
 
 	public int numberOfAllOperators() {
 		List<User> userList = trasformListUsersIntoListUserComplite();
+		if (userList == null)
+			return 0;
 		int i = 0;
 		for (User u : userList) {
 
@@ -58,21 +60,20 @@ public class ActionOnUseRS {
 	}
 
 	public Rootdto rootIsOnData() {
-	    List<User> userList = trasformListUsersIntoListUserComplite();
-	    if (userList != null) {
-	        for (User u : userList) {
-	            if (u.getId().equals(String.valueOf(StrangeValues.ROOTid.getLevel()))
-	                    // confronto case-insensitive, coerente con come salvi il root
-	                    && u.getName().equalsIgnoreCase(StrangeValues.ROOT.toString())
-	                    && u.getAccessLevelValue() == AccessLevel.AL5.getLevel()) {
+		List<User> userList = trasformListUsersIntoListUserComplite();
+		if (userList != null) {
+			for (User u : userList) {
+				if (u.getId().equals(String.valueOf(StrangeValues.ROOTid.getLevel()))
+						// confronto case-insensitive, coerente con come salvi il root
+						&& u.getName().equalsIgnoreCase(StrangeValues.ROOT.toString())
+						&& u.getAccessLevelValue() == AccessLevel.AL5.getLevel()) {
 
-	                return rootMapper.fromUser(u);
-	            }
-	        }
-	    }
-	    return null;
+					return rootMapper.fromUser(u);
+				}
+			}
+		}
+		return null;
 	}
-
 
 	public void addRootOnData(Root root) {
 		Rootdto rootdto = rootMapper.toRootdtoFromRoot(root.getId(), root.getName(), root.getPassword(),

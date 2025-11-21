@@ -15,19 +15,29 @@ public class AppBlocks {
 	public AppBlocks() {
 	}
 
+	public void rootCreation(Root root) {
+		try {
+
+			System.out.println("NOME SISTEMA: " + StrangeValues.ROOT.toString());
+			System.out.print("Inserire PASSWORD di SISTEMA: ");
+			String pw = Hash.hash(GlobalScaner.scanner.nextLine());
+			root = new Root(pw);
+			ActionOnUseRS.getInstance().addRootOnData(root);
+			System.out.println();
+			System.out.println("PASSWORD SALVATA CON SUCCESSO");
+
+		} catch (Exception e) {
+			System.err.println("Error creating Root instance: " + e.getMessage());
+		}
+	}
+
 	public void RootConfiguration(Root root) {
 		try {
 			boolean f = true;
 			Rootdto rootdto = ActionOnUseRS.getInstance().rootIsOnData();
-			if (rootdto == null) {
-				System.out.println("BENVENUTO, SI CONFIGURI IL PROGRAMMA");
-				System.out.println("NOME SISTEMA: " + StrangeValues.ROOT.toString());
-				System.out.print("Inserire PASSWORD di SISTEMA: ");
-				String pw = Hash.hash(GlobalScaner.scanner.nextLine());
-				root = new Root(pw);
-				ActionOnUseRS.getInstance().addRootOnData(root);
-				System.out.println();
-				System.out.println("PASSWORD SALVATA CON SUCCESSO");
+			if (rootdto == null && ActionOnUseRS.getInstance().numberOfAllOperators() == 0) {
+				System.out.print("PRIMO ACCESSO, CREAZIONE NUOVO SISTEMA");
+				rootCreation(root);
 
 				do {
 					if (createUserSession()) {
@@ -45,22 +55,26 @@ public class AppBlocks {
 		}
 	}
 
-	private boolean rootIsAlone() {
+	private Checks rootIsAlone() {
+		Rootdto rootdto = ActionOnUseRS.getInstance().rootIsOnData();
+		if (rootdto == null)
+			return Checks.neutral;
 		if (ActionOnUseRS.getInstance().numberOfAllOperators() > 1) {
-			return false;
+			return Checks.negative;
 		}
-		return true;
+		return Checks.affermative;
 
 	}
 
-	/**
-	 * 
-	 */
 	public void loginSession() {
 		Checks flag;
 		do {
 
-			if (rootIsAlone()) {
+			if (rootIsAlone().equals(Checks.neutral)) {// root is diapered from data
+				System.out.println("errore di sistema, ROOT inesistente [correzione immediata]");
+				Root.createRootErrorDatabase();
+
+			} else if (rootIsAlone().equals(Checks.affermative)) {
 				Checks c = changeRootOrCreateUsere();
 				do {
 					if (c.equals(Checks.neutral))
@@ -75,14 +89,10 @@ public class AppBlocks {
 			System.out.print("[LOGIN] Inserire nome utente: ");
 			String name = GlobalScaner.scanner.nextLine().toLowerCase();
 			Exit.exit(name); // exit
-			if (Quit.quit(name))
-				return;
 
 			System.out.print("[LOGIN] Inserire password: ");
 			String pw = GlobalScaner.scanner.nextLine().toLowerCase();
 			Exit.exit(pw); // exit
-			if (Quit.quit(name))
-				return;
 
 			flag = Master.getIstance().login(name, pw);
 		} while (flag.equals(Checks.negative));

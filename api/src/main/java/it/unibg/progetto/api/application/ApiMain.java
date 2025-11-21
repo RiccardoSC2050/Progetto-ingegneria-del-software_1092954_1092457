@@ -33,7 +33,6 @@ public class ApiMain {
 	public CommandLineRunner createDefaultUser(UserMapper userMapper, UsersService service,
 			ActionOnUseRS conversionUseRS, RootMapper rootMapper) {
 		return args -> {
-
 			AppBlocks ab = new AppBlocks();
 			String input;
 

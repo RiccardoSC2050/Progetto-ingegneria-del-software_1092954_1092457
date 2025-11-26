@@ -24,46 +24,70 @@ import it.unibg.progetto.service.UsersService;
 @EntityScan(basePackages = "it.unibg.progetto.data")
 public class ApiMain {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ApiMain.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ApiMain.class, args);
+    }
 
-	@Bean
-	@Profile("!test")
-	public CommandLineRunner createDefaultUser(UserMapper userMapper, UsersService service,
-			ActionOnUseRS conversionUseRS, RootMapper rootMapper) {
-		return args -> {
-			AppBlocks ab = new AppBlocks();
-			String input;
+    @Bean
+    @Profile("!test")
+    public CommandLineRunner createDefaultUser(
+            UserMapper userMapper,
+            UsersService service,
+            ActionOnUseRS conversionUseRS,
+            RootMapper rootMapper
+    ) {
+        return args -> {
+            AppBlocks ab = new AppBlocks();
 
-			Root.configurationOfRoot();
-			ab.loginSession();
+            // Configurazione iniziale di Root (crea/legge root dal DB)
+            Root.configurationOfRoot();
 
-			do {
-				System.out.print(ManagerSession.getCurrent().getName() + "> ");
-				input = GlobalScaner.scanner.nextLine();
+            // Primo tentativo di login gestito da AppBlocks
+            ab.loginSession();
 
-				switch (input) {
+            // Loop principale dell'applicazione
+            while (true) {
+                // Controllo la sessione corrente
+                Session current = ManagerSession.getCurrent();
 
-				case "exit":
-					Exit.exit(input);
-					break;
+                if (current == null) {
+                    // Nessuna sessione attiva: chiedo di rifare il login
+                    System.out.println("Nessuna sessione attiva. Effettua nuovamente il login.");
+                    ab.loginSession();
+                    current = ManagerSession.getCurrent();
 
-				case "clear":
-					ClearTerminal.clearTerminal(input);
-					break;
+                    // Se ancora null, esco in modo pulito invece di lanciare un NPE
+                    if (current == null) {
+                        System.out.println("Login non riuscito. Chiusura applicazione.");
+                        return;
+                    }
+                }
 
-				case "out":
-					ab.logoutSession();
-					break;
+                // A questo punto current NON è null
+                System.out.print(current.getName() + "> ");
+                String input = GlobalScaner.scanner.nextLine();
 
-				default:
-					System.out.print("Comando errato o non esistente\n\n");
-					break;
-				}
+                switch (input) {
+                    case "exit":
+                        Exit.exit(input);
+                        break;
 
-			} while (true);
+                    case "clear":
+                        ClearTerminal.clearTerminal(input);
+                        break;
 
-		};
-	}
+                    case "out":
+                        // logout dell'utente corrente
+                        ab.logoutSession();
+                        // al prossimo giro del while, current sarà null
+                        // e verrà richiesto un nuovo login
+                        break;
+
+                    default:
+                        System.out.print("Comando errato o non esistente\n\n");
+                        break;
+                }
+            }
+        };
+    }
 }

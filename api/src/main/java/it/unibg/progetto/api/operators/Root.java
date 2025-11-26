@@ -65,31 +65,27 @@ public class Root extends Operator implements DataControl {
 	 * @return Root instance
 	 */
 	public static Root getInstanceRoot() {
-	    if (root == null) {
-	        ActionOnUseRS service = ActionOnUseRS.getInstance();
+		if (root == null) {
+			ActionOnUseRS service = ActionOnUseRS.getInstance();
 
-	        // Caso estremo: service non ancora inizializzato (fuori da Spring)
-	        if (service == null) {
-	            // password “di servizio” qualsiasi, basta che non sia vuota
-	            root = new Root(StrangeValues.secret.toString());
-	            return root;
-	        }
+			// Caso estremo: service non ancora inizializzato (fuori da Spring)
+			if (service == null) {
+				// password “di servizio” qualsiasi, basta che non sia vuota
+				root = new Root(StrangeValues.secret.toString());
+				return root;
+			}
 
-	        Rootdto rootdto = service.rootIsOnData();
+			Rootdto rootdto = service.rootIsOnData();
 
-	        if (rootdto != null && rootdto.getPassword() != null && !rootdto.getPassword().isBlank()) {
-	            // Root già presente sul DB → uso la password del DB
-	            root = new Root(rootdto.getPassword());
-	        } else {
-	            // Root NON presente sul DB → la creo io e la salvo
-	            Root newRoot = new Root(StrangeValues.secret.toString());
-	            service.addRootOnData(newRoot);   // salva nel DB
-	            root = newRoot;                   // e la metto come singleton
-	        }
-	    }
-	    return root;
+			if (rootdto != null && rootdto.getPassword() != null && !rootdto.getPassword().isBlank()) {
+				// Root già presente sul DB → uso la password del DB
+				root = new Root(rootdto.getPassword());
+			} else {
+
+			}
+		}
+		return root;
 	}
-
 
 	public static void configurationOfRoot() {
 		AppBlocks ab = new AppBlocks();

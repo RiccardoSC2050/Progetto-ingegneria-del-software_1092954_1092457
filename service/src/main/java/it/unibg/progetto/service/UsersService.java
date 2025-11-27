@@ -20,4 +20,12 @@ public class UsersService {
 	public List<Users> getAllUsersFromDataBase() {
 		return repository.findAll();
 	}
+	
+	public Users addUsersIntoDataUsers(Users user) {
+	    return repository.save(user);
+	}
+	
+	public void deleteUsers(Users user) {
+		repository.delete(user);
+	}
 }

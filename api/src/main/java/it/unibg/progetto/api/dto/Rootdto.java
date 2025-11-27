@@ -1,28 +1,24 @@
-package it.unibg.progetto.data;
+package it.unibg.progetto.api.dto;
 
-import java.security.PrivateKey;
+import it.unibg.progetto.api.conditions.AccessLevel;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+public class Rootdto {
 
-@Entity
-@Table(name = "users")
-public class Users {
-	@Id
 	private String uuid;
-	private String name;
+	private String username;
 	private String password;
 	private int accessLevel;
 
-	public Users() {
+	public Rootdto() {
+		super();
 	}
 
-	public Users(String uuid, String name, String password, int accessLevel) {
+	public Rootdto(String uuid, String username, String password, AccessLevel accessLevel) {
+		super();
 		this.uuid = uuid;
-		this.name = name;
+		this.username = username;
 		this.password = password;
-		this.accessLevel = accessLevel;
+		this.accessLevel = accessLevel.getLevel();
 	}
 
 	public String getUuid() {
@@ -33,12 +29,12 @@ public class Users {
 		this.uuid = uuid;
 	}
 
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {

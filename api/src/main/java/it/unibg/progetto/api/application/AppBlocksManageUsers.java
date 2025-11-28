@@ -10,9 +10,9 @@ import it.unibg.progetto.api.dto.Rootdto;
 import it.unibg.progetto.api.operators.Root;
 import it.unibg.progetto.hashcode.Hash;
 
-public class AppBlocks {
+public class AppBlocksManageUsers {
 
-	public AppBlocks() {
+	public AppBlocksManageUsers() {
 	}
 
 	public void rootCreation(Root root) {

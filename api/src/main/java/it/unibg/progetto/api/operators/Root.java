@@ -9,7 +9,7 @@ import org.hibernate.query.NativeQuery.ReturnableResultNode;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
-import it.unibg.progetto.api.application.AppBlocks;
+import it.unibg.progetto.api.application.AppBlocksManageUsers;
 import it.unibg.progetto.api.components.GlobalScaner;
 import it.unibg.progetto.api.components.Input;
 import it.unibg.progetto.api.components.Quit;
@@ -53,7 +53,7 @@ public class Root extends Operator implements DataControl {
 
 	public static Root createRootErrorDatabase() {
 		resetRoot();
-		AppBlocks ab = new AppBlocks();
+		AppBlocksManageUsers ab = new AppBlocksManageUsers();
 		ab.rootCreation(root);
 		return getInstanceRoot();
 	}
@@ -89,7 +89,7 @@ public class Root extends Operator implements DataControl {
 	}
 
 	public static void configurationOfRoot() {
-		AppBlocks ab = new AppBlocks();
+		AppBlocksManageUsers ab = new AppBlocksManageUsers();
 		ab.RootConfiguration(root);
 	}
 

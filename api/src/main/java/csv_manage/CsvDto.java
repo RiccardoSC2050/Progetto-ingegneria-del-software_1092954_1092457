@@ -4,29 +4,16 @@ import jakarta.persistence.Lob;
 
 public class CsvDto {
 
-	private Integer id;
-
 	private String fileName;
 
 	private String ownerId;
 
 	private byte[] data;
 
-	public CsvDto(Integer id, String fileName, String ownerId, byte[] data) {
-		super();
-		this.id = id;
+	public CsvDto(String fileName, String ownerId, byte[] data) {
 		this.fileName = fileName;
 		this.ownerId = ownerId;
 		this.data = data;
-	}
-
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getFileName() {

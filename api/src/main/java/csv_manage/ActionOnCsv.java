@@ -19,15 +19,21 @@ import it.unibg.progetto.data.Csv;
 import it.unibg.progetto.service.CsvService;
 
 @Component
-public class CsvConversion {
+public class ActionOnCsv {
 
+	private static ActionOnCsv istance;
 	private final CsvService csvService;
 	private final CsvMapper csvMapper;
 
 	@Autowired
-	public CsvConversion(CsvService csvService, CsvMapper csvMapper) {
+	public ActionOnCsv(CsvService csvService, CsvMapper csvMapper) {
 		this.csvService = csvService;
 		this.csvMapper = csvMapper;
+		istance = this;
+	}
+
+	public static ActionOnCsv getIstnce() {
+		return istance;
 	}
 
 	/*
@@ -37,14 +43,18 @@ public class CsvConversion {
 	 * chiede nome file si salva in locale e contemporanemante in data
 	 * 
 	 */
-	
+
 	/**
+	 * se l'utente può salvare il file per se, allora dopo avere controllato il suo
+	 * livello di accesso e dopo avere prseo il suo uuid si chiede il nome file, se
+	 * il nome file non è gia tra i suoi nomifile, allora converte il nome del file
+	 * ricerca come lo vuole lui e poi si aggiorna il database
 	 * 
 	 * @param current
 	 * @throws IOException
 	 */
-	public void createFileCsv(Session current) throws IOException {
-		if (!(current.getAccessLevel() > AccessLevel.AL2.getLevel()
+	public void saveFileCsvOnData(Session current) throws IOException {
+		if (!(current.getAccessLevel() >= AccessLevel.AL2.getLevel()
 				&& AccessLevel.isAPossibleValue(current.getAccessLevel()))) {
 			System.out.println("ERRORE: non ti è possibile salavre il file");
 		}
@@ -94,6 +104,42 @@ public class CsvConversion {
 
 		Files.move(oldPath, newPath, StandardCopyOption.REPLACE_EXISTING);
 		return true;
+	}
+
+	public void createLocalFile(CsvDto c) throws Exception {
+		csvMapper.createLocalFileFromCsvDto(c);
+	}
+
+	public void saveAllFileCsvFromDataOfUser(Session current) throws Exception {
+		String uuid = current.getUuid();
+
+		List<CsvDto> csvdtoList = csvMapper.ListCsvFromDatabaseWithSpecificUUID(csvService, uuid);
+
+		for (CsvDto c : csvdtoList) {
+			createLocalFile(c);
+		}
+
+	}
+
+	public void deleteAllFileInRepo() {
+		File folder = new File("/api/temporary_fileCSV_saving/");
+		File[] allFiles = folder.listFiles();
+
+		if (allFiles != null) {
+			for (File f : allFiles) {
+				if (f.isFile()) {
+					f.delete();
+				}
+			}
+		}
+	}
+
+	public void importFileFromLocalPc(String path) throws IOException {
+		Path p = Paths.get(path);
+		byte[] bytes = Files.readAllBytes(p);
+		String standardname = "/api/temporary_fileCSV_saving/" + CsvStandard.STANDARD + ".csv";
+
+		Files.write(p, bytes);
 	}
 
 }

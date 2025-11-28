@@ -1,4 +1,4 @@
-package csv_manage;
+package it.unibg.progetto.api.csv_manage;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,13 +94,13 @@ public class ActionOnCsv {
 	// si svolge una ricerca
 
 	private boolean changeNameFile(String nameFile) throws IOException {
-		Path oldPath = Paths.get("/api/temporary_fileCSV_saving/" + CsvStandard.STANDARD + ".csv");
+		Path oldPath = Paths.get("../api/temporary_fileCSV_saving/" + CsvStandard.STANDARD + ".csv");
 
 		if (!Files.exists(oldPath)) {
 			throw new RuntimeException("Il file non esiste: " + oldPath);
 		}
 
-		Path newPath = Paths.get("/api/temporary_fileCSV_saving/" + nameFile + ".csv");
+		Path newPath = Paths.get("../api/temporary_fileCSV_saving/" + nameFile + ".csv");
 
 		Files.move(oldPath, newPath, StandardCopyOption.REPLACE_EXISTING);
 		return true;
@@ -122,7 +122,7 @@ public class ActionOnCsv {
 	}
 
 	public void deleteAllFileInRepo() {
-		File folder = new File("/api/temporary_fileCSV_saving/");
+		File folder = new File("../api/temporary_fileCSV_saving/");
 		File[] allFiles = folder.listFiles();
 
 		if (allFiles != null) {
@@ -137,9 +137,9 @@ public class ActionOnCsv {
 	public void importFileFromLocalPc(String path) throws IOException {
 		Path p = Paths.get(path);
 		byte[] bytes = Files.readAllBytes(p);
-		String standardname = "/api/temporary_fileCSV_saving/" + CsvStandard.STANDARD + ".csv";
+		Path standardname = Paths.get("../api/temporary_fileCSV_saving/" + CsvStandard.STANDARD + ".csv");
 
-		Files.write(p, bytes);
+		Files.write(standardname, bytes);
 	}
 
 }

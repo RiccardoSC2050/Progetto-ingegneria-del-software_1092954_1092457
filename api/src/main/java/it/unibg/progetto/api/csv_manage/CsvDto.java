@@ -1,4 +1,4 @@
-package csv_manage;
+package it.unibg.progetto.api.csv_manage;
 
 import jakarta.persistence.Lob;
 

@@ -1,4 +1,4 @@
-package csv_manage;
+package it.unibg.progetto.api.csv_manage;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class CsvMapper {
 			System.out.println("ERRORE, il file/ oggetto non esiste");
 		}
 		String nameFile = c.getFileName();
-		Path localFile = Paths.get("/api/temporary_fileCSV_saving/" + nameFile + ".csv");
+		Path localFile = Paths.get("../api/temporary_fileCSV_saving/" + nameFile + ".csv");
 
 		Files.write(localFile, c.getData());
 

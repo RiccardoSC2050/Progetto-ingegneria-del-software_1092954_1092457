@@ -10,12 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import it.unibg.progetto.api.access_session.ManagerSession;
 import it.unibg.progetto.api.access_session.Session;
+import it.unibg.progetto.api.action_on.ActionOnCsv;
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.components.ClearTerminal;
 import it.unibg.progetto.api.components.Exit;
 import it.unibg.progetto.api.components.GlobalScaner;
-import it.unibg.progetto.api.csv_manage.ActionOnCsv;
-import it.unibg.progetto.api.csv_manage.CsvMapper;
+import it.unibg.progetto.api.mapper.CsvMapper;
 import it.unibg.progetto.api.mapper.RootMapper;
 import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.api.operators.Root;
@@ -38,31 +38,37 @@ public class ApiMain {
 			CsvMapper csvMapper) {
 		return args -> {
 			AppBlocksManageUsers ab = new AppBlocksManageUsers();
-			AppBlocksManageCsv sbcsv = new AppBlocksManageCsv();
+			AppBlocksManageCsv blockCsv = new AppBlocksManageCsv();
 			String input;
 
+			blockCsv.clearFolderCsv();
 			Root.configurationOfRoot();
 			ab.loginSession();
 
 			do {
+				blockCsv.manageImplementationOfMainFileCsv();
 				System.out.print(ManagerSession.getCurrent().getName() + "> ");
 				input = GlobalScaner.scanner.nextLine();
 
 				switch (input) {
 
 				case "exit":
+					blockCsv.saveAllFileInFolderIntoCsvTable(ManagerSession.getCurrent());
+					blockCsv.clearFolderCsv();
 					Exit.exit(input);
-					break;
-
-				case "import":
-					sbcsv.importMainFile();
 					break;
 
 				case "clear":
 					ClearTerminal.clearTerminal(input);
 					break;
 
+				case "write":
+					blockCsv.createGeneralFileCsv();
+					break;
+
 				case "out":
+					blockCsv.saveAllFileInFolderIntoCsvTable(ManagerSession.getCurrent());
+					blockCsv.clearFolderCsv();
 					ab.logoutSession();
 					break;
 

@@ -34,11 +34,12 @@ public class AppBlocksManageUsers {
 	public void RootConfiguration(Root root) {
 		try {
 			boolean f = true;
+			AppBlocksManageCsv abCsv = new AppBlocksManageCsv();
 			Rootdto rootdto = ActionOnUseRS.getInstance().rootIsOnData();
 			if (rootdto == null && ActionOnUseRS.getInstance().numberOfAllOperators() == 0) {
 				System.out.print("PRIMO ACCESSO, CREAZIONE NUOVO SISTEMA");
 				rootCreation(root);
-
+				abCsv.manageImplementationOfMainFileCsv();
 				do {
 					if (createUserSession()) {
 						f = false;

@@ -22,42 +22,29 @@ public class CsvService {
 	}
 
 	/**
+	 * AGGIUNGE UN FILE CSV NUOVO PARTENDO DA NOME FILE IN LOCALE E DA UUID UTENTE
 	 * 
 	 * @param fileName
 	 * @param idOwner
 	 * @return
 	 */
-	public Csv addFileCSV(String fileName, String idOwner) {
+	public Csv addNewFileCSV(Csv c) {
 
-		Path filePath = Paths.get("../api/temporary_fileCSV_saving/", fileName + ".csv");
+		return repository.save(c);
 
-		if (!Files.exists(filePath)) {
-			throw new RuntimeException("Il file CSV non esiste: " + filePath.toAbsolutePath());
-		}
-
-		try {
-			byte[] bytes = Files.readAllBytes(filePath);
-
-			Csv csv = new Csv(fileName, idOwner);
-			csv.setData(bytes);
-
-			return repository.save(csv);
-
-		} catch (IOException e) {
-			throw new RuntimeException("Errore nella lettura del CSV: " + filePath, e);
-		}
 	}
 
 	/**
+	 * aggiorna un csv preciso che ha un preciso id che deve esssere contriollato in
+	 * un metodo che richiama il seguente
 	 * 
-	 * @param fileName
+	 * @param c
 	 * @param bytes
-	 * @throws IOException
 	 */
-	public void covertBytesInCSV(String fileName, byte[] bytes) throws IOException {
+	public void updateCsvEntitybytes(Csv c, byte[] bytes) {
 
-		Path filePath = Paths.get("../api/temporary_fileCSV_saving/", fileName + ".csv");
-		Files.write(filePath, bytes);
+		c.setData(bytes);
+
 	}
 
 	/**

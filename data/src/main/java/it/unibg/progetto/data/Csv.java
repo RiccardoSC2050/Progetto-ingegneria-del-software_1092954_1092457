@@ -24,10 +24,17 @@ public class Csv {
 	public Csv() {
 	}
 
-	public Csv(String fileName, String ownerId) {
+	public Csv(String fileName, String ownerId, byte[] data) {
 		this.fileName = fileName;
 		this.ownerId = ownerId;
-		this.data = null;
+		this.data = data;
+	}
+
+	public Csv(Integer id, String fileName, String ownerId, byte[] data) {
+		this.id = id;
+		this.fileName = fileName;
+		this.ownerId = ownerId;
+		this.data = data;
 	}
 
 	// getter and setter

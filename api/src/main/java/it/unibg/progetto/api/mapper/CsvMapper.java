@@ -89,6 +89,10 @@ public class CsvMapper {
 		return csvList;
 	}
 
+	public List<Csv> ListCSv(CsvService csvService) {
+		return csvService.getAllFileCsv();
+	}
+
 	/**
 	 * salva un file csvdto nella tabella csv
 	 * 

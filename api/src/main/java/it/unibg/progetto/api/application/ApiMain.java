@@ -66,6 +66,10 @@ public class ApiMain {
 					blockCsv.createGeneralFileCsv();
 					break;
 
+				case "read":
+					blockCsv.readFileCsv();
+					break;
+
 				case "out":
 					blockCsv.saveAllFileInFolderIntoCsvTable(ManagerSession.getCurrent());
 					blockCsv.clearFolderCsv();

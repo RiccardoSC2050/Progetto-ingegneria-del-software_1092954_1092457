@@ -87,6 +87,12 @@ public class AppBlocksManageCsv {
 		ManageCsvFile.createFileCsvOnFolder(name);
 	}
 
+	/**
+	 * SALVA TUTTI I FILE NON ESISTENTI IN DATA
+	 * 
+	 * @param current
+	 * @throws IOException
+	 */
 	public void saveAllFileInFolderIntoCsvTable(Session current) throws IOException {
 		// creo lista dei file
 		File folder = new File("../api/temporary_fileCSV_saving/");
@@ -95,9 +101,27 @@ public class AppBlocksManageCsv {
 		for (File f : allFiles) {
 			String nameFile = f.getName().toString().replace(".csv", "");
 
-			ActionOnCsv.getIstnce()
-					.addNewFileInCsvTableFromCsvDto(ActionOnCsv.getIstnce().convertFileCsvToCsvDro(nameFile, current));
+			if (!ActionOnCsv.getIstnce().checknameFileAlreadyExistOnlyInData(nameFile, ManagerSession.getCurrent()))
+				ActionOnCsv.getIstnce().addNewFileInCsvTableFromCsvDto(
+						ActionOnCsv.getIstnce().convertFileCsvToCsvDro(nameFile, current));
 		}
 	}
 
+	/**
+	 * MOSTRA I FILE IN LETTURA
+	 * 
+	 * @throws Exception
+	 */
+	public void readFileCsv() throws Exception {
+		System.out.println("I tuoi file:");
+		ActionOnCsv.getIstnce().stampListOfMyCsv(ManagerSession.getCurrent());
+		System.out.println();
+		boolean f;
+		do {
+			System.out.println("Quale vuoi visualizzare?");
+			String name = GlobalScaner.scanner.nextLine();
+			f = ActionOnCsv.getIstnce().showFileContent(name, ManagerSession.getCurrent());
+
+		} while (!f);
+	}
 }

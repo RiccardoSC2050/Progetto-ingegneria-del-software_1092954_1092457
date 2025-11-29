@@ -15,6 +15,7 @@ import it.unibg.progetto.api.access_session.Session;
 import it.unibg.progetto.api.components.GlobalScaner;
 import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.conditions.CsvStandard;
+import it.unibg.progetto.api.csv_manage.ManageCsvFile;
 import it.unibg.progetto.api.dto.CsvDto;
 import it.unibg.progetto.api.mapper.CsvMapper;
 import it.unibg.progetto.data.Csv;
@@ -210,9 +211,19 @@ public class ActionOnCsv {
 
 	}
 
+	/**
+	 * RITORNA UNA LISTA DI CSVDTO DI FILE CSV DEL FILE CHE L'UTENTE HA SALVATO
+	 * 
+	 * @param uuid
+	 * @return
+	 */
 	public List<CsvDto> returnAllFileCsvDtoFromDataOfUser(String uuid) {
 		return csvMapper.ListCsvFromDatabaseWithSpecificUUID(csvService, uuid);
 
+	}
+
+	public List<Csv> returnListCsv() {
+		return csvMapper.ListCSv(csvService);
 	}
 
 	/**
@@ -225,6 +236,63 @@ public class ActionOnCsv {
 	 */
 	public boolean checknameFileAlreadyExist(String name, Session current) {
 
+		if (checknameFileAlreadyExistOnlyInFolder(name))
+			return true;
+
+		if (checknameFileAlreadyExistOnlyInData(name, current))
+			return true;
+
+		return false;
+	}
+
+	/**
+	 * CONTROLLA SE IL NOME FILE ESISTE GIA IN DATA, SE ESISTE RITORNA TRUE
+	 * ALTRIMENTI FALSE
+	 * 
+	 * 
+	 * @param name
+	 * @param current
+	 * @return
+	 */
+	public boolean checknameFileAlreadyExistOnlyInData(String name, Session current) {
+
+		List<CsvDto> csvdtoLsit = returnAllFileCsvDtoFromDataOfUser(current.getUuid());
+		for (CsvDto c : csvdtoLsit) {
+			if (name.equals(c.getFileName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * RITORNA IL NOME FILE CERCATO IN DATA
+	 * 
+	 * 
+	 * @param name
+	 * @param current
+	 * @return
+	 */
+	private Csv whatIsTheLuckyNameFile(String name) {
+		List<Csv> csvList = returnListCsv();
+		for (Csv c : csvList) {
+			if (name.equals(c.getFileName())) {
+				return c;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * CONTROLLA SE IL NOME FILE ESISTE GIA IN FOLDER, SE ESISTE RITORNA TRUE
+	 * ALTRIMENTI FALSE
+	 * 
+	 * 
+	 * @param name
+	 * @param current
+	 * @return
+	 */
+	public boolean checknameFileAlreadyExistOnlyInFolder(String name) {
 		File folder = new File("../api/temporary_fileCSV_saving/");
 		File[] allFiles = folder.listFiles();
 
@@ -234,12 +302,44 @@ public class ActionOnCsv {
 				return true;
 			}
 		}
+		return false;
+	}
 
-		List<CsvDto> csvdtoLsit = returnAllFileCsvDtoFromDataOfUser(current.getUuid());
-		for (CsvDto c : csvdtoLsit) {
-			if (name.equals(c.getFileName())) {
+	/**
+	 * STAMPA TUTTI I FILE CHE L'UTENTE POSSIEDE
+	 */
+	public void stampListOfMyCsv(Session current) {
+		List<CsvDto> cList = returnAllFileCsvDtoFromDataOfUser(current.getUuid());
+
+		for (CsvDto c : cList) {
+			System.out.println(c.getFileName());
+		}
+	}
+
+	/**
+	 * STAMPA IL FILE CHE L'UTENTE VUOLE LEGGERE, SE IL FILE NON è NE PRESENTE IN
+	 * DATA NE IN LOCALE, NON STAMPA NULLA MA RITORNA FALSE
+	 * 
+	 * @param name
+	 * @param current
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean showFileContent(String name, Session current) throws Exception {
+		try {
+			if (checknameFileAlreadyExistOnlyInFolder(name)) {
+				ManageCsvFile.readFileCsv(name);
 				return true;
-			}
+			} else if (checknameFileAlreadyExistOnlyInData(name, current)) {
+				conversionFromCsvToCsvDto(whatIsTheLuckyNameFile(name));
+				createLocalFileFromCsvDto(conversionFromCsvToCsvDto(whatIsTheLuckyNameFile(name)));
+				ManageCsvFile.readFileCsv(name);
+				return true;
+			} else
+				return false;
+		} catch (
+
+		Exception e) {
 		}
 		return false;
 	}

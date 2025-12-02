@@ -39,6 +39,7 @@ public class ApiMain {
 		return args -> {
 			AppBlocksManageUsers ab = new AppBlocksManageUsers();
 			AppBlocksManageCsv blockCsv = new AppBlocksManageCsv();
+			AppBlocksCsv appBlocksCsv = new AppBlocksCsv(sercCsvService, csvMapper);
 			String input;
 
 			blockCsv.clearFolderCsv();
@@ -68,6 +69,28 @@ public class ApiMain {
 
 				case "read":
 					blockCsv.readFileCsv();
+					break;
+
+				case "mycsv":
+					appBlocksCsv.showMyCsvFiles();
+					break;
+					
+				case "viewcsv":
+					blockCsv.viewMyCsvFromDatabase();
+					break;
+
+				case "delcsv":
+					blockCsv.deleteMyCsvFromDatabase();
+					break;
+
+				case "search":
+					blockCsv.searchOnBaseAndMaybeSave();
+					break;
+
+				case "save":
+					blockCsv.saveAllFileInFolderIntoCsvTable(ManagerSession.getCurrent());
+					blockCsv.clearFolderCsv();
+					System.out.println("File CSV salvati nel database.\n");
 					break;
 
 				case "out":

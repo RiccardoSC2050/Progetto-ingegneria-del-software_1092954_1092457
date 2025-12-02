@@ -25,7 +25,9 @@ import it.unibg.progetto.service.CsvService;
 public class ActionOnCsv {
 
 	private static ActionOnCsv istance;
+	@Autowired
 	private final CsvService csvService;
+	@Autowired
 	private final CsvMapper csvMapper;
 
 	@Autowired
@@ -366,5 +368,51 @@ public class ActionOnCsv {
 		// ORA LO ELIMINIAMO DAL LOCALE
 		deleteOneFileInRepo(standardname);
 	}
+
+	/**
+	 * Salva nel database la ricerca che è stata scritta temporaneamente in
+	 * STANDARD.csv. Usa un nome finale scelto dall'utente (finalName).
+	 */
+	public boolean saveSearchStandardInDatabase(String finalName, Session current) throws IOException {
+
+		// controllo che NON esista già un file con quel nome
+		if (checknameFileAlreadyExist(finalName, current)) {
+			// prima lanciavamo una RuntimeException, ora restituiamo false
+			return false;
+		}
+
+		// rinomino STANDARD.csv -> <finalName>.csv
+		changeNameFile(finalName);
+
+		// converto in DTO e salvo in DB
+		CsvDto dto = convertFileCsvToCsvDro(finalName, current);
+		addNewFileInCsvTableFromCsvDto(dto);
+
+		// cancello il file locale
+		Path p = Paths.get("temporary_fileCSV_saving/" + finalName + ".csv");
+		deleteOneFileInRepo(p);
+
+		return true;
+	}
+	
+	// Restituisce la lista di CsvDto del SOLO utente loggato
+	public List<CsvDto> getMyCsvList(Session current) {
+	    // uso il mapper che hai già
+	    return csvMapper.ListCsvFromDatabaseWithSpecificUUID(csvService, current.getUuid());
+	}
+
+	// Elimina il CSV in posizione "index" nella lista dell'utente
+	public boolean deleteMyCsvByIndex(int index, Session current) {
+	    List<CsvDto> list = getMyCsvList(current);
+	    if (list == null || index < 0 || index >= list.size()) {
+	        return false;
+	    }
+
+	    CsvDto dto = list.get(index);
+	    Csv entity = csvMapper.toCsvFromCsvDtoWithId(dto);
+	    csvService.deleteFileCsv(entity);
+	    return true;
+	}
+
 
 }

@@ -39,7 +39,6 @@ public class ApiMain {
 		return args -> {
 			AppBlocksManageUsers ab = new AppBlocksManageUsers();
 			AppBlocksManageCsv blockCsv = new AppBlocksManageCsv();
-			AppBlocksCsv appBlocksCsv = new AppBlocksCsv(sercCsvService, csvMapper);
 			String input;
 
 			blockCsv.clearFolderCsv();
@@ -72,9 +71,9 @@ public class ApiMain {
 					break;
 
 				case "mycsv":
-					appBlocksCsv.showMyCsvFiles();
+					blockCsv.showMyCsvFiles();
 					break;
-					
+
 				case "viewcsv":
 					blockCsv.viewMyCsvFromDatabase();
 					break;

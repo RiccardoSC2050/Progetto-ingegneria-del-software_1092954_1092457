@@ -29,6 +29,23 @@ public class AppBlocksManageCsv {
 	public AppBlocksManageCsv() {
 	}
 
+	public void showMyCsvFiles() {
+		Session current = ManagerSession.getCurrent();
+		String uuid = current.getUuid(); // o getUuid(), dipende dal tuo Session
+
+		List<CsvDto> myFiles = ActionOnCsv.getIstnce().returnAllFileCsvDtoFromDataOfUser(uuid);
+
+		if (myFiles.isEmpty()) {
+			System.out.println("Non hai ancora nessun file CSV salvato.");
+			return;
+		}
+
+		System.out.println("=== I TUOI FILE CSV ===");
+		for (CsvDto c : myFiles) {
+			System.out.println("- " + c.getFileName() + " (ownerId=" + c.getOwnerId() + ")");
+		}
+	}
+
 	/**
 	 * CONTROLLO PRESENZA DEL FILE DI RIFERIMENTO AZIENDALE (DOCUMENTO_AZIENDALE)
 	 * 

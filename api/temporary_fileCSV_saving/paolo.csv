@@ -1,0 +1,11 @@
+id,nome,cognome,mail,numero_di_telefono,ruolo,anno_inizio,richiami
+21,Fabio,De Angelis,user21@example.com,+39 3201234580,HR,2013,0
+22,Claudia,Lombardi,user22@example.com,+39 3201234581,HR,2016,1
+23,Nicola,Caruso,user23@example.com,+39 3201234582,HR,2014,0
+24,Elisabetta,Gentile,user24@example.com,+39 3201234583,HR,2017,2
+25,Giovanni,Longo,user25@example.com,+39 3201234584,HR,2012,1
+26,Cristina,Martinelli,user26@example.com,+39 3201234585,HR,2019,0
+27,Pierluigi,Fiore,user27@example.com,+39 3201234586,HR,2011,3
+28,Angela,Costantini,user28@example.com,+39 3201234587,HR,2010,2
+29,Stefano,Barbieri,user29@example.com,+39 3201234588,HR,2015,0
+30,Chiara,Bruno,user30@example.com,+39 3201234589,HR,2020,0

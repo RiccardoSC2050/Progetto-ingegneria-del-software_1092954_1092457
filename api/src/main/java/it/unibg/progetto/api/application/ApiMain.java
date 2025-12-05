@@ -70,14 +70,6 @@ public class ApiMain {
 					blockCsv.readFileCsv();
 					break;
 
-				case "mycsv":
-					blockCsv.showMyCsvFiles();
-					break;
-
-				case "viewcsv":
-					blockCsv.viewMyCsvFromDatabase();
-					break;
-
 				case "delcsv":
 					blockCsv.deleteMyCsvFromDatabase();
 					break;

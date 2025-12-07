@@ -14,7 +14,7 @@ public class ResearchChoice {
 	 * 
 	 * @throws Exception
 	 */
-	public static List<String[]> askAndExecuteSearch() throws Exception {
+	public static void askAndExecuteSearch() throws Exception {
 		System.out.println("=== RICERCHE SU DOCUMENTO_AZIENDALE ===");
 		System.out.println("1) Cerca per ruolo");
 		System.out.println("2) Cerca per anno di inizio (>= anno)");
@@ -29,14 +29,7 @@ public class ResearchChoice {
 			break;
 
 		case "2":
-			System.out.print("Inserisci l'anno minimo di inizio (es. 2018): ");
-			String annoStr = GlobalScaner.scanner.nextLine().trim();
-			try {
-				int anno = Integer.parseInt(annoStr);
-				result = MainResearch.searchByAnnoInizioMaggioreUguale(anno);
-			} catch (NumberFormatException e) {
-				System.out.println("Anno non valido.\n");
-			}
+			ManageResearchOnCsv.searchAndMaybeSaveByAnnoInizio();
 			break;
 
 		default:
@@ -44,6 +37,5 @@ public class ResearchChoice {
 			break;
 		}
 
-		return result;
 	}
 }

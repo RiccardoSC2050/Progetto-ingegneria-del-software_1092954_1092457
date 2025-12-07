@@ -1,13 +1,18 @@
 package it.unibg.progetto.api.application;
 
+import java.util.List;
+
+import it.unibg.progetto.api.access_session.ManagerSession;
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.components.Exit;
 import it.unibg.progetto.api.components.GlobalScaner;
 import it.unibg.progetto.api.components.Quit;
+import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.conditions.Checks;
 import it.unibg.progetto.api.conditions.StrangeValues;
 import it.unibg.progetto.api.dto.Rootdto;
 import it.unibg.progetto.api.operators.Root;
+import it.unibg.progetto.api.operators.User;
 import it.unibg.progetto.hashcode.Hash;
 
 public class AppBlocksManageUsers {
@@ -171,4 +176,34 @@ public class AppBlocksManageUsers {
 
 		loginSession();
 	}
+
+	public void createUserIfRoot() {
+		if (ManagerSession.getCurrent().getAccessLevel() == AccessLevel.AL5.getLevel()) {
+			Root.getInstanceRoot().createUser();
+		} else {
+			System.out.println("Non sei ROOT, non puoi creare utente");
+		}
+	}
+
+	public void deleteUserIfRoot() {
+		if (ManagerSession.getCurrent().getAccessLevel() == AccessLevel.AL5.getLevel()) {
+			Root.getInstanceRoot().deleteUser();
+		} else {
+			System.out.println("Non sei ROOT, non puoi cancellare utenti");
+		}
+	}
+
+	public void showUsersIfRoot(Checks n) {
+		if (ManagerSession.getCurrent().getAccessLevel() == AccessLevel.AL5.getLevel()) {
+			System.out.println("numero utenti: " + ActionOnUseRS.getInstance().numberOfAllOperators() + "\n");
+			ActionOnUseRS.getInstance().printNameUserAll(n,
+					ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword());
+
+			System.out.println();
+
+		} else {
+			System.out.println("Non sei ROOT, non puoi accedere alla lista utenti");
+		}
+	}
+
 }

@@ -15,6 +15,7 @@ import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.components.ClearTerminal;
 import it.unibg.progetto.api.components.Exit;
 import it.unibg.progetto.api.components.GlobalScaner;
+import it.unibg.progetto.api.conditions.Checks;
 import it.unibg.progetto.api.mapper.CsvMapper;
 import it.unibg.progetto.api.mapper.RootMapper;
 import it.unibg.progetto.api.mapper.UserMapper;
@@ -37,57 +38,79 @@ public class ApiMain {
 			ActionOnUseRS conversionUseRS, RootMapper rootMapper, CsvService sercCsvService, ActionOnCsv actionOnCsv,
 			CsvMapper csvMapper) {
 		return args -> {
-			AppBlocksManageUsers ab = new AppBlocksManageUsers();
+			AppBlocksManageUsers blockUser = new AppBlocksManageUsers();
 			AppBlocksManageCsv blockCsv = new AppBlocksManageCsv();
 			String input;
 
 			blockCsv.clearFolderCsv();
 			Root.configurationOfRoot();
-			ab.loginSession();
+			blockUser.loginSession();
 
 			do {
+				blockCsv.controllOnFolderCsv();
 				blockCsv.manageImplementationOfMainFileCsv();
 				System.out.print(ManagerSession.getCurrent().getName() + "> ");
 				input = GlobalScaner.scanner.nextLine();
 
 				switch (input) {
 
-				case "exit":
-					blockCsv.saveAllFileInFolderIntoCsvTable(ManagerSession.getCurrent());
+				case "exit": // end program
+					blockCsv.saveAllFileInFolderIntoCsvTable();
 					blockCsv.clearFolderCsv();
 					Exit.exit(input);
 					break;
 
-				case "clear":
+				case "clear": // clear terminal
 					ClearTerminal.clearTerminal(input);
 					break;
 
-				case "write":
+				case "w -c": // create an file csv
 					blockCsv.createGeneralFileCsv();
 					break;
 
-				case "read":
+				case "r -c": // read an your file csv
 					blockCsv.readFileCsv();
+					blockCsv.clearFolderCsv();
 					break;
 
-				case "delcsv":
+				case "ls -f": // mostrami tutti i file
+					blockCsv.lsFileUser();
+					break;
+
+				case "crt -u": // crea utente se sono root
+					blockUser.createUserIfRoot();
+					break;
+
+				case "dlt -u": // elimino utente se sono root
+					blockUser.deleteUserIfRoot();
+					break;
+
+				case "dlt -c": // limina un mio file csv
 					blockCsv.deleteMyCsvFromDatabase();
 					break;
 
-				case "search":
+				case "show -a -u": // mostra tutti gli utenti nome
+					blockUser.showUsersIfRoot(Checks.neutral);
+					break;
+
+				case "show -t -u": // mostra tutti gli utenti nome
+					blockUser.showUsersIfRoot(Checks.affermative);
+					break;
+
+				case "search": // ricerca mirata
 					blockCsv.searchOnBaseAndMaybeSave();
 					break;
 
-				case "save":
-					blockCsv.saveAllFileInFolderIntoCsvTable(ManagerSession.getCurrent());
+				case "save": // salva i miei file
+					blockCsv.saveAllFileInFolderIntoCsvTable();
 					blockCsv.clearFolderCsv();
 					System.out.println("File CSV salvati nel database.\n");
 					break;
 
-				case "out":
-					blockCsv.saveAllFileInFolderIntoCsvTable(ManagerSession.getCurrent());
+				case "out": // logout
+					blockCsv.saveAllFileInFolderIntoCsvTable();
 					blockCsv.clearFolderCsv();
-					ab.logoutSession();
+					blockUser.logoutSession();
 					break;
 
 				default:

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import ch.qos.logback.core.net.LoginAuthenticator;
 import it.unibg.progetto.api.conditions.AccessLevel;
+import it.unibg.progetto.api.conditions.Checks;
 import it.unibg.progetto.api.conditions.StrangeValues;
 import it.unibg.progetto.api.dto.Rootdto;
 import it.unibg.progetto.api.dto.Userdto;
@@ -113,6 +114,18 @@ public class ActionOnUseRS {
 
 		List<User> userList = converterListUsersToListUserProtected(usersService, userMapper);
 		return userList;
+	}
+
+	public void printNameUserAll(Checks n, List<User> l) {
+		if (n.equals(Checks.neutral)) {
+			for (User u : l) {
+				System.out.println(u.getName());
+			}
+		} else if (n.equals(Checks.affermative)) {
+			for (User u : l) {
+				System.out.println(u.toString());
+			}
+		}
 	}
 
 	/**

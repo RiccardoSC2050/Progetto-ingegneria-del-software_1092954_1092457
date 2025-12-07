@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unibg.progetto.api.components.Constant;
+
 public class ManageCsvFile {
 
 	public ManageCsvFile() {
@@ -18,25 +20,11 @@ public class ManageCsvFile {
 	 * rappresenta la cartella temporanea. Se non esiste, la crea. OK
 	 */
 	public static File getTempFolder() {
-		File folder = new File("../api/temporary_fileCSV_saving/");
+		File folder = new File(Constant.getFilePathCsv());
 		if (!folder.exists()) {
 			folder.mkdirs(); // la crea se non esiste
 		}
 		return folder;
-	}
-
-	/**
-	 * METODO CHE SALVA IN UN ARRAY DI FILE TUTTI I FILE PRESENTI NEL FOLDER
-	 * TEMPORANEO Ritorna tutti i file CHE SONO nella cartella temporanea. Mai null:
-	 * se non ci sono file, ritorna un array vuoto. OK
-	 */
-	public static File[] listTempFiles() {
-		File folder = getTempFolder();
-		File[] allFiles = folder.listFiles();
-		if (allFiles == null) {
-			return new File[0];
-		}
-		return allFiles;
 	}
 
 	/**
@@ -56,7 +44,7 @@ public class ManageCsvFile {
 	 * @param nameFile
 	 */
 	public static void createFileCsvOnFolder(String nameFile) {
-		String p = "../api/temporary_fileCSV_saving/" + nameFile + ".csv";
+		String p = Constant.getFilePathCsv() + nameFile + ".csv";
 
 		try (FileWriter fileCsv = new FileWriter(p)) {
 
@@ -66,7 +54,7 @@ public class ManageCsvFile {
 	}
 
 	public static void readFileCsv(String name) {
-		String p = "../api/temporary_fileCSV_saving/" + name + ".csv";
+		String p = Constant.getFilePathCsv() + name + ".csv";
 		try (BufferedReader br = new BufferedReader(new FileReader(p))) {
 
 			String line;
@@ -86,7 +74,7 @@ public class ManageCsvFile {
 	}
 
 	/**
-	 * UTILE PER LE RICERCHE MIRATE SU FILE 
+	 * UTILE PER LE RICERCHE MIRATE SU FILE
 	 * 
 	 * Legge tutte le righe (come array di String) di un file CSV della cartella
 	 * temporanea (o del file aziendale, se nameFile = BASE_FILE_NAME). OK
@@ -119,32 +107,31 @@ public class ManageCsvFile {
 
 		return rows;
 	}
-	
-	/**
-     * Legge e restituisce SOLO la prima riga (header) di un file CSV.
-     * OK
-     *
-     * @param nameFile nome del file SENZA .csv
-     * @return header come stringa (la riga completa così com'è nel file), oppure
-     *         null se il file è vuoto
-     */
-    public static String readHeader(String nameFile) {
-        File csvFile = getTempCsvFile(nameFile);
 
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-            return br.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException("Errore nella lettura dell'header del file CSV: " + csvFile.getPath(), e);
-        }
-    }
-    
-    public static void printRows(List<String[]> rows) {
-        for (String[] row : rows) {
-            for (String col : row) {
-                System.out.print(col + "\t");
-            }
-            System.out.println();
-        }
-    }
+	/**
+	 * Legge e restituisce SOLO la prima riga (header) di un file CSV. OK
+	 *
+	 * @param nameFile nome del file SENZA .csv
+	 * @return header come stringa (la riga completa così com'è nel file), oppure
+	 *         null se il file è vuoto
+	 */
+	public static String readHeader(String nameFile) {
+		File csvFile = getTempCsvFile(nameFile);
+
+		try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+			return br.readLine();
+		} catch (IOException e) {
+			throw new RuntimeException("Errore nella lettura dell'header del file CSV: " + csvFile.getPath(), e);
+		}
+	}
+
+	public static void printRows(List<String[]> rows) {
+		for (String[] row : rows) {
+			for (String col : row) {
+				System.out.print(col + "\t");
+			}
+			System.out.println();
+		}
+	}
 
 }

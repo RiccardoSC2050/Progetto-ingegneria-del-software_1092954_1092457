@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.unibg.progetto.api.access_session.Session;
+import it.unibg.progetto.api.components.Constant;
 import it.unibg.progetto.api.components.GlobalScaner;
 import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.conditions.CsvStandard;
@@ -57,7 +58,7 @@ public class ActionOnCsv {
 			System.out.println("ERRORE, il file/ oggetto non esiste");
 		}
 		String nameFile = c.getFileName();
-		Path localFile = Paths.get("../api/temporary_fileCSV_saving/" + nameFile + ".csv");
+		Path localFile = Paths.get(Constant.getFilePathCsv() + nameFile + ".csv");
 
 		Files.write(localFile, c.getData());
 
@@ -76,7 +77,7 @@ public class ActionOnCsv {
 	 * @throws IOException
 	 */
 	public CsvDto convertFileCsvToCsvDto(String name, Session current) throws IOException {
-		Path p = Paths.get("../api/temporary_fileCSV_saving/" + name + ".csv");
+		Path p = Paths.get(Constant.getFilePathCsv() + name + ".csv");
 
 		if (!Files.exists(p)) {
 			throw new RuntimeException("Il file non esiste: " + p);
@@ -144,14 +145,14 @@ public class ActionOnCsv {
 	 * @throws IOException
 	 */
 	public boolean changeNameFile(String nameFile) throws IOException {
-		Path oldPath = Paths.get("../api/temporary_fileCSV_saving/" + CsvStandard.STANDARD + ".csv");
+		Path oldPath = Paths.get(Constant.getFilePathCsv() + CsvStandard.STANDARD + ".csv");
 
 		if (!Files.exists(oldPath)) {
 			throw new RuntimeException("Il file non esiste: " + oldPath);
 
 		}
 
-		Path newPath = Paths.get("../api/temporary_fileCSV_saving/" + nameFile + ".csv");
+		Path newPath = Paths.get(Constant.getFilePathCsv() + nameFile + ".csv");
 
 		Files.move(oldPath, newPath, StandardCopyOption.REPLACE_EXISTING);
 		return true;
@@ -175,10 +176,27 @@ public class ActionOnCsv {
 	}
 
 	/**
+	 * RITORNA UN solo specifico FILE ESISTENTE NEL DATA SOLO DAL NOME
+	 * 
+	 * @param current
+	 * @throws Exception
+	 */
+	public void saveOneFileCsvFromData(Session current, String name) throws Exception {
+
+		List<CsvDto> csvdtoList = csvMapper.ListCsvFromDatabase(csvService);
+
+		for (CsvDto c : csvdtoList) {
+			if (c.getFileName().equals(name))
+				createLocalFileFromCsvDto(c);
+		}
+
+	}
+
+	/**
 	 * CANCELLA OGNI FILE NEL FOLDER TEMPORANEO USO SPECIFICO NEL POST LOGOUT
 	 */
 	public void deleteAllFileInRepo() {
-		File folder = new File("../api/temporary_fileCSV_saving/");
+		File folder = new File(Constant.getFilePathCsv());
 		File[] allFiles = folder.listFiles();
 
 		for (File f : allFiles) {
@@ -293,7 +311,7 @@ public class ActionOnCsv {
 	 * @return
 	 */
 	public boolean checknameFileAlreadyExistOnlyInFolder(String name) {
-		File folder = new File("../api/temporary_fileCSV_saving/");
+		File folder = new File(Constant.getFilePathCsv());
 		File[] allFiles = folder.listFiles();
 
 		for (File f : allFiles) {
@@ -354,7 +372,7 @@ public class ActionOnCsv {
 	public void importFileFromLocalPc(String path, Session current) throws IOException {
 		Path p = Paths.get(path);
 		byte[] bytes = Files.readAllBytes(p);
-		Path standardname = Paths.get("../api/temporary_fileCSV_saving/" + CsvStandard.DOCUMENTO_AZIENDALE + ".csv");
+		Path standardname = Paths.get(Constant.getFilePathCsv() + CsvStandard.DOCUMENTO_AZIENDALE + ".csv");
 
 		// CREO IL FILE IN LOCALE
 		Files.write(standardname, bytes);
@@ -368,7 +386,7 @@ public class ActionOnCsv {
 	}
 
 	/**
-	 * DA RIVEDERE ma va bene
+	 * 
 	 * 
 	 * 
 	 * Elimina il CSV in posizione "index" nella lista dell'utente.
@@ -380,9 +398,17 @@ public class ActionOnCsv {
 		}
 
 		CsvDto dto = list.get(index);
-		Csv entity = csvMapper.toCsvFromCsvDtoWithId(dto);
-		csvService.deleteFileCsv(entity);
+		deleteOneFileInData(dto);
 		return true;
+	}
+
+	/**
+	 * ELIMINA UN CSV ENTITY PARTENDO DA UN CSVDTO
+	 * 
+	 * @param c
+	 */
+	public void deleteOneFileInData(CsvDto c) {
+		csvMapper.deleteCsvEntityFromData(csvService, c);
 	}
 
 }

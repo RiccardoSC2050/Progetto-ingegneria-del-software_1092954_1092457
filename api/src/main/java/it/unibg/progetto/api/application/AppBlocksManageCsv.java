@@ -10,7 +10,9 @@ import it.unibg.progetto.api.access_session.ManagerSession;
 import it.unibg.progetto.api.access_session.Session;
 import it.unibg.progetto.api.action_on.ActionOnCsv;
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
+import it.unibg.progetto.api.components.Constant;
 import it.unibg.progetto.api.components.GlobalScaner;
+import it.unibg.progetto.api.components.Quit;
 import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.conditions.CsvStandard;
 import it.unibg.progetto.api.csv_manage.ManageCsvFile;
@@ -18,10 +20,13 @@ import it.unibg.progetto.api.dto.CsvDto;
 import it.unibg.progetto.api.researchoncsv.MainResearch;
 import it.unibg.progetto.api.researchoncsv.ResearchChoice;
 
-
 public class AppBlocksManageCsv {
 
 	public AppBlocksManageCsv() {
+	}
+
+	public void controllOnFolderCsv() {
+		ManageCsvFile.getTempFolder();
 	}
 
 	/**
@@ -60,6 +65,7 @@ public class AppBlocksManageCsv {
 	}
 
 	public void clearFolderCsv() {
+		controllOnFolderCsv();
 		ActionOnCsv.getIstnce().deleteAllFileInRepo();
 	}
 
@@ -97,9 +103,9 @@ public class AppBlocksManageCsv {
 	 * @param current
 	 * @throws IOException
 	 */
-	public void saveAllFileInFolderIntoCsvTable(Session current) throws IOException {
+	public void saveAllFileInFolderIntoCsvTable() throws IOException {
 		// creo lista dei file
-		File folder = new File("../api/temporary_fileCSV_saving/");
+		File folder = new File(Constant.getFilePathCsv());
 		File[] allFiles = folder.listFiles();
 
 		for (File f : allFiles) {
@@ -107,7 +113,7 @@ public class AppBlocksManageCsv {
 
 			if (!ActionOnCsv.getIstnce().checknameFileAlreadyExistOnlyInData(nameFile, ManagerSession.getCurrent()))
 				ActionOnCsv.getIstnce().addNewFileInCsvTableFromCsvDto(
-						ActionOnCsv.getIstnce().convertFileCsvToCsvDto(nameFile, current));
+						ActionOnCsv.getIstnce().convertFileCsvToCsvDto(nameFile, ManagerSession.getCurrent()));
 		}
 	}
 
@@ -117,76 +123,41 @@ public class AppBlocksManageCsv {
 	 * @throws Exception
 	 */
 	public void readFileCsv() throws Exception {
-		System.out.println("I tuoi file:");
-		ActionOnCsv.getIstnce().stampListOfMyCsv(ManagerSession.getCurrent());
-		System.out.println();
+		lsFileUser();
 		boolean f;
 		do {
 			System.out.println("Quale vuoi visualizzare?");
 			String name = GlobalScaner.scanner.nextLine();
+			if (Quit.quit(name))
+				return;
 			f = ActionOnCsv.getIstnce().showFileContent(name, ManagerSession.getCurrent());
 
 		} while (!f);
 	}
 
+	public void lsFileUser() {
+		System.out.println("I tuoi file:");
+		ActionOnCsv.getIstnce().stampListOfMyCsv(ManagerSession.getCurrent());
+		System.out.println();
+	}
+
 	/**
-	 * da appblock
+	 * AVVIA RICERCA MIRATA
 	 * 
 	 * @throws Exception
 	 */
 	// Metodo principale: gestisce il flusso generale
 	public void searchOnBaseAndMaybeSave() throws Exception {
-		Session current = ManagerSession.getCurrent();
 
 		// 1) chiedo che tipo di ricerca fare e la eseguo
-		List<String[]> result = ResearchChoice.askAndExecuteSearch();
-
-		if (result == null || result.isEmpty()) {
-			System.out.println("Nessun risultato trovato.\n");
-			return;
-		}
-
-		// 2) stampo i risultati
-		System.out.println("\nRisultati trovati:");
-		ManageCsvFile.printRows(result);
-		System.out.println();
-
-		// 3) se l'utente è livello 1 può solo vedere
-		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
-			System.out.println("Hai livello di accesso 1: puoi solo visualizzare i risultati, non salvarli.\n");
-			return;
-		}
-
-		// 4) AL2 o AL3: posso chiedere se vuole salvare
-		askAndSaveResult(current, result);
+		ResearchChoice.askAndExecuteSearch();
+		ActionOnCsv.getIstnce().deleteOneFileInRepo(
+				Paths.get(Constant.getFilePathCsv() + CsvStandard.DOCUMENTO_AZIENDALE.toString() + ".csv"));
+		ActionOnCsv.getIstnce().deleteAllFileInRepo();
 	}
 
 	/**
-	 * Chiede se salvare i risultati e, se sì, li salva in STANDARD.csv e poi nel DB
-	 * con il nome scelto dall'utente.
-	 */
-	private void askAndSaveResult(Session current, List<String[]> result) throws Exception {
-		System.out.print("Vuoi salvare questi risultati in un nuovo CSV? [y/n]: ");
-		String answer = GlobalScaner.scanner.nextLine().trim();
-		if (!answer.equalsIgnoreCase("y")) {
-			return;
-		}
-
-		System.out.print("Inserisci il nome del nuovo file (senza .csv): ");
-		String finalName = GlobalScaner.scanner.nextLine().trim();
-
-		// 1) salvo i risultati in STANDARD.csv nella folder temporanea
-		MainResearch.saveSearchResult(CsvStandard.STANDARD.toString(), result, true);
-
-		// 2) mando STANDARD nel DB con il nome scelto
-		ActionOnCsv.getIstnce()
-				.addNewFileInCsvTableFromCsvDto(ActionOnCsv.getIstnce().convertFileCsvToCsvDto(finalName, current));
-
-		System.out.println("Ricerca salvata come file CSV \"" + finalName + "\" nel database.\n");
-	}
-
-	/**
-	 * forse da appbloc
+	 * METODO CHE ELIMINA UN FILE CSV DAL DATABASE
 	 */
 	public void deleteMyCsvFromDatabase() {
 		Session current = ManagerSession.getCurrent();
@@ -203,9 +174,8 @@ public class AppBlocksManageCsv {
 		System.out.print("Quale vuoi eliminare? [numero, oppure 'q' per annullare]: ");
 
 		String input = GlobalScaner.scanner.nextLine().trim();
-		if (input.equalsIgnoreCase("q")) {
+		if (Quit.quit(input))
 			return;
-		}
 
 		int index;
 		try {
@@ -221,9 +191,9 @@ public class AppBlocksManageCsv {
 		}
 
 		CsvDto chosen = list.get(index);
-		System.out.print("Sei sicuro di voler eliminare \"" + chosen.getFileName() + "\"? [y/n]: ");
+		System.out.print("Sei sicuro di voler eliminare \"" + chosen.getFileName() + "\"? [s/n]: ");
 		String confirm = GlobalScaner.scanner.nextLine().trim();
-		if (!confirm.equalsIgnoreCase("y")) {
+		if (!confirm.equalsIgnoreCase("s")) {
 			System.out.println("Eliminazione annullata.\n");
 			return;
 		}

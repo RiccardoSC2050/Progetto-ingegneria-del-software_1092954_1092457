@@ -129,7 +129,7 @@ public class AppBlocksManageUsers {
 			if (Quit.quit(pw))
 				return false;
 			flag = Master.getIstance().login(StrangeValues.ROOT.toString().toLowerCase(), pw);
-		} while (flag == Checks.negative && flag == Checks.neutral);
+		} while (flag == Checks.negative || flag == Checks.neutral);
 		System.out.println("Connesso come ROOT");
 		return true;
 

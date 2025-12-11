@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
 import it.unibg.progetto.api.access_session.ManagerSession;
-import it.unibg.progetto.api.access_session.Session;
+
 import it.unibg.progetto.api.action_on.ActionOnCsv;
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.components.ClearTerminal;

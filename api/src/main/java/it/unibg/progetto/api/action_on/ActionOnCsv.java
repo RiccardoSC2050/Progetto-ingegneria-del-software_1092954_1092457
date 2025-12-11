@@ -13,8 +13,7 @@ import org.springframework.stereotype.Component;
 
 import it.unibg.progetto.api.access_session.Session;
 import it.unibg.progetto.api.components.Constant;
-import it.unibg.progetto.api.components.GlobalScaner;
-import it.unibg.progetto.api.conditions.AccessLevel;
+
 import it.unibg.progetto.api.conditions.CsvStandard;
 import it.unibg.progetto.api.csv_manage.ManageCsvFile;
 import it.unibg.progetto.api.dto.CsvDto;

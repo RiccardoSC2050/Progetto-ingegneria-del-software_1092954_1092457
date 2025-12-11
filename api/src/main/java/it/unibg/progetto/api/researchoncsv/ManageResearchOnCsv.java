@@ -1,5 +1,6 @@
 package it.unibg.progetto.api.researchoncsv;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unibg.progetto.api.access_session.ManagerSession;
@@ -8,6 +9,7 @@ import it.unibg.progetto.api.action_on.ActionOnCsv;
 import it.unibg.progetto.api.components.GlobalScaner;
 import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.conditions.CsvStandard;
+import it.unibg.progetto.api.conditions.StringValue;
 import it.unibg.progetto.api.csv_manage.ManageCsvFile;
 
 public class ManageResearchOnCsv {
@@ -45,15 +47,28 @@ public class ManageResearchOnCsv {
 	 * 
 	 * @throws Exception
 	 */
-	public static void searchAndMaybeSaveByRuolo() throws Exception {
+	public static void searchAndMaybeSave(StringValue v) throws Exception {
 		Session current = ManagerSession.getCurrent();
 		ActionOnCsv.getIstnce().saveOneFileCsvFromData(current, CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		boolean f;
+		List<String[]> result = new ArrayList<String[]>();
+		String ruolo;
+		do {
+			f = true;
+			ruolo = "";
+			System.out.println("Inserisci per cercare [ricerca per " + v.toString()
+					+ "]\n[SE SAI CHE VUOI RICERCARE PROPRIO UN RUOLO SPECIFICO INSERISCI ! ALLA FINE]:");
+			ruolo = GlobalScaner.scanner.nextLine();
 
-		System.out.println("Inserisci il ruolo da cercare (es. Developer, HR, Manager):");
-		String ruolo = GlobalScaner.scanner.nextLine();
+			// 1) Faccio la ricerca sul file aziendale
+			result = MainResearch.searchByStringValue(v, ruolo);
 
-		// 1) Faccio la ricerca sul file aziendale
-		List<String[]> result = MainResearch.searchByRuolo(ruolo);
+			if (result != null) {
+				f = false;
+			} else if (result == null)
+				f = true;
+
+		} while (f);
 
 		if (result.isEmpty()) {
 			System.out.println("Nessun dipendente trovato con ruolo: " + ruolo);
@@ -86,6 +101,31 @@ public class ManageResearchOnCsv {
 		String annoStr = GlobalScaner.scanner.nextLine().trim();
 		int anno = Integer.parseInt(annoStr);
 		List<String[]> result = MainResearch.searchByAnnoInizioMaggioreUguale(anno);
+
+		System.out.println("Risultato della ricerca:");
+		ManageCsvFile.printRows(result);
+
+		// 2) Controllo il livello di accesso
+		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
+			System.out.println("Non hai i permessi per salvare la ricerca (access level < 2).");
+			return;
+		}
+
+		// 3) Chiedo se vuole salvare
+		askAndSaveResult(ManagerSession.getCurrent(), result);
+	}
+
+	public static void searchAndMaybeSaveByMarker() throws Exception {
+		Session current = ManagerSession.getCurrent();
+		ActionOnCsv.getIstnce().saveOneFileCsvFromData(current, CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		int marker;
+		do {
+			System.out.print("Inserisci il numero di segnalazioni (0-4): ");
+			String mark = GlobalScaner.scanner.nextLine().trim();
+
+			marker = Integer.parseInt(mark);
+		} while (!(marker >= 0 && marker <= 4));
+		List<String[]> result = MainResearch.searchByMarker(marker);
 
 		System.out.println("Risultato della ricerca:");
 		ManageCsvFile.printRows(result);

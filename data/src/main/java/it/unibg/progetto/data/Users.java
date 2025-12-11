@@ -1,7 +1,5 @@
 package it.unibg.progetto.data;
 
-import java.security.PrivateKey;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;

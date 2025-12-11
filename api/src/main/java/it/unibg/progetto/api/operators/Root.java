@@ -1,13 +1,7 @@
 package it.unibg.progetto.api.operators;
 
-import java.security.PrivateKey;
-import java.security.Provider.Service;
 import java.util.Iterator;
 import java.util.List;
-
-import org.hibernate.internal.build.AllowSysOut;
-import org.hibernate.query.NativeQuery.ReturnableResultNode;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.application.AppBlocksManageUsers;
@@ -19,11 +13,8 @@ import it.unibg.progetto.api.conditions.Checks;
 import it.unibg.progetto.api.conditions.StrangeValues;
 import it.unibg.progetto.api.components.Exit;
 import it.unibg.progetto.api.dto.Rootdto;
-import it.unibg.progetto.api.dto.Userdto;
-import it.unibg.progetto.api.mapper.UserMapper;
-import it.unibg.progetto.data.Users;
+
 import it.unibg.progetto.hashcode.Hash;
-import it.unibg.progetto.service.UsersService;
 
 /**
  * Root administrator class extending Operator with maximum privileges.

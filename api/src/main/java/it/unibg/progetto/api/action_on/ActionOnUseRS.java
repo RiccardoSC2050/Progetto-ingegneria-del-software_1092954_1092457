@@ -1,16 +1,12 @@
 package it.unibg.progetto.api.action_on;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.antlr.v4.runtime.atn.SemanticContext.Operator;
-import org.hibernate.query.NativeQuery.ReturnableResultNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.HikariCheckpointRestoreLifecycle;
+
 import org.springframework.stereotype.Component;
 
-import ch.qos.logback.core.net.LoginAuthenticator;
 import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.conditions.Checks;
 import it.unibg.progetto.api.conditions.StrangeValues;
@@ -53,8 +49,8 @@ public class ActionOnUseRS {
 			return 0;
 		int i = 0;
 		for (User u : userList) {
-
-			i++;
+			if (u != null)
+				i++;
 		}
 		return i;
 

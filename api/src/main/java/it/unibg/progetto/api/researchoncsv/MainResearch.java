@@ -1,17 +1,38 @@
 package it.unibg.progetto.api.researchoncsv;
 
 import java.util.List;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import it.unibg.progetto.api.conditions.CsvStandard;
+import it.unibg.progetto.api.conditions.StringValue;
 import it.unibg.progetto.api.csv_manage.ManageCsvFile;
 
 public class MainResearch {
 
 	/**
+	 * CONTOLLA SE IL ! è PRESNETE IN FONDO ALLA PAROLA O MENO
+	 * 
+	 * @param value
+	 * @return
+	 */
+	private static boolean controlofSpecialChar(String value) {
+		int l = value.length();
+		if (value.contains("!")) {
+			if (value.charAt(l - 1) == '!') {
+				return true;
+			}
+		} else if (!value.contains("!")) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * CREA LA BASE PER LA RICERCA MIRATA
+	 * 
 	 * 
 	 * Esegue una ricerca generica su DOCUMENTO_AZIENDALE.csv filtrando per
 	 * uguaglianza su una colonna. OK
@@ -27,6 +48,13 @@ public class MainResearch {
 		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true); // true =
 																												// salta
 																												// header
+
+		// controllo di '!'
+		if (controlofSpecialChar(value) == false) {
+			System.out.println("errore di inserimento");
+			return null;
+		}
+
 		List<String[]> result = new ArrayList<>();
 
 		for (String[] row : allRows) {
@@ -34,16 +62,38 @@ public class MainResearch {
 				continue;
 			}
 			String cell = row[columnIndex];
-			if (cell != null && cell.equalsIgnoreCase(value)) {
-				result.add(row);
+
+			if (columnIndex == 4) {
+				value.toLowerCase().strip().replace("+39", "").strip();
+				if (value.toLowerCase().contains("!")
+						&& value.toLowerCase().replace("!", "").strip().equals(cell.toLowerCase()))
+					result.add(row);
+				// aggiunge una riga se inizia con lettere dell'attributo colonna
+				else if (cell.toLowerCase().replace("+39", "").strip().startsWith(value.toLowerCase().strip()))
+					result.add(row);
+			}
+
+			else if (cell != null)
+
+			{
+				// aggiunge una riga se contiene punto esclamativo in fondo (ontrollato prima) e
+				// se ovviaente è uguale al valore colonna
+				if (value.toLowerCase().contains("!")
+						&& value.toLowerCase().replace("!", "").strip().equals(cell.toLowerCase()))
+					result.add(row);
+				// aggiunge una riga se inizia con lettere dell'attributo colonna
+				else if (cell.toLowerCase().startsWith(value.toLowerCase().strip()))
+					result.add(row);
 			}
 		}
 
 		return result;
+
 	}
 
 	/**
-	 * RICERCA MIRATA SUL RUOLO DI LAVORO NELLA AZIENDA
+	 * RICERCA MIRATA SU UNA STRINGA valore di colonna sul doc DI LAVORatori NELLA
+	 * AZIENDA
 	 * 
 	 * Esempio di ricerca: tutti i dipendenti con un certo ruolo (Developer, HR,
 	 * Manager, ...). OK
@@ -51,9 +101,9 @@ public class MainResearch {
 	 * @param ruolo ruolo da cercare
 	 * @return lista di righe corrispondenti
 	 */
-	public static List<String[]> searchByRuolo(String ruolo) {
+	public static List<String[]> searchByStringValue(StringValue v, String value) {
 		// nella struttura del file aziendale la colonna "ruolo" è la numero 5 (0-based)
-		return searchOnBaseFileByColumnEquals(5, ruolo);
+		return searchOnBaseFileByColumnEquals(v.getIndex(), value);
 	}
 
 	/**
@@ -69,12 +119,41 @@ public class MainResearch {
 		List<String[]> result = new ArrayList<>();
 
 		for (String[] row : allRows) {
-			if (row.length <= 6) {
+			if (row.length <= StringValue.ANNO_INIZIO.getIndex()) {
 				continue;
 			}
 			try {
-				int annoInizio = Integer.parseInt(row[6]);
+				int annoInizio = Integer.parseInt(row[StringValue.ANNO_INIZIO.getIndex()]);
 				if (annoInizio >= annoInizioMin) {
+					result.add(row);
+				}
+			} catch (NumberFormatException e) {
+				// riga con anno non valido -> la salto
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * ritorna tutti quelli che sono dopo l'anno inserito
+	 * 
+	 * Esempio di ricerca: tutti i dipendenti assunti a partire da un certo anno. OK
+	 *
+	 * @param annoInizioMin anno minimo (incluso)
+	 * @return lista di righe corrispondenti
+	 */
+	public static List<String[]> searchByMarker(int marker) {
+		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
+		List<String[]> result = new ArrayList<>();
+
+		for (String[] row : allRows) {
+			if (row.length <= StringValue.RICHIAMI.getIndex()) {
+				continue;
+			}
+			try {
+				int mark = Integer.parseInt(row[StringValue.RICHIAMI.getIndex()]);
+				if (mark == marker) {
 					result.add(row);
 				}
 			} catch (NumberFormatException e) {

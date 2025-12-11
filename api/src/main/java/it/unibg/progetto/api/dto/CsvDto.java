@@ -1,6 +1,6 @@
 package it.unibg.progetto.api.dto;
 
-import jakarta.persistence.Lob;
+
 
 public class CsvDto {
 

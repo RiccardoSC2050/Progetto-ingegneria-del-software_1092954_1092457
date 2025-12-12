@@ -1,0 +1,13 @@
+id,nome,cognome,mail,numero_di_telefono,ruolo,anno_inizio,richiami
+3,Marco,Moretti,marco.moretti@servizi-digitali.it,+39 3502608513,IT Support,2016,0
+30,Alessandro,Pastore,alessandro.pastore@group.it,+39 3664374922,Developer,2016,0
+31,Antonio,Costa,antonio.costa@servizi-digitali.it,+39 3905304573,Scrum Master,2022,2
+32,Pierluigi,Ferretti,pierluigi.ferretti@azienda.it,+39 3408487336,Office Manager,2014,2
+33,Serena,Marchetti,serena.marchetti@innovatech.it,+39 3608874152,Senior Developer,2008,1
+34,Simone,Giordano,simone.giordano@azienda.it,+39 3364569244,Senior Developer,2014,0
+35,Francesco,Fabbri,francesco.fabbri@azienda.it,+39 3317106422,Data Engineer,2022,0
+36,Andrea,Clemente,andrea.clemente@tech-italia.it,+39 3899255661,Technical Writer,2020,0
+37,Gabriele,Basile,gabriele.basile@servizi-digitali.it,+39 3367210624,Developer,2015,0
+38,Francesca,D'Angelo,francesca.d.angelo@tech-italia.it,+39 3335933742,Senior Developer,2019,1
+39,Pierluigi,Lombardi,pierluigi.lombardi@tech-italia.it,+39 3372970445,System Administrator,2021,0
+300,Patrizia,Fontana,patrizia.fontana@group.it,+39 3609901382,Sales Specialist,2014,0

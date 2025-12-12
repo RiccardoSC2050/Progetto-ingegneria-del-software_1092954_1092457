@@ -1,6 +1,12 @@
 package it.unibg.progetto.api.application;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import it.unibg.progetto.api.access_session.ManagerSession;
+import it.unibg.progetto.api.action_on.ActionOnCsv;
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.components.Exit;
 import it.unibg.progetto.api.components.GlobalScaner;
@@ -8,9 +14,10 @@ import it.unibg.progetto.api.components.Quit;
 import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.conditions.Checks;
 import it.unibg.progetto.api.conditions.StrangeValues;
+import it.unibg.progetto.api.dto.CsvDto;
 import it.unibg.progetto.api.dto.Rootdto;
 import it.unibg.progetto.api.operators.Root;
-
+import it.unibg.progetto.api.operators.User;
 import it.unibg.progetto.hashcode.Hash;
 
 public class AppBlocksManageUsers {
@@ -201,6 +208,138 @@ public class AppBlocksManageUsers {
 
 		} else {
 			System.out.println("Non sei ROOT, non puoi accedere alla lista utenti");
+		}
+	}
+
+	/**
+	 * NOMI UTENTI CHE HANNO ALMENO UN FILE
+	 */
+	/**
+	 * Ritorna SOLO gli altri utenti (escludo me stesso) che hanno almeno un file
+	 * CSV.
+	 */
+	private List<User> getOtherUsersThatHaveAtLeastOneFile() {
+
+		String myId = ManagerSession.getCurrent().getUuid();
+
+		List<User> allUsers = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
+
+		List<CsvDto> allCsv = ActionOnCsv.getIstnce().returnAllFileCsvDtoFromData();
+
+		List<String> userIdsWithFiles = new ArrayList<>();
+
+		// utenti che hanno almeno un file
+		for (CsvDto c : allCsv) {
+			if (c == null)
+				continue;
+			String uid = c.getOwnerId();
+			if (uid != null && !uid.isBlank() && !userIdsWithFiles.contains(uid)) {
+				userIdsWithFiles.add(uid);
+			}
+		}
+
+		List<User> result = new ArrayList<>();
+
+		for (User u : allUsers) {
+			if (u == null || u.getId() == null)
+				continue;
+
+			boolean isMe = u.getId().equals(myId);
+			boolean hasFile = userIdsWithFiles.contains(u.getId());
+			boolean isRoot = u.getId().equals("0");
+
+			if (!isMe && hasFile && !isRoot) {
+				result.add(u);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * processo logico per visualizzare il file di un utente
+	 * 
+	 * @throws Exception
+	 */
+	public void viewOtherFiles() throws Exception {
+
+		if (ManagerSession.getCurrent().getAccessLevel() < AccessLevel.AL3.getLevel()) {
+			System.out.println("Non sei di livello 3, non puoi accedere alla lista file di altri utenti");
+			return;
+		}
+
+		List<User> otherUsersWithFiles = getOtherUsersThatHaveAtLeastOneFile();
+
+		System.out.println("<=== UTENTI CHE HANNO FILE CSV ===>");
+		if (otherUsersWithFiles.isEmpty()) {
+			System.out.println("Non ci sono altri utenti con file CSV disponibili.");
+			return;
+		}
+
+		// stampa elenco utenti con indice
+		int i = 0;
+		for (User u : otherUsersWithFiles) {
+			System.out.println((i + 1) + ") " + u.getName());
+			i++;
+		}
+
+		// scelta utente
+		int userChoice = readChoice(1, otherUsersWithFiles.size(), "Seleziona un utente (numero): ");
+		User selectedUser = otherUsersWithFiles.get(userChoice - 1);
+
+		System.out.println("\nI suoi file:");
+		List<CsvDto> userFiles = ActionOnCsv.getIstnce().returnAllFileCsvDtoFromDataOfUser(selectedUser.getId());
+
+		if (userFiles == null || userFiles.isEmpty()) {
+			// teoricamente non dovrebbe succedere (li abbiamo filtrati), ma meglio essere
+			// solidi
+			System.out.println("Questo utente non ha file CSV.");
+			return;
+		}
+
+		// lista fileName unica e stabile
+		List<String> fileNames = new ArrayList<>();
+		Set<String> seen = new HashSet<>();
+		for (CsvDto c : userFiles) {
+			if (c == null)
+				continue;
+			String fn = c.getFileName();
+			if (fn != null && !fn.isBlank() && seen.add(fn)) {
+				fileNames.add(fn);
+			}
+		}
+
+		if (fileNames.isEmpty()) {
+			System.out.println("Questo utente non ha file CSV.");
+			return;
+		}
+
+		// stampa file con indice
+		i = 0;
+		for (String n : fileNames) {
+			System.out.println((i + 1) + ") " + fileNames.get(i));
+			i++;
+		}
+
+		// scelta file
+		int fileChoice = readChoice(1, fileNames.size(), "Seleziona un file da leggere (numero): ");
+		String chosenFileName = fileNames.get(fileChoice - 1);
+
+		// mostra contenuto file
+		ActionOnCsv.getIstnce().showFileContent(chosenFileName, selectedUser.getId());
+	}
+
+	private int readChoice(int min, int max, String prompt) {
+		while (true) {
+			System.out.print(prompt);
+			String s = GlobalScaner.scanner.nextLine().strip();
+			try {
+				int n = Integer.parseInt(s);
+				if (n >= min && n <= max)
+					return n;
+			} catch (NumberFormatException ignored) {
+			}
+			System.out.println("Scelta non valida. Inserisci un numero tra " + min + " e " + max + ".");
 		}
 	}
 

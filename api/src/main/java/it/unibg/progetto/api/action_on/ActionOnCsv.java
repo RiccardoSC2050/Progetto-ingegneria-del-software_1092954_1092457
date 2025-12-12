@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -229,6 +230,22 @@ public class ActionOnCsv {
 	}
 
 	/**
+	 * RITORNA UNA LISTA DI UUID DEI SOLI UTENTI CHE HANNO ALMENO UN FILE
+	 * 
+	 * @param csvdtoList
+	 * @return
+	 */
+	public List<String> returnOnlyUserThatHaveAFile(List<CsvDto> csvdtoList) {
+		List<String> idList = new ArrayList<String>();
+		for (CsvDto c : csvdtoList) {
+			if (!idList.contains(c.getOwnerId())) {
+				idList.add(c.getOwnerId());
+			}
+		}
+		return idList;
+	}
+
+	/**
 	 * RITORNA UNA LISTA DI CSVDTO DI FILE CSV DEL FILE CHE L'UTENTE HA SALVATO
 	 * 
 	 * @param uuid
@@ -251,12 +268,12 @@ public class ActionOnCsv {
 	 * @param current
 	 * @return
 	 */
-	public boolean checknameFileAlreadyExist(String name, Session current) {
+	public boolean checknameFileAlreadyExist(String name, String uuid) {
 
 		if (checknameFileAlreadyExistOnlyInFolder(name))
 			return true;
 
-		if (checknameFileAlreadyExistOnlyInData(name, current))
+		if (checknameFileAlreadyExistOnlyInData(name, uuid))
 			return true;
 
 		return false;
@@ -271,9 +288,9 @@ public class ActionOnCsv {
 	 * @param current
 	 * @return
 	 */
-	public boolean checknameFileAlreadyExistOnlyInData(String name, Session current) {
+	public boolean checknameFileAlreadyExistOnlyInData(String name, String uuid) {
 
-		List<CsvDto> csvdtoLsit = returnAllFileCsvDtoFromDataOfUser(current.getUuid());
+		List<CsvDto> csvdtoLsit = returnAllFileCsvDtoFromDataOfUser(uuid);
 		for (CsvDto c : csvdtoLsit) {
 			if (name.equals(c.getFileName())) {
 				return true;
@@ -325,8 +342,8 @@ public class ActionOnCsv {
 	/**
 	 * STAMPA LISTA DI TUTTI I FILE CHE L'UTENTE POSSIEDE
 	 */
-	public void stampListOfMyCsv(Session current) {
-		List<CsvDto> cList = returnAllFileCsvDtoFromDataOfUser(current.getUuid());
+	public void stampListOfMyCsv(String uuid) {
+		List<CsvDto> cList = returnAllFileCsvDtoFromDataOfUser(uuid);
 
 		for (CsvDto c : cList) {
 			System.out.println(c.getFileName());
@@ -342,12 +359,12 @@ public class ActionOnCsv {
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean showFileContent(String name, Session current) throws Exception {
+	public boolean showFileContent(String name, String uuid) throws Exception {
 		try {
 			if (checknameFileAlreadyExistOnlyInFolder(name)) {
 				ManageCsvFile.readFileCsv(name);
 				return true;
-			} else if (checknameFileAlreadyExistOnlyInData(name, current)) {
+			} else if (checknameFileAlreadyExistOnlyInData(name, uuid)) {
 				conversionFromCsvToCsvDto(whatIsTheLuckyNameFile(name));
 				createLocalFileFromCsvDto(conversionFromCsvToCsvDto(whatIsTheLuckyNameFile(name)));
 				ManageCsvFile.readFileCsv(name);

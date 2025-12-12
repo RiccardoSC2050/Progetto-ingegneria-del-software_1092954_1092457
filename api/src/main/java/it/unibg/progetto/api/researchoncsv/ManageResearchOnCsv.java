@@ -41,7 +41,7 @@ public class ManageResearchOnCsv {
 		System.out.println("Ricerca salvata come file CSV \"" + finalName + "\" nel database.\n");
 	}
 
-	// RICERCA PER RUOLO
+	// RICERCA PER STRINGA
 	/**
 	 * da mettere in un'altra classe
 	 * 
@@ -57,7 +57,7 @@ public class ManageResearchOnCsv {
 			f = true;
 			ruolo = "";
 			System.out.println("Inserisci per cercare [ricerca per " + v.toString()
-					+ "]\n[SE SAI CHE VUOI RICERCARE PROPRIO UN RUOLO SPECIFICO INSERISCI ! ALLA FINE]:");
+					+ "]\n[SE SAI CHE VUOI RICERCARE PROPRIO UNA PAROLA SPECIFICA INSERISCI ! ALLA FINE]:");
 			ruolo = GlobalScaner.scanner.nextLine();
 
 			// 1) Faccio la ricerca sul file aziendale

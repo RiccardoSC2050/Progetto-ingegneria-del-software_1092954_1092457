@@ -91,7 +91,7 @@ public class AppBlocksManageCsv {
 		do {
 			System.out.println("inserire il nome del file casuale");
 			name = GlobalScaner.scanner.nextLine();
-			if (!ActionOnCsv.getIstnce().checknameFileAlreadyExist(name, ManagerSession.getCurrent()))
+			if (!ActionOnCsv.getIstnce().checknameFileAlreadyExist(name, ManagerSession.getCurrent().getUuid()))
 				break;
 		} while (true);
 		ManageCsvFile.createFileCsvOnFolder(name);
@@ -111,7 +111,8 @@ public class AppBlocksManageCsv {
 		for (File f : allFiles) {
 			String nameFile = f.getName().toString().replace(".csv", "");
 
-			if (!ActionOnCsv.getIstnce().checknameFileAlreadyExistOnlyInData(nameFile, ManagerSession.getCurrent()))
+			if (!ActionOnCsv.getIstnce().checknameFileAlreadyExistOnlyInData(nameFile,
+					ManagerSession.getCurrent().getUuid()))
 				ActionOnCsv.getIstnce().addNewFileInCsvTableFromCsvDto(
 						ActionOnCsv.getIstnce().convertFileCsvToCsvDto(nameFile, ManagerSession.getCurrent()));
 		}
@@ -130,14 +131,17 @@ public class AppBlocksManageCsv {
 			String name = GlobalScaner.scanner.nextLine();
 			if (Quit.quit(name))
 				return;
-			f = ActionOnCsv.getIstnce().showFileContent(name, ManagerSession.getCurrent());
+			f = ActionOnCsv.getIstnce().showFileContent(name, ManagerSession.getCurrent().getUuid());
 
 		} while (!f);
 	}
 
+	/**
+	 * ritorna i file dell'utente loggato
+	 */
 	public void lsFileUser() {
 		System.out.println("I tuoi file:");
-		ActionOnCsv.getIstnce().stampListOfMyCsv(ManagerSession.getCurrent());
+		ActionOnCsv.getIstnce().stampListOfMyCsv(ManagerSession.getCurrent().getUuid());
 		System.out.println();
 	}
 
@@ -168,8 +172,8 @@ public class AppBlocksManageCsv {
 			return;
 		}
 
-		System.out.println("=== I TUOI CSV SALVATI NEL DB ===");
-		ActionOnCsv.getIstnce().stampListOfMyCsv(ManagerSession.getCurrent());
+		System.out.println("=== I FILE CSV CHE PUOI CANCELLARE ===");
+		ActionOnCsv.getIstnce().stampListOfMyCsv(ManagerSession.getCurrent().getUuid());
 
 		System.out.print("Quale vuoi eliminare? [numero, oppure 'q' per annullare]: ");
 

@@ -44,22 +44,20 @@ class RootTest {
 	@Test
 	void getInstanceRootInitializesRootWithFixedValues() {
 
-	    // Nome fissato per Root dal costruttore di Operator
-	    assertEquals("ROOT", root.getName());
+		// Nome fissato per Root dal costruttore di Operator
+		assertEquals("ROOT", root.getName());
 
-	    // Id e livello di accesso fissi per l'amministratore
-	    assertEquals("0", root.getId());
-	    assertEquals(5, root.getAccessLevelValue());
+		// Id e livello di accesso fissi per l'amministratore
+		assertEquals("0", root.getId());
+		assertEquals(5, root.getAccessLevelValue());
 
-	    // AccessLevel "oggetto" non viene impostato esplicitamente
-	    assertNull(root.getAccessLevel(), "AccessLevel non viene impostato esplicitamente per Root");
+		// AccessLevel "oggetto" non viene impostato esplicitamente
+		assertNull(root.getAccessLevel(), "AccessLevel non viene impostato esplicitamente per Root");
 
-	    // La password ora arriva dal database: verifichiamo solo che esista
-	    assertNotNull(root.getPassword());
-	    assertFalse(root.getPassword().isBlank());
+		// La password ora arriva dal database: verifichiamo solo che esista
+		assertNotNull(root.getPassword());
+		assertFalse(root.getPassword().isBlank());
 	}
-
-
 
 	@Test
 	void manualRootConstructorSetsIdZeroAndLevelFive() {
@@ -72,26 +70,6 @@ class RootTest {
 		// Id e livello di accesso fissati per Root
 		assertEquals("0", customRoot.getId());
 		assertEquals(5, customRoot.getAccessLevelValue());
-	}
-
-	// ---------- 2. Metodi DataControl (vuoti ma coperti) ----------
-
-	@Test
-	void readDataFileDoesNotThrow() {
-
-		assertDoesNotThrow(root::readDataFile);
-	}
-
-	@Test
-	void createDataFileDoesNotThrow() {
-
-		assertDoesNotThrow(root::createDataFile);
-	}
-
-	@Test
-	void deleteDataFileDoesNotThrow() {
-
-		assertDoesNotThrow(root::deleteDataFile);
 	}
 
 	// ------------------method create user --------------------
@@ -118,25 +96,25 @@ class RootTest {
 	void delUserTest() {
 		String id = null;
 		List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
-		if(userList!=null) {
-		for (User u : userList) {
-			if (u.getName().toLowerCase().equals("tester")) {
-				id = u.getId();
+		if (userList != null) {
+			for (User u : userList) {
+				if (u.getName().toLowerCase().equals("tester")) {
+					id = u.getId();
+				}
 			}
-		}
 
-		String fakeInput = String.join("\n", "tester", // name
-				"y", // password
-				"y", // level
-				id // level
-		) + "\n";
+			String fakeInput = String.join("\n", "tester", // name
+					"y", // password
+					"y", // level
+					id // level
+			) + "\n";
 
-		ByteArrayInputStream in = new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8));
+			ByteArrayInputStream in = new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8));
 
-		// finto stdin
-		System.setIn(in);
+			// finto stdin
+			System.setIn(in);
 
-		GlobalScaner.scanner = new Scanner(System.in);
+			GlobalScaner.scanner = new Scanner(System.in);
 		}
 		root.deleteUser();
 		root.deleteUser();

@@ -157,7 +157,7 @@ public class MainResearch {
 					result.add(row);
 				}
 			} catch (NumberFormatException e) {
-				// riga con anno non valido -> la salto
+				// riga con MARKER non valido -> la salto
 			}
 		}
 

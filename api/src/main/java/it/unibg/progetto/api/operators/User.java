@@ -10,7 +10,7 @@ import it.unibg.progetto.api.conditions.AccessLevel;
  * @author Employee Management System
  * @version 1.0
  */
-public class User extends Operator implements DataControl {
+public class User extends Operator {
 
 	/**
 	 * Constructs a new User with specified credentials and access level. Validates
@@ -23,9 +23,8 @@ public class User extends Operator implements DataControl {
 	 */
 	public User(String name, String password, AccessLevel accessLevel) {
 		super(name, password, accessLevel);
-		
-	}
 
+	}
 
 	/**
 	 * 
@@ -40,34 +39,4 @@ public class User extends Operator implements DataControl {
 		// TODO Auto-generated constructor stub
 	}
 
-
-
-
-	/**
-	 * Reads data from the user's associated data file. Implementation pending -
-	 * will load user-specific data from storage.
-	 */
-	@Override
-	public void readDataFile() {
-
-	}
-
-
-	/**
-	 * Creates a new data file for storing user information. Implementation pending
-	 * - will initialize user data storage.
-	 */
-	@Override
-	public void createDataFile() {
-		
-	}
-
-	/**
-	 * Deletes the user's data file from storage. Implementation pending - will
-	 * permanently remove user data.
-	 */
-	@Override
-	public void deleteDataFile() {
-		
-	}
 }

@@ -107,6 +107,11 @@ public class ApiMain {
 					System.out.println("File CSV salvati nel database.\n");
 					break;
 
+				case "in -u": // leggo un file di un utente
+					blockCsv.saveAllFileInFolderIntoCsvTable();
+					blockUser.viewOtherFiles();
+					break;
+
 				case "out": // logout
 					blockCsv.saveAllFileInFolderIntoCsvTable();
 					blockCsv.clearFolderCsv();

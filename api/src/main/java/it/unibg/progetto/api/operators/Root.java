@@ -24,7 +24,7 @@ import it.unibg.progetto.hashcode.Hash;
  * @author Employee Management System
  * @version 1.0
  */
-public class Root extends Operator implements DataControl {
+public class Root extends Operator {
 
 	private static Root root = null;
 
@@ -178,24 +178,6 @@ public class Root extends Operator implements DataControl {
 			return;
 		String id = userIdControl(n);
 		delUser(n, id);
-
-	}
-
-	@Override
-	public void readDataFile() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void createDataFile() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deleteDataFile() {
-		// TODO Auto-generated method stub
 
 	}
 

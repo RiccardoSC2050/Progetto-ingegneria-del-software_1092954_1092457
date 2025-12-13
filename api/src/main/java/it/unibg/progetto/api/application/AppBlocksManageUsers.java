@@ -267,72 +267,84 @@ public class AppBlocksManageUsers {
 			System.out.println("Non sei di livello 3, non puoi accedere alla lista file di altri utenti");
 			return;
 		}
+		do {
+			List<User> otherUsersWithFiles = getOtherUsersThatHaveAtLeastOneFile();
 
-		List<User> otherUsersWithFiles = getOtherUsersThatHaveAtLeastOneFile();
-
-		System.out.println("<=== UTENTI CHE HANNO FILE CSV ===>");
-		if (otherUsersWithFiles.isEmpty()) {
-			System.out.println("Non ci sono altri utenti con file CSV disponibili.");
-			return;
-		}
-
-		// stampa elenco utenti con indice
-		int i = 0;
-		for (User u : otherUsersWithFiles) {
-			System.out.println((i + 1) + ") " + u.getName());
-			i++;
-		}
-
-		// scelta utente
-		int userChoice = readChoice(1, otherUsersWithFiles.size(), "Seleziona un utente (numero): ");
-		User selectedUser = otherUsersWithFiles.get(userChoice - 1);
-
-		System.out.println("\nI suoi file:");
-		List<CsvDto> userFiles = ActionOnCsv.getIstnce().returnAllFileCsvDtoFromDataOfUser(selectedUser.getId());
-
-		if (userFiles == null || userFiles.isEmpty()) {
-			// teoricamente non dovrebbe succedere (li abbiamo filtrati), ma meglio essere
-			// solidi
-			System.out.println("Questo utente non ha file CSV.");
-			return;
-		}
-
-		// lista fileName unica e stabile
-		List<String> fileNames = new ArrayList<>();
-		Set<String> seen = new HashSet<>();
-		for (CsvDto c : userFiles) {
-			if (c == null)
-				continue;
-			String fn = c.getFileName();
-			if (fn != null && !fn.isBlank() && seen.add(fn)) {
-				fileNames.add(fn);
+			System.out.println("<=== UTENTI CHE HANNO FILE CSV ===>");
+			if (otherUsersWithFiles.isEmpty()) {
+				System.out.println("Non ci sono altri utenti con file CSV disponibili.");
+				return;
 			}
-		}
 
-		if (fileNames.isEmpty()) {
-			System.out.println("Questo utente non ha file CSV.");
-			return;
-		}
+			// stampa elenco utenti con indice
+			int i = 0;
+			for (User u : otherUsersWithFiles) {
+				System.out.println((i + 1) + ") " + u.getName());
+				i++;
+			}
 
-		// stampa file con indice
-		i = 0;
-		for (String n : fileNames) {
-			System.out.println((i + 1) + ") " + fileNames.get(i));
-			i++;
-		}
+			// scelta utente
 
-		// scelta file
-		int fileChoice = readChoice(1, fileNames.size(), "Seleziona un file da leggere (numero): ");
-		String chosenFileName = fileNames.get(fileChoice - 1);
+			Integer userChoice = readChoice(1, otherUsersWithFiles.size(), "Seleziona un utente (numero): ");
+			if (userChoice == null)
+				return;
+			if (userChoice == -1)
+				return;
+			User selectedUser = otherUsersWithFiles.get(userChoice - 1);
 
-		// mostra contenuto file
-		ActionOnCsv.getIstnce().showFileContent(chosenFileName, selectedUser.getId());
+			System.out.println("\nI suoi file:");
+			List<CsvDto> userFiles = ActionOnCsv.getIstnce().returnAllFileCsvDtoFromDataOfUser(selectedUser.getId());
+
+			if (userFiles == null || userFiles.isEmpty()) {
+				// teoricamente non dovrebbe succedere (li abbiamo filtrati), ma meglio essere
+				// solidi
+				System.out.println("Questo utente non ha file CSV.");
+				return;
+			}
+
+			// lista fileName unica e stabile
+			List<String> fileNames = new ArrayList<>();
+			Set<String> seen = new HashSet<>();
+			for (CsvDto c : userFiles) {
+				if (c == null)
+					continue;
+				String fn = c.getFileName();
+				if (fn != null && !fn.isBlank() && seen.add(fn)) {
+					fileNames.add(fn);
+				}
+			}
+
+			if (fileNames.isEmpty()) {
+				System.out.println("Questo utente non ha file CSV.");
+				return;
+			}
+
+			// stampa file con indice
+			i = 0;
+			for (String n : fileNames) {
+				System.out.println((i + 1) + ") " + fileNames.get(i));
+				i++;
+			}
+
+			// scelta file
+
+			Integer fileChoice = readChoice(1, fileNames.size(), "Seleziona un file da leggere (numero): ");
+			if (fileChoice == null)
+				return;
+
+			String chosenFileName = fileNames.get(fileChoice - 1);
+
+			// mostra contenuto file
+			ActionOnCsv.getIstnce().showFileContent(chosenFileName, selectedUser.getId());
+		} while (true);
 	}
 
-	private int readChoice(int min, int max, String prompt) {
+	private Integer readChoice(int min, int max, String prompt) {
 		while (true) {
 			System.out.print(prompt);
 			String s = GlobalScaner.scanner.nextLine().strip();
+			if (Quit.quit(s))
+				return null;
 			try {
 				int n = Integer.parseInt(s);
 				if (n >= min && n <= max)

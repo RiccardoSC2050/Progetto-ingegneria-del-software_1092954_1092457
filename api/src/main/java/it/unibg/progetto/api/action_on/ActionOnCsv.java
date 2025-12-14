@@ -181,7 +181,7 @@ public class ActionOnCsv {
 	 * @param current
 	 * @throws Exception
 	 */
-	public void saveOneFileCsvFromData(Session current, String name) throws Exception {
+	public void saveOneFileCsvFromData(String name) throws Exception {
 
 		List<CsvDto> csvdtoList = csvMapper.ListCsvFromDatabase(csvService);
 

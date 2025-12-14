@@ -100,6 +100,10 @@ public class ApiMain {
 				case "search": // ricerca mirata
 					blockCsv.searchOnBaseAndMaybeSave();
 					break;
+					
+				case "search -s": // ricerca mirata
+					blockCsv.searchOnBaseStatistic();
+					break;
 
 				case "save": // salva i miei file
 					blockCsv.saveAllFileInFolderIntoCsvTable();

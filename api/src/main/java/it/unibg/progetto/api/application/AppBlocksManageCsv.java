@@ -155,8 +155,20 @@ public class AppBlocksManageCsv {
 
 		// 1) chiedo che tipo di ricerca fare e la eseguo
 		ResearchChoice.askAndExecuteSearch();
-		ActionOnCsv.getIstnce().deleteOneFileInRepo(
-				Paths.get(Constant.getFilePathCsv() + CsvStandard.DOCUMENTO_AZIENDALE.toString() + ".csv"));
+
+		ActionOnCsv.getIstnce().deleteAllFileInRepo();
+	}
+
+	/**
+	 * AVVIA RICERCA STATISTICA
+	 * 
+	 * @throws Exception
+	 */
+	// Metodo principale: gestisce il flusso generale
+	public void searchOnBaseStatistic() throws Exception {
+
+		// 1) chiedo che tipo di ricerca fare e la eseguo
+		ResearchChoice.askAndExecuteStatisticSearch();
 		ActionOnCsv.getIstnce().deleteAllFileInRepo();
 	}
 
@@ -209,5 +221,7 @@ public class AppBlocksManageCsv {
 			System.out.println("Impossibile eliminare il file.\n");
 		}
 	}
+	
+	
 
 }

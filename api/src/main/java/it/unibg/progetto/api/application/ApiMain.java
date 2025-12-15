@@ -9,14 +9,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
 import it.unibg.progetto.api.access_session.ManagerSession;
-import it.unibg.progetto.api.access_session.Session;
+import it.unibg.progetto.api.action_on.ActionOnCsv;
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.components.ClearTerminal;
 import it.unibg.progetto.api.components.Exit;
 import it.unibg.progetto.api.components.GlobalScaner;
+import it.unibg.progetto.api.conditions.Checks;
+import it.unibg.progetto.api.mapper.CsvMapper;
 import it.unibg.progetto.api.mapper.RootMapper;
 import it.unibg.progetto.api.mapper.UserMapper;
 import it.unibg.progetto.api.operators.Root;
+import it.unibg.progetto.service.CsvService;
 import it.unibg.progetto.service.UsersService;
 
 @SpringBootApplication(scanBasePackages = "it.unibg.progetto")
@@ -34,41 +37,45 @@ public class ApiMain {
             UserMapper userMapper,
             UsersService service,
             ActionOnUseRS conversionUseRS,
-            RootMapper rootMapper
+            RootMapper rootMapper,
+            CsvService sercCsvService,
+            ActionOnCsv actionOnCsv,
+            CsvMapper csvMapper
     ) {
         return args -> {
-            AppBlocks ab = new AppBlocks();
+            AppBlocksManageUsers blockUser = new AppBlocksManageUsers();
+            AppBlocksManageCsv blockCsv = new AppBlocksManageCsv();
 
-            // Configurazione iniziale di Root (crea/legge root dal DB)
+            String input;
+
+            blockCsv.clearFolderCsv();
             Root.configurationOfRoot();
+            blockUser.loginSession();
 
-            // Primo tentativo di login gestito da AppBlocks
-            ab.loginSession();
-
-            // Loop principale dell'applicazione
             while (true) {
-                // Controllo la sessione corrente
-                Session current = ManagerSession.getCurrent();
 
-                if (current == null) {
-                    // Nessuna sessione attiva: chiedo di rifare il login
+                // Se per qualsiasi motivo la sessione non esiste, richiedi login
+                if (ManagerSession.getCurrent() == null) {
                     System.out.println("Nessuna sessione attiva. Effettua nuovamente il login.");
-                    ab.loginSession();
-                    current = ManagerSession.getCurrent();
+                    blockUser.loginSession();
 
-                    // Se ancora null, esco in modo pulito invece di lanciare un NPE
-                    if (current == null) {
+                    if (ManagerSession.getCurrent() == null) {
                         System.out.println("Login non riuscito. Chiusura applicazione.");
                         return;
                     }
                 }
 
-                // A questo punto current NON è null
-                System.out.print(current.getName() + "> ");
-                String input = GlobalScaner.scanner.nextLine();
+                blockCsv.controllOnFolderCsv();
+                blockCsv.manageImplementationOfMainFileCsv();
+
+                System.out.print(ManagerSession.getCurrent().getName() + "> ");
+                input = GlobalScaner.scanner.nextLine();
 
                 switch (input) {
+
                     case "exit":
+                        blockCsv.saveAllFileInFolderIntoCsvTable();
+                        blockCsv.clearFolderCsv();
                         Exit.exit(input);
                         break;
 
@@ -76,11 +83,62 @@ public class ApiMain {
                         ClearTerminal.clearTerminal(input);
                         break;
 
+                    case "w -c":
+                        blockCsv.createGeneralFileCsv();
+                        break;
+
+                    case "r -c":
+                        blockCsv.readFileCsv();
+                        blockCsv.clearFolderCsv();
+                        break;
+
+                    case "ls -f":
+                        blockCsv.lsFileUser();
+                        break;
+
+                    case "crt -u":
+                        blockUser.createUserIfRoot();
+                        break;
+
+                    case "dlt -u":
+                        blockUser.deleteUserIfRoot();
+                        break;
+
+                    case "dlt -c":
+                        blockCsv.deleteMyCsvFromDatabase();
+                        break;
+
+                    case "show -a -u":
+                        blockUser.showUsersIfRoot(Checks.neutral);
+                        break;
+
+                    case "show -t -u":
+                        blockUser.showUsersIfRoot(Checks.affermative);
+                        break;
+
+                    case "search":
+                        blockCsv.searchOnBaseAndMaybeSave();
+                        break;
+
+                    case "search -s":
+                        blockCsv.searchOnBaseStatistic();
+                        break;
+
+                    case "save":
+                        blockCsv.saveAllFileInFolderIntoCsvTable();
+                        blockCsv.clearFolderCsv();
+                        System.out.println("File CSV salvati nel database.\n");
+                        break;
+
+                    case "in -u":
+                        blockCsv.saveAllFileInFolderIntoCsvTable();
+                        blockUser.viewOtherFiles();
+                        break;
+
                     case "out":
-                        // logout dell'utente corrente
-                        ab.logoutSession();
-                        // al prossimo giro del while, current sarà null
-                        // e verrà richiesto un nuovo login
+                        blockCsv.saveAllFileInFolderIntoCsvTable();
+                        blockCsv.clearFolderCsv();
+                        blockUser.logoutSession();
                         break;
 
                     default:

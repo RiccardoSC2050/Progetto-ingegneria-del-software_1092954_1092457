@@ -13,6 +13,11 @@ public enum AccessLevel {
 		return level;
 	}
 
+	public static boolean isAPossibleValue(int n) {
+
+		return fromLevel(n) != null;
+	}
+
 	/**
 	 * 
 	 * @param i

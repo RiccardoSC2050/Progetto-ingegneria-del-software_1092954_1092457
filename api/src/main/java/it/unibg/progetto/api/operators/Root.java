@@ -1,15 +1,10 @@
 package it.unibg.progetto.api.operators;
 
-import java.security.PrivateKey;
-import java.security.Provider.Service;
+import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.internal.build.AllowSysOut;
-import org.hibernate.query.NativeQuery.ReturnableResultNode;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
-import it.unibg.progetto.api.application.AppBlocks;
+import it.unibg.progetto.api.application.AppBlocksManageUsers;
 import it.unibg.progetto.api.components.GlobalScaner;
 import it.unibg.progetto.api.components.Input;
 import it.unibg.progetto.api.components.Quit;
@@ -18,11 +13,8 @@ import it.unibg.progetto.api.conditions.Checks;
 import it.unibg.progetto.api.conditions.StrangeValues;
 import it.unibg.progetto.api.components.Exit;
 import it.unibg.progetto.api.dto.Rootdto;
-import it.unibg.progetto.api.dto.Userdto;
-import it.unibg.progetto.api.mapper.UserMapper;
-import it.unibg.progetto.data.Users;
+
 import it.unibg.progetto.hashcode.Hash;
-import it.unibg.progetto.service.UsersService;
 
 /**
  * Root administrator class extending Operator with maximum privileges.
@@ -32,7 +24,7 @@ import it.unibg.progetto.service.UsersService;
  * @author Employee Management System
  * @version 1.0
  */
-public class Root extends Operator implements DataControl {
+public class Root extends Operator {
 
 	private static Root root = null;
 
@@ -53,7 +45,7 @@ public class Root extends Operator implements DataControl {
 
 	public static Root createRootErrorDatabase() {
 		resetRoot();
-		AppBlocks ab = new AppBlocks();
+		AppBlocksManageUsers ab = new AppBlocksManageUsers();
 		ab.rootCreation(root);
 		return getInstanceRoot();
 	}
@@ -88,7 +80,7 @@ public class Root extends Operator implements DataControl {
 	}
 
 	public static void configurationOfRoot() {
-		AppBlocks ab = new AppBlocks();
+		AppBlocksManageUsers ab = new AppBlocksManageUsers();
 		ab.RootConfiguration(root);
 	}
 
@@ -181,26 +173,10 @@ public class Root extends Operator implements DataControl {
 		}
 
 		String n = userNameControl();
+		if (n == "")
+			return;
 		String id = userIdControl(n);
 		delUser(n, id);
-
-	}
-
-	@Override
-	public void readDataFile() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void createDataFile() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deleteDataFile() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -251,8 +227,9 @@ public class Root extends Operator implements DataControl {
 	 * @return
 	 */
 	private String userNameControl() {
-		String k = "";
+		Checks k = Checks.neutral;
 		String name = "";
+		String a = "";
 
 		/* chiediamo il nome */
 		try {
@@ -261,44 +238,66 @@ public class Root extends Operator implements DataControl {
 						 * si inserisce un nome e si verifica se questo è corretto, quindi se è dento la
 						 * lista operatori
 						 */
-					k = "";
+
+					k = Checks.neutral;
 					System.out.println("Che utente intedi eliminare?");
 
 					List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
+					/* rimuovo ROOT in modo sicuro */
+					if (userList != null) {
+						Iterator<User> it = userList.iterator();
+						while (it.hasNext()) {
+							User u = it.next();
+							if (u.getName().equalsIgnoreCase(StrangeValues.ROOT.toString())) {
+								it.remove();
+							}
+						}
+					}
+
+					/* se non ci sono utenti oltre root, esco */
+					if (userList == null || userList.isEmpty()) {
+						System.out.println("Nessun utente da eliminare (solo utente root presente).");
+						return "";
+					}
+
+					/* stampo gli utenti rimasti */
 					for (User u : userList) {
 						System.out.println("- " + u.getName());
 					}
+
 					name = GlobalScaner.scanner.nextLine();
 					Exit.exit(name);
 
 					for (User u : userList) {
 						if (u.getName().equals(name)) {
-							k = "ok";
+							k = Checks.ok;
 						}
 					}
-					if (!k.equals("ok")) {
+					if (!k.equals(Checks.ok)) {
 						System.out.println("Nome errato o non esistenete");
 					}
 
-				} while (!k.equals("ok"));
+				} while (!k.equals(Checks.ok));
 
 				do { /*
 						 * qui verifico se il nome (corretto) sia quello effettivamente desiderato, se
 						 * non lo è si ricomincia con l'inserimento nome verificato
 						 */
-					System.out.println(name + " è l'utente corretto che vuoi eliminare? [y|n]");
+					a = "";
+					System.out.println(name + " è l'utente corretto che vuoi eliminare? [s|n]");
 					String r = GlobalScaner.scanner.nextLine();
 					Exit.exit(r);
-					k = r;
-				} while (!(k.equals("y") | k.equals("n")));
+					a = r;
+				} while (!(a.equals("s") | a.equals("n")));
 
-				if (k.equals("y")) {
+				if (a.equals("s")) {
 					System.out.println("");
 				}
-			} while (k.equals("n"));
+			} while (a.equals("n"));
 
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return name;
 	}
@@ -316,12 +315,12 @@ public class Root extends Operator implements DataControl {
 			List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
 			do {
-
-				System.out.println("Conosci già l'id dell'utente? [y|n]");
+				k = "";
+				System.out.println("Conosci già l'id dell'utente? [s|n]");
 				String r = GlobalScaner.scanner.nextLine();
 				Exit.exit(r);
 				k = r;
-			} while (!(k.equals("y") | k.equals("n")));
+			} while (!(k.equals("s") | k.equals("n")));
 			if (k.equals("n")) {
 				System.out.println("Ecco descrizione Utente|Utenti " + name + ":\n");
 				for (User u : userList) {
@@ -332,37 +331,41 @@ public class Root extends Operator implements DataControl {
 
 				id = checkDeleteId(userList);
 
-			} else if (k.equals("y")) {
+			} else if (k.equals("s")) {
 
 				id = checkDeleteId(userList);
 
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return id;
 	}
 
 	private String checkDeleteId(List<User> userList) {
-		String k;
+		Checks k = Checks.neutral;
 		String id = "";
 		try {
 			do {
-				k = "";
+
+				k = Checks.neutral;
+
 				System.out.println("Inserisci l'id utente per completare l'eliminazione");
 				id = GlobalScaner.scanner.nextLine();
 				Exit.exit(id);
 
 				for (User u : userList) {
 					if (u.getId().equals(id)) {
-						k = "ok";
+						k = Checks.ok;
 					}
 				}
-				if (!k.equals("ok")) {
+				if (!k.equals(Checks.ok)) {
 					System.out.println("Errore inserimento id, riprova");
 				}
 
-			} while (!k.equals("ok"));
+			} while (!k.equals(Checks.ok));
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return id;
 

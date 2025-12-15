@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.dto.Rootdto;
-import it.unibg.progetto.api.dto.Userdto;
+
 import it.unibg.progetto.api.operators.User;
 import it.unibg.progetto.data.Users;
 

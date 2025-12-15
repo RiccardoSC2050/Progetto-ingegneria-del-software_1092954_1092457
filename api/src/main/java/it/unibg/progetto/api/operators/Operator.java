@@ -1,16 +1,7 @@
 package it.unibg.progetto.api.operators;
 
-import java.util.List;
-import java.util.UUID;
-
-import it.unibg.progetto.api.access_session.ManagerSession;
-import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.conditions.AccessLevel;
 import it.unibg.progetto.api.conditions.StrangeValues;
-import it.unibg.progetto.api.dto.Userdto;
-import it.unibg.progetto.api.mapper.UserMapper;
-import it.unibg.progetto.data.Users;
-import it.unibg.progetto.service.UsersService;
 
 /**
  * Abstract base class for all system operators. Provides common functionality

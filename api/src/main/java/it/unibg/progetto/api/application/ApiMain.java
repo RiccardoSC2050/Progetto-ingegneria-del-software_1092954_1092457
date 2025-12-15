@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
 import it.unibg.progetto.api.access_session.ManagerSession;
-
 import it.unibg.progetto.api.action_on.ActionOnCsv;
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
 import it.unibg.progetto.api.components.ClearTerminal;
@@ -28,107 +27,125 @@ import it.unibg.progetto.service.UsersService;
 @EntityScan(basePackages = "it.unibg.progetto.data")
 public class ApiMain {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ApiMain.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ApiMain.class, args);
+    }
 
-	@Bean
-	@Profile("!test")
-	public CommandLineRunner createDefaultUser(UserMapper userMapper, UsersService service,
-			ActionOnUseRS conversionUseRS, RootMapper rootMapper, CsvService sercCsvService, ActionOnCsv actionOnCsv,
-			CsvMapper csvMapper) {
-		return args -> {
-			AppBlocksManageUsers blockUser = new AppBlocksManageUsers();
-			AppBlocksManageCsv blockCsv = new AppBlocksManageCsv();
-			String input;
+    @Bean
+    @Profile("!test")
+    public CommandLineRunner createDefaultUser(
+            UserMapper userMapper,
+            UsersService service,
+            ActionOnUseRS conversionUseRS,
+            RootMapper rootMapper,
+            CsvService sercCsvService,
+            ActionOnCsv actionOnCsv,
+            CsvMapper csvMapper
+    ) {
+        return args -> {
+            AppBlocksManageUsers blockUser = new AppBlocksManageUsers();
+            AppBlocksManageCsv blockCsv = new AppBlocksManageCsv();
 
-			blockCsv.clearFolderCsv();
-			Root.configurationOfRoot();
-			blockUser.loginSession();
+            String input;
 
-			do {
-				blockCsv.controllOnFolderCsv();
-				blockCsv.manageImplementationOfMainFileCsv();
-				System.out.print(ManagerSession.getCurrent().getName() + "> ");
-				input = GlobalScaner.scanner.nextLine();
+            blockCsv.clearFolderCsv();
+            Root.configurationOfRoot();
+            blockUser.loginSession();
 
-				switch (input) {
+            while (true) {
 
-				case "exit": // end program
-					blockCsv.saveAllFileInFolderIntoCsvTable();
-					blockCsv.clearFolderCsv();
-					Exit.exit(input);
-					break;
+                // Se per qualsiasi motivo la sessione non esiste, richiedi login
+                if (ManagerSession.getCurrent() == null) {
+                    System.out.println("Nessuna sessione attiva. Effettua nuovamente il login.");
+                    blockUser.loginSession();
 
-				case "clear": // clear terminal
-					ClearTerminal.clearTerminal(input);
-					break;
+                    if (ManagerSession.getCurrent() == null) {
+                        System.out.println("Login non riuscito. Chiusura applicazione.");
+                        return;
+                    }
+                }
 
-				case "w -c": // create an file csv
-					blockCsv.createGeneralFileCsv();
-					break;
+                blockCsv.controllOnFolderCsv();
+                blockCsv.manageImplementationOfMainFileCsv();
 
-				case "r -c": // read an your file csv
-					blockCsv.readFileCsv();
-					blockCsv.clearFolderCsv();
-					break;
+                System.out.print(ManagerSession.getCurrent().getName() + "> ");
+                input = GlobalScaner.scanner.nextLine();
 
-				case "ls -f": // mostrami tutti i file
-					blockCsv.lsFileUser();
-					break;
+                switch (input) {
 
-				case "crt -u": // crea utente se sono root
-					blockUser.createUserIfRoot();
-					break;
+                    case "exit":
+                        blockCsv.saveAllFileInFolderIntoCsvTable();
+                        blockCsv.clearFolderCsv();
+                        Exit.exit(input);
+                        break;
 
-				case "dlt -u": // elimino utente se sono root
-					blockUser.deleteUserIfRoot();
-					break;
+                    case "clear":
+                        ClearTerminal.clearTerminal(input);
+                        break;
 
-				case "dlt -c": // limina un mio file csv
-					blockCsv.deleteMyCsvFromDatabase();
-					break;
+                    case "w -c":
+                        blockCsv.createGeneralFileCsv();
+                        break;
 
-				case "show -a -u": // mostra tutti gli utenti nome
-					blockUser.showUsersIfRoot(Checks.neutral);
-					break;
+                    case "r -c":
+                        blockCsv.readFileCsv();
+                        blockCsv.clearFolderCsv();
+                        break;
 
-				case "show -t -u": // mostra tutti gli utenti nome
-					blockUser.showUsersIfRoot(Checks.affermative);
-					break;
+                    case "ls -f":
+                        blockCsv.lsFileUser();
+                        break;
 
-				case "search": // ricerca mirata
-					blockCsv.searchOnBaseAndMaybeSave();
-					break;
-					
-				case "search -s": // ricerca mirata
-					blockCsv.searchOnBaseStatistic();
-					break;
+                    case "crt -u":
+                        blockUser.createUserIfRoot();
+                        break;
 
-				case "save": // salva i miei file
-					blockCsv.saveAllFileInFolderIntoCsvTable();
-					blockCsv.clearFolderCsv();
-					System.out.println("File CSV salvati nel database.\n");
-					break;
+                    case "dlt -u":
+                        blockUser.deleteUserIfRoot();
+                        break;
 
-				case "in -u": // leggo un file di un utente
-					blockCsv.saveAllFileInFolderIntoCsvTable();
-					blockUser.viewOtherFiles();
-					break;
+                    case "dlt -c":
+                        blockCsv.deleteMyCsvFromDatabase();
+                        break;
 
-				case "out": // logout
-					blockCsv.saveAllFileInFolderIntoCsvTable();
-					blockCsv.clearFolderCsv();
-					blockUser.logoutSession();
-					break;
+                    case "show -a -u":
+                        blockUser.showUsersIfRoot(Checks.neutral);
+                        break;
 
-				default:
-					System.out.print("Comando errato o non esistente\n\n");
-					break;
-				}
+                    case "show -t -u":
+                        blockUser.showUsersIfRoot(Checks.affermative);
+                        break;
 
-			} while (true);
+                    case "search":
+                        blockCsv.searchOnBaseAndMaybeSave();
+                        break;
 
-		};
-	}
+                    case "search -s":
+                        blockCsv.searchOnBaseStatistic();
+                        break;
+
+                    case "save":
+                        blockCsv.saveAllFileInFolderIntoCsvTable();
+                        blockCsv.clearFolderCsv();
+                        System.out.println("File CSV salvati nel database.\n");
+                        break;
+
+                    case "in -u":
+                        blockCsv.saveAllFileInFolderIntoCsvTable();
+                        blockUser.viewOtherFiles();
+                        break;
+
+                    case "out":
+                        blockCsv.saveAllFileInFolderIntoCsvTable();
+                        blockCsv.clearFolderCsv();
+                        blockUser.logoutSession();
+                        break;
+
+                    default:
+                        System.out.print("Comando errato o non esistente\n\n");
+                        break;
+                }
+            }
+        };
+    }
 }

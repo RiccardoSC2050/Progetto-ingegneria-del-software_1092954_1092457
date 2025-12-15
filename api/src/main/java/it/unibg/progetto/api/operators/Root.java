@@ -73,7 +73,6 @@ public class Root extends Operator {
 				// Root già presente sul DB → uso la password del DB
 				root = new Root(rootdto.getPassword());
 			} else {
-				// Root NON presente sul DB (impossibile)
 
 			}
 		}

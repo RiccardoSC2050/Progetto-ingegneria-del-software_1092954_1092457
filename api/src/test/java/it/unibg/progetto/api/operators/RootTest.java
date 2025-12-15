@@ -1,123 +1,184 @@
 package it.unibg.progetto.api.operators;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.mockito.MockedStatic;
 
 import it.unibg.progetto.api.action_on.ActionOnUseRS;
-import it.unibg.progetto.api.application.ApiMain;
 import it.unibg.progetto.api.components.GlobalScaner;
+import it.unibg.progetto.api.conditions.AccessLevel;
+import it.unibg.progetto.api.dto.Rootdto;
 
-@SpringBootTest(classes = ApiMain.class)
-@ActiveProfiles("test")
 class RootTest {
 
-	private Root root;
+    /**
+     * Prima di ogni test azzero il singleton Root.root,
+     * così ogni test parte “pulito”.
+     */
+    @BeforeEach
+    void resetSingleton() throws Exception {
+        Field field = Root.class.getDeclaredField("root");
+        field.setAccessible(true);
+        field.set(null, null); // static field → obj = null
+    }
 
-	@BeforeEach
-	void setUp() {
-		// create object for each test
+    // ---------- 1. Singleton: getInstanceRoot() ----------
 
-		root = Root.getInstanceRoot();
+    @Test
+    void getInstanceRootReturnsSameInstance() {
+        try (MockedStatic<ActionOnUseRS> mockedStatic = mockStatic(ActionOnUseRS.class)) {
+            ActionOnUseRS mockService = mock(ActionOnUseRS.class);
+            mockedStatic.when(ActionOnUseRS::getInstance).thenReturn(mockService);
 
-	}
+            Rootdto dto = new Rootdto();
+            dto.setPassword("pwd");
+            when(mockService.rootIsOnData()).thenReturn(dto);
 
-	// ---------- 1. Costruttore e singleton ----------
+            Root r1 = Root.getInstanceRoot();
+            Root r2 = Root.getInstanceRoot();
 
-	@Test
-	void getInstanceRootReturnsSameInstance() {
-		Root r1 = Root.getInstanceRoot();
-		Root r2 = Root.getInstanceRoot();
+            assertSame(r1, r2, "getInstanceRoot() deve restituire sempre la stessa istanza");
+        }
+    }
 
-		// Deve essere la stessa istanza (pattern Singleton)
-		assertSame(r1, r2, "getInstanceRoot() deve restituire sempre la stessa istanza");
-	}
+    @Test
+    void getInstanceRootInitializesRootWithFixedValues() {
+        try (MockedStatic<ActionOnUseRS> mockedStatic = mockStatic(ActionOnUseRS.class)) {
+            ActionOnUseRS mockService = mock(ActionOnUseRS.class);
+            mockedStatic.when(ActionOnUseRS::getInstance).thenReturn(mockService);
 
-	@Test
-	void getInstanceRootInitializesRootWithFixedValues() {
+            Rootdto dto = new Rootdto();
+            dto.setPassword("pwd");
+            when(mockService.rootIsOnData()).thenReturn(dto);
 
-		// Nome fissato per Root dal costruttore di Operator
-		assertEquals("ROOT", root.getName());
+            Root root = Root.getInstanceRoot();
 
-		// Id e livello di accesso fissi per l'amministratore
-		assertEquals("0", root.getId());
-		assertEquals(5, root.getAccessLevelValue());
+            assertEquals("ROOT", root.getName(), "Il nome di Root deve essere 'ROOT'");
+            assertEquals("0", root.getId(), "L'id di Root deve essere '0'");
+            assertEquals(5, root.getAccessLevelValue(), "Il livello di accesso di Root deve essere 5");
+            assertNull(root.getAccessLevel(), "AccessLevel non viene impostato esplicitamente per Root");
+            assertEquals("pwd", root.getPassword(), "La password deve essere quella letta dal DTO");
+        }
+    }
 
-		// AccessLevel "oggetto" non viene impostato esplicitamente
-		assertNull(root.getAccessLevel(), "AccessLevel non viene impostato esplicitamente per Root");
+    // ---------- 2. Costruttore manuale ----------
 
-		// La password ora arriva dal database: verifichiamo solo che esista
-		assertNotNull(root.getPassword());
-		assertFalse(root.getPassword().isBlank());
-	}
+    @Test
+    void manualRootConstructorSetsIdZeroAndLevelFive() {
+        Root customRoot = new Root("pwd");
 
-	@Test
-	void manualRootConstructorSetsIdZeroAndLevelFive() {
-		Root customRoot = new Root("pwd");
+        assertEquals("ROOT", customRoot.getName(), "Il nome di Root deve essere 'ROOT'");
+        assertEquals("pwd", customRoot.getPassword(), "La password passata al costruttore deve essere mantenuta");
+        assertEquals("0", customRoot.getId(), "L'id di Root deve essere '0'");
+        assertEquals(5, customRoot.getAccessLevelValue(), "Il livello di accesso di Root deve essere 5");
+    }
 
-		// Nome e password presi dal costruttore
-		assertEquals("ROOT", customRoot.getName());
-		assertEquals("pwd", customRoot.getPassword());
+    // ---------- 3. Metodi DataControl (vuoti ma coperti) ----------
 
-		// Id e livello di accesso fissati per Root
-		assertEquals("0", customRoot.getId());
-		assertEquals(5, customRoot.getAccessLevelValue());
-	}
+    @Test
+    void readDataFileDoesNotThrow() {
+        Root root = new Root("pwd");
+        assertDoesNotThrow(root::readDataFile, "readDataFile() non deve lanciare eccezioni");
+    }
 
-	// ------------------method create user --------------------
-	@Test
-	void isPossibleTocreateUserTest() {
+    @Test
+    void createDataFileDoesNotThrow() {
+        Root root = new Root("pwd");
+        assertDoesNotThrow(root::createDataFile, "createDataFile() non deve lanciare eccezioni");
+    }
 
-		String fakeInput = String.join("\n", "tester", // name
-				"secret", // password
-				"2" // level
-		) + "\n";
+    @Test
+    void deleteDataFileDoesNotThrow() {
+        Root root = new Root("pwd");
+        assertDoesNotThrow(root::deleteDataFile, "deleteDataFile() non deve lanciare eccezioni");
+    }
 
-		ByteArrayInputStream in = new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8));
+    // ---------- 4. createUser() ----------
 
-		// finto stdin
-		System.setIn(in);
+    @Test
+    void createUserCallsAddUserOnDataOnValidInput() {
+        Root root = new Root("pwd");
 
-		GlobalScaner.scanner = new Scanner(System.in);
+        String fakeInput = String.join("\n",
+                "tester",
+                "secret",
+                "2"
+        ) + "\n";
 
-		root.createUser();
-	}
+        System.setIn(new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8)));
+        GlobalScaner.scanner = new Scanner(System.in);
 
-	// ------------------method delete user --------------------
-	@Test
-	void delUserTest() {
-		String id = null;
-		List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
-		if (userList != null) {
-			for (User u : userList) {
-				if (u.getName().toLowerCase().equals("tester")) {
-					id = u.getId();
-				}
-			}
+        try (MockedStatic<ActionOnUseRS> mockedStatic = mockStatic(ActionOnUseRS.class)) {
+            ActionOnUseRS mockService = mock(ActionOnUseRS.class);
+            mockedStatic.when(ActionOnUseRS::getInstance).thenReturn(mockService);
 
-			String fakeInput = String.join("\n", "tester", // name
-					"y", // password
-					"y", // level
-					id // level
-			) + "\n";
+            when(mockService.trasformListUsersIntoListUserWithoutPassword())
+                    .thenReturn(Collections.emptyList());
 
-			ByteArrayInputStream in = new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8));
+            boolean result = root.createUser();
 
-			// finto stdin
-			System.setIn(in);
+            assertTrue(result, "createUser() deve restituire true con input valido");
+            verify(mockService).addUserOnData(any(User.class));
+        }
+    }
 
-			GlobalScaner.scanner = new Scanner(System.in);
-		}
-		root.deleteUser();
-		root.deleteUser();
-	}
+    // ---------- 5. deleteUser() ----------
 
+    @Test
+    void deleteUserWithNullUserListDoesNotThrow() {
+        Root root = new Root("pwd");
+
+        try (MockedStatic<ActionOnUseRS> mockedStatic = mockStatic(ActionOnUseRS.class)) {
+            ActionOnUseRS mockService = mock(ActionOnUseRS.class);
+            mockedStatic.when(ActionOnUseRS::getInstance).thenReturn(mockService);
+
+            when(mockService.trasformListUsersIntoListUserWithoutPassword())
+                    .thenReturn(null);
+
+            assertDoesNotThrow(root::deleteUser,
+                    "deleteUser() non deve lanciare eccezioni se la lista è null");
+            verify(mockService).trasformListUsersIntoListUserWithoutPassword();
+        }
+    }
+
+    @Test
+    void deleteUserDeletesExistingUser() {
+        Root root = new Root("pwd");
+
+        User existing = new User("tester", "pw", AccessLevel.AL1);
+        List<User> userList = Collections.singletonList(existing);
+
+        String fakeInput = String.join("\n",
+                "tester",
+                "y",
+                "y",
+                existing.getId()
+        ) + "\n";
+
+        System.setIn(new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8)));
+        GlobalScaner.scanner = new Scanner(System.in);
+
+        try (MockedStatic<ActionOnUseRS> mockedStatic = mockStatic(ActionOnUseRS.class)) {
+            ActionOnUseRS mockService = mock(ActionOnUseRS.class);
+            mockedStatic.when(ActionOnUseRS::getInstance).thenReturn(mockService);
+
+            when(mockService.trasformListUsersIntoListUserWithoutPassword())
+                    .thenReturn(userList);
+
+            assertDoesNotThrow(root::deleteUser,
+                    "deleteUser() non deve lanciare eccezioni con utente esistente");
+
+            verify(mockService).deleteUser(existing);
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package it.unibg.progetto.api.domain;
 
 import it.unibg.progetto.api.domain.rules.AccessLevel;
-import it.unibg.progetto.api.domain.rules.StrangeValues;
+import it.unibg.progetto.api.domain.rules.InvalidValues;
 
 /**
  * Abstract base class for all system operators. Provides common functionality
@@ -75,9 +75,9 @@ abstract class Operator {
 	 * @param password the password for root authentication
 	 */
 	public Operator(String password) {
-		this.name = String.valueOf(StrangeValues.ROOT);
+		this.name = String.valueOf(InvalidValues.ROOT);
 		this.password = password;
-		this.id = String.valueOf(StrangeValues.ROOTid.getLevel());
+		this.id = String.valueOf(InvalidValues.ROOTid.getLevel());
 		this.accessLevelValue = AccessLevel.AL5.getLevel();
 
 	}

@@ -3,14 +3,14 @@ package it.unibg.progetto.api.cli.research;
 
 import java.nio.file.Paths;
 
-import it.unibg.progetto.api.application.usecase.ActionOnCsv;
+import it.unibg.progetto.api.application.usecase.CsvUseCase;
 import it.unibg.progetto.api.cli.components.Constant;
-import it.unibg.progetto.api.cli.components.GlobalScaner;
+import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.cli.components.Quit;
 import it.unibg.progetto.api.domain.rules.CsvStandard;
-import it.unibg.progetto.api.domain.rules.StringValue;
+import it.unibg.progetto.api.domain.rules.StringValues;
 
-public class ResearchChoice {
+public class CsvResearchChoice {
 
 	private static void menuOfMainReserch() {
 		System.out.println();
@@ -66,46 +66,46 @@ public class ResearchChoice {
 			f = true;
 			menuOfMainReserch();
 
-			String choice = GlobalScaner.scanner.nextLine().trim();
+			String choice = GlobalScanner.scanner.nextLine().trim();
 
 			switch (choice) {
 			case "1":
-				ManageResearchOnCsv.searchAndMaybeSave(StringValue.RUOLO);
+				CsvResearchManager.searchAndMaybeSave(StringValues.RUOLO);
 
 				break;
 
 			case "2":
-				ManageResearchOnCsv.searchAndMaybeSaveByAnnoInizio();
+				CsvResearchManager.searchAndMaybeSaveByAnnoInizio();
 
 				break;
 
 			case "3":
-				ManageResearchOnCsv.searchAndMaybeSave(StringValue.NOME);
+				CsvResearchManager.searchAndMaybeSave(StringValues.NOME);
 
 				break;
 
 			case "4":
-				ManageResearchOnCsv.searchAndMaybeSave(StringValue.COGNOME);
+				CsvResearchManager.searchAndMaybeSave(StringValues.COGNOME);
 
 				break;
 
 			case "5":
-				ManageResearchOnCsv.searchAndMaybeSave(StringValue.MAIL);
+				CsvResearchManager.searchAndMaybeSave(StringValues.MAIL);
 
 				break;
 
 			case "6":
-				ManageResearchOnCsv.searchAndMaybeSave(StringValue.NUMERO_TELEFONO);
+				CsvResearchManager.searchAndMaybeSave(StringValues.NUMERO_TELEFONO);
 
 				break;
 
 			case "7":
-				ManageResearchOnCsv.searchAndMaybeSaveByMarker();
+				CsvResearchManager.searchAndMaybeSaveByMarker();
 
 				break;
 
 			case "8":
-				ManageResearchOnCsv.searchAndMaybeSave(StringValue.ID);
+				CsvResearchManager.searchAndMaybeSave(StringValues.ID);
 
 				break;
 
@@ -118,7 +118,7 @@ public class ResearchChoice {
 				System.out.println("Scelta non valida.\n");
 
 			}
-			ActionOnCsv.getIstnce().deleteOneFileInRepo(
+			CsvUseCase.getIstnce().deleteOneFileInRepo(
 					Paths.get(Constant.getFilePathCsv() + CsvStandard.DOCUMENTO_AZIENDALE.toString() + ".csv"));
 		} while (f);
 	}
@@ -129,56 +129,56 @@ public class ResearchChoice {
 			f = true;
 			menuOfMainStatisticalReserch();
 
-			String choice = GlobalScaner.scanner.nextLine().trim();
+			String choice = GlobalScanner.scanner.nextLine().trim();
 
 			switch (choice) {
 			case "1":
-				System.out.println("Ci sono " + StatisticResearch.countTotalValidEmployees() + " dipendenti");
+				System.out.println("Ci sono " + CsvStatisticsResearch.countTotalValidEmployees() + " dipendenti");
 
 				break;
 
 			case "2":
-				ManageResearchOnCsv.statsAndMaybeSaveCountByRole();
+				CsvResearchManager.statsAndMaybeSaveCountByRole();
 
 				break;
 
 			case "3":
-				ManageResearchOnCsv.statsAndMaybeSavePercentByRole();
+				CsvResearchManager.statsAndMaybeSavePercentByRole();
 
 				break;
 
 			case "4":
-				ManageResearchOnCsv.statsAndMaybeSaveMinMaxAnnoInizio();
+				CsvResearchManager.statsAndMaybeSaveMinMaxAnnoInizio();
 
 				break;
 
 			case "5":
-				ManageResearchOnCsv.statsAndMaybeSaveAverageAnnoInizio();
+				CsvResearchManager.statsAndMaybeSaveAverageAnnoInizio();
 
 				break;
 
 			case "6":
-				ManageResearchOnCsv.statsAndMaybeSaveDistributionByStartYear();
+				CsvResearchManager.statsAndMaybeSaveDistributionByStartYear();
 
 				break;
 
 			case "7":
-				ManageResearchOnCsv.statsAndMaybeSaveRichiamiSummary();
+				CsvResearchManager.statsAndMaybeSaveRichiamiSummary();
 
 				break;
 
 			case "8":
-				ManageResearchOnCsv.statsAndMaybeSaveTop5Richiami();
+				CsvResearchManager.statsAndMaybeSaveTop5Richiami();
 
 				break;
 				
 			case "9":
-				ManageResearchOnCsv.statsAndMaybeSaveZeroRichiami();
+				CsvResearchManager.statsAndMaybeSaveZeroRichiami();
 
 				break;
 				
 			case "10":
-				ManageResearchOnCsv.statsAndMaybeSaveMissingFields();
+				CsvResearchManager.statsAndMaybeSaveMissingFields();
 
 				break;
 
@@ -192,7 +192,7 @@ public class ResearchChoice {
 
 			}
 
-			ActionOnCsv.getIstnce().deleteOneFileInRepo(
+			CsvUseCase.getIstnce().deleteOneFileInRepo(
 					Paths.get(Constant.getFilePathCsv() + CsvStandard.DOCUMENTO_AZIENDALE.toString() + ".csv"));
 
 		} while (f);

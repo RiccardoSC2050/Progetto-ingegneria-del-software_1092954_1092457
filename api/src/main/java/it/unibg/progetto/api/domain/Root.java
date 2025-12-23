@@ -1,19 +1,18 @@
 package it.unibg.progetto.api.domain;
 
-
 import java.util.Iterator;
 import java.util.List;
 
-import it.unibg.progetto.api.application.dto.Rootdto;
-import it.unibg.progetto.api.application.usecase.ActionOnUseRS;
+import it.unibg.progetto.api.application.dto.RootDto;
+import it.unibg.progetto.api.application.usecase.UsersUseCase;
 import it.unibg.progetto.api.cli.AppBlocksManageUsers;
 import it.unibg.progetto.api.cli.components.Exit;
-import it.unibg.progetto.api.cli.components.GlobalScaner;
+import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.cli.components.Input;
 import it.unibg.progetto.api.cli.components.Quit;
 import it.unibg.progetto.api.domain.rules.AccessLevel;
-import it.unibg.progetto.api.domain.rules.Checks;
-import it.unibg.progetto.api.domain.rules.StrangeValues;
+import it.unibg.progetto.api.domain.rules.Validators;
+import it.unibg.progetto.api.domain.rules.InvalidValues;
 import it.unibg.progetto.api.security.Hash;
 
 /**
@@ -58,16 +57,16 @@ public class Root extends Operator {
 	 */
 	public static Root getInstanceRoot() {
 		if (root == null) {
-			ActionOnUseRS service = ActionOnUseRS.getInstance();
+			UsersUseCase service = UsersUseCase.getInstance();
 
 			// Caso estremo: service non ancora inizializzato (fuori da Spring)
 			if (service == null) {
 				// password “di servizio” qualsiasi, basta che non sia vuota
-				root = new Root(StrangeValues.secret.toString());
+				root = new Root(InvalidValues.secret.toString());
 				return root;
 			}
 
-			Rootdto rootdto = service.rootIsOnData();
+			RootDto rootdto = service.rootIsOnData();
 
 			if (rootdto != null && rootdto.getPassword() != null && !rootdto.getPassword().isBlank()) {
 				// Root già presente sul DB → uso la password del DB
@@ -84,6 +83,12 @@ public class Root extends Operator {
 		ab.RootConfiguration(root);
 	}
 
+	public boolean checkLenghtPw(String p) {
+		if (p.length() < 8)
+			return false;
+		return true;
+	}
+
 	/**
 	 * create a User user = new User user is added to allOperators List
 	 * 
@@ -93,32 +98,35 @@ public class Root extends Operator {
 	 * @return
 	 * @throws InvalidAccessLevelException
 	 */
-	private Checks isPossibleTocreateUser(String name) {
+	private Validators isPossibleTocreateUser(String name) {
 		try {
 
-			List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
+			List<User> userList = UsersUseCase.getInstance().trasformListUsersIntoListUserWithoutPassword();
 			if (userList != null) {
 				for (User u : userList) {
 					if (u.getName().equals(name)) {
 
 						System.err.println("ERRORE di inserimento: il nome " + name
 								+ " utente già esiste, si prega di inserirne uno nuovo");
-						return Checks.negative;
+						return Validators.negative;
 					}
 				}
 			}
-			System.out.println("Inserire password utente: ");
-			String pw = GlobalScaner.scanner.nextLine();
+			String pw = "";
+			do {
+				System.out.print("Inserire password utente [min 8 caratteri]: ");
+				pw = GlobalScanner.scanner.nextLine();
+			} while (!checkLenghtPw(pw));
 			if (Quit.quit(pw))
-				return Checks.neutral;
+				return Validators.neutral;
 			pw = Hash.hash(pw);
 			int aclv;
 			do {
 
 				System.out.println("Inserire il livello di accesso utente [1-3]: ");
-				String al = GlobalScaner.scanner.nextLine();
+				String al = GlobalScanner.scanner.nextLine();
 				if (Quit.quit(pw))
-					return Checks.neutral;
+					return Validators.neutral;
 				if (Input.isNumeric(al) && !al.isEmpty())
 					aclv = Integer.parseInt(al);
 				else
@@ -129,7 +137,7 @@ public class Root extends Operator {
 			AccessLevel alv = AccessLevel.fromLevel(aclv);
 
 			User user = new User(name, pw, alv);
-			ActionOnUseRS.getInstance().addUserOnData(user);
+			UsersUseCase.getInstance().addUserOnData(user);
 
 			System.out.println("Utente creato con successo:");
 			System.out.println(user.toString());
@@ -137,23 +145,23 @@ public class Root extends Operator {
 		} catch (ExceptionInInitializerError e) {
 			System.out.println("ERRORE: non è stato possibile creare l'utente");
 		}
-		return Checks.affermative;
+		return Validators.affermative;
 	}
 
 	public boolean createUser() {
-		Checks action = Checks.negative;
+		Validators action = Validators.negative;
 		do {
 			System.out.println("CREAZIONE NUOVO UTENTE\n");
 			System.out.println("Inserire nome utente: ");
-			String name = GlobalScaner.scanner.nextLine().toLowerCase();
+			String name = GlobalScanner.scanner.nextLine().toLowerCase();
 			if (Quit.quit(name))
 				return false;
 
 			action = isPossibleTocreateUser(name);
-			if (action == Checks.neutral)
+			if (action == Validators.neutral)
 				return false;
 
-		} while (action == Checks.negative);
+		} while (action == Validators.negative);
 		return true;
 
 	}
@@ -165,7 +173,7 @@ public class Root extends Operator {
 	 */
 	public void deleteUser() {
 
-		List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
+		List<User> userList = UsersUseCase.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
 		if (userList == null) {
 			System.out.println("Nessun utente da eliminare");
@@ -190,7 +198,7 @@ public class Root extends Operator {
 		try {
 
 			name = name.toLowerCase();
-			List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
+			List<User> userList = UsersUseCase.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
 			for (User u : userList) {
 				if (u.getName().equals(name) && u.getId().equals(id)) {
@@ -215,7 +223,7 @@ public class Root extends Operator {
 	 */
 	private void deleteUserInDataUsers(User u) {
 		try {
-			ActionOnUseRS.getInstance().deleteUser(u);
+			UsersUseCase.getInstance().deleteUser(u);
 
 		} catch (Error e) {
 			System.out.println(e);
@@ -227,7 +235,7 @@ public class Root extends Operator {
 	 * @return
 	 */
 	private String userNameControl() {
-		Checks k = Checks.neutral;
+		Validators k = Validators.neutral;
 		String name = "";
 		String a = "";
 
@@ -239,17 +247,17 @@ public class Root extends Operator {
 						 * lista operatori
 						 */
 
-					k = Checks.neutral;
+					k = Validators.neutral;
 					System.out.println("Che utente intedi eliminare?");
 
-					List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
+					List<User> userList = UsersUseCase.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
 					/* rimuovo ROOT in modo sicuro */
 					if (userList != null) {
 						Iterator<User> it = userList.iterator();
 						while (it.hasNext()) {
 							User u = it.next();
-							if (u.getName().equalsIgnoreCase(StrangeValues.ROOT.toString())) {
+							if (u.getName().equalsIgnoreCase(InvalidValues.ROOT.toString())) {
 								it.remove();
 							}
 						}
@@ -266,19 +274,19 @@ public class Root extends Operator {
 						System.out.println("- " + u.getName());
 					}
 
-					name = GlobalScaner.scanner.nextLine();
+					name = GlobalScanner.scanner.nextLine();
 					Exit.exit(name);
 
 					for (User u : userList) {
 						if (u.getName().equals(name)) {
-							k = Checks.ok;
+							k = Validators.ok;
 						}
 					}
-					if (!k.equals(Checks.ok)) {
+					if (!k.equals(Validators.ok)) {
 						System.out.println("Nome errato o non esistenete");
 					}
 
-				} while (!k.equals(Checks.ok));
+				} while (!k.equals(Validators.ok));
 
 				do { /*
 						 * qui verifico se il nome (corretto) sia quello effettivamente desiderato, se
@@ -286,7 +294,7 @@ public class Root extends Operator {
 						 */
 					a = "";
 					System.out.println(name + " è l'utente corretto che vuoi eliminare? [s|n]");
-					String r = GlobalScaner.scanner.nextLine();
+					String r = GlobalScanner.scanner.nextLine();
 					Exit.exit(r);
 					a = r;
 				} while (!(a.equals("s") | a.equals("n")));
@@ -312,12 +320,12 @@ public class Root extends Operator {
 		String k = "";
 		try {
 
-			List<User> userList = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
+			List<User> userList = UsersUseCase.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
 			do {
 				k = "";
 				System.out.println("Conosci già l'id dell'utente? [s|n]");
-				String r = GlobalScaner.scanner.nextLine();
+				String r = GlobalScanner.scanner.nextLine();
 				Exit.exit(r);
 				k = r;
 			} while (!(k.equals("s") | k.equals("n")));
@@ -343,27 +351,27 @@ public class Root extends Operator {
 	}
 
 	private String checkDeleteId(List<User> userList) {
-		Checks k = Checks.neutral;
+		Validators k = Validators.neutral;
 		String id = "";
 		try {
 			do {
 
-				k = Checks.neutral;
+				k = Validators.neutral;
 
 				System.out.println("Inserisci l'id utente per completare l'eliminazione");
-				id = GlobalScaner.scanner.nextLine();
+				id = GlobalScanner.scanner.nextLine();
 				Exit.exit(id);
 
 				for (User u : userList) {
 					if (u.getId().equals(id)) {
-						k = Checks.ok;
+						k = Validators.ok;
 					}
 				}
-				if (!k.equals(Checks.ok)) {
+				if (!k.equals(Validators.ok)) {
 					System.out.println("Errore inserimento id, riprova");
 				}
 
-			} while (!k.equals(Checks.ok));
+			} while (!k.equals(Validators.ok));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,9 +1,9 @@
 package it.unibg.progetto.api.cli;
-import it.unibg.progetto.api.application.usecase.ActionOnUseRS;
+import it.unibg.progetto.api.application.usecase.UsersUseCase;
 import it.unibg.progetto.api.domain.User;
-import it.unibg.progetto.api.domain.rules.Checks;
-import it.unibg.progetto.api.domain.rules.StrangeValues;
-import it.unibg.progetto.api.security.ManagerSession;
+import it.unibg.progetto.api.domain.rules.Validators;
+import it.unibg.progetto.api.security.session.SessionManager;
+import it.unibg.progetto.api.domain.rules.InvalidValues;
 
 public class Master {
 
@@ -24,20 +24,20 @@ public class Master {
 	 * @param name
 	 * @param password
 	 */
-	public Checks login(String name, String password) {
+	public Validators login(String name, String password) {
 
-		User u = ActionOnUseRS.getInstance().LoginAuthenticator(name, password);
+		User u = UsersUseCase.getInstance().LoginAuthenticator(name, password);
 		if (u != null) {
 
-			if (u.getId().equals(StrangeValues.secret.toString()) && u.getName().equals(StrangeValues.secret.toString())
-					&& u.getPassword().equals(StrangeValues.secret.toString())) {
-				return Checks.neutral;
+			if (u.getId().equals(InvalidValues.secret.toString()) && u.getName().equals(InvalidValues.secret.toString())
+					&& u.getPassword().equals(InvalidValues.secret.toString())) {
+				return Validators.neutral;
 			}
 
-			ManagerSession.login(u.getId(), u.getName(), u.getAccessLevel());
-			return Checks.affermative;
+			SessionManager.login(u.getId(), u.getName(), u.getAccessLevel());
+			return Validators.affermative;
 		}
-		return Checks.negative;
+		return Validators.negative;
 
 	}
 
@@ -45,7 +45,7 @@ public class Master {
 	 * 
 	 */
 	public void logout() {
-		ManagerSession.logout();
+		SessionManager.logout();
 	}
 
 }

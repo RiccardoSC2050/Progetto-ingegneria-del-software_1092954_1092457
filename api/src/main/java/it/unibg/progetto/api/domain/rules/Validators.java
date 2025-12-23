@@ -1,7 +1,7 @@
 package it.unibg.progetto.api.domain.rules;
 
 
-public enum Checks {
+public enum Validators {
 	affermative, negative, neutral, rootLog, creationUser, ok;
 
 }

@@ -16,27 +16,27 @@ import org.springframework.stereotype.Component;
 import it.unibg.progetto.api.application.dto.CsvDto;
 import it.unibg.progetto.api.cli.components.Constant;
 import it.unibg.progetto.api.domain.rules.CsvStandard;
-import it.unibg.progetto.api.infrastructure.csv.ManageCsvFile;
+import it.unibg.progetto.api.infrastructure.csv.CsvFileManager;
 import it.unibg.progetto.api.mapping.CsvMapper;
-import it.unibg.progetto.api.security.Session;
+import it.unibg.progetto.api.security.session.Session;
 import it.unibg.progetto.data.Csv;
 import it.unibg.progetto.service.CsvService;
 
 @Component
-public class ActionOnCsv {
+public class CsvUseCase {
 
-	private static ActionOnCsv istance;
+	private static CsvUseCase istance;
 	private final CsvService csvService;
 	private final CsvMapper csvMapper;
 
 	@Autowired
-	public ActionOnCsv(CsvService csvService, CsvMapper csvMapper) {
+	public CsvUseCase(CsvService csvService, CsvMapper csvMapper) {
 		this.csvService = csvService;
 		this.csvMapper = csvMapper;
 		istance = this;
 	}
 
-	public static ActionOnCsv getIstnce() {
+	public static CsvUseCase getIstnce() {
 		return istance;
 	}
 
@@ -362,12 +362,12 @@ public class ActionOnCsv {
 	public boolean showFileContent(String name, String uuid) throws Exception {
 		try {
 			if (checknameFileAlreadyExistOnlyInFolder(name)) {
-				ManageCsvFile.readFileCsv(name);
+				CsvFileManager.readFileCsv(name);
 				return true;
 			} else if (checknameFileAlreadyExistOnlyInData(name, uuid)) {
 				conversionFromCsvToCsvDto(whatIsTheLuckyNameFile(name));
 				createLocalFileFromCsvDto(conversionFromCsvToCsvDto(whatIsTheLuckyNameFile(name)));
-				ManageCsvFile.readFileCsv(name);
+				CsvFileManager.readFileCsv(name);
 				return true;
 			} else
 				return false;

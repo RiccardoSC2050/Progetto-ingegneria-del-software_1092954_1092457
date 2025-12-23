@@ -11,10 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import it.unibg.progetto.api.app.ApiMain;
-import it.unibg.progetto.api.application.usecase.ActionOnUseRS;
+import it.unibg.progetto.api.application.usecase.UsersUseCase;
 import it.unibg.progetto.api.domain.User;
 import it.unibg.progetto.api.domain.rules.AccessLevel;
-import it.unibg.progetto.api.domain.rules.StrangeValues;
+import it.unibg.progetto.api.domain.rules.InvalidValues;
 import it.unibg.progetto.api.security.Hash;
 import it.unibg.progetto.data.Users;
 import it.unibg.progetto.service.UsersService;
@@ -24,7 +24,7 @@ import it.unibg.progetto.service.UsersService;
 class ActionOnUseRSTest {
 
     @Autowired
-    private ActionOnUseRS actionOnUseRS;   // bean reale, creato da Spring
+    private UsersUseCase actionOnUseRS;   // bean reale, creato da Spring
 
     @Autowired
     private UsersService usersService;     // anche questo vero, con H2
@@ -102,7 +102,7 @@ class ActionOnUseRSTest {
 
         // password "protetta" secondo il tuo codice:
         // returnProtectedUser usa StrangeValues.secret.toString()
-        assertEquals(StrangeValues.secret.toString(), logged.getPassword());
+        assertEquals(InvalidValues.secret.toString(), logged.getPassword());
 
         assertEquals(AccessLevel.AL1, logged.getAccessLevel());
     }

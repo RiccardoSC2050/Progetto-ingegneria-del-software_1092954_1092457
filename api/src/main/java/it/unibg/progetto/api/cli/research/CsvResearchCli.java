@@ -4,15 +4,15 @@ package it.unibg.progetto.api.cli.research;
 import java.util.List;
 
 import it.unibg.progetto.api.domain.rules.CsvStandard;
-import it.unibg.progetto.api.domain.rules.StringValue;
-import it.unibg.progetto.api.infrastructure.csv.ManageCsvFile;
+import it.unibg.progetto.api.domain.rules.StringValues;
+import it.unibg.progetto.api.infrastructure.csv.CsvFileManager;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainResearch {
+public class CsvResearchCli {
 
 	/**
 	 * CONTOLLA SE IL ! è PRESNETE IN FONDO ALLA PAROLA O MENO
@@ -47,7 +47,7 @@ public class MainResearch {
 	 * @return lista di righe (senza header) che soddisfano la condizione
 	 */
 	public static List<String[]> searchOnBaseFileByColumnEquals(int columnIndex, String value) {
-		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true); // true =
+		List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true); // true =
 																												// salta
 																												// header
 
@@ -103,7 +103,7 @@ public class MainResearch {
 	 * @param ruolo ruolo da cercare
 	 * @return lista di righe corrispondenti
 	 */
-	public static List<String[]> searchByStringValue(StringValue v, String value) {
+	public static List<String[]> searchByStringValue(StringValues v, String value) {
 		// nella struttura del file aziendale la colonna "ruolo" è la numero 5 (0-based)
 		return searchOnBaseFileByColumnEquals(v.getIndex(), value);
 	}
@@ -117,15 +117,15 @@ public class MainResearch {
 	 * @return lista di righe corrispondenti
 	 */
 	public static List<String[]> searchByAnnoInizioMaggioreUguale(int annoInizioMin) {
-		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
+		List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
 		List<String[]> result = new ArrayList<>();
 
 		for (String[] row : allRows) {
-			if (row.length <= StringValue.ANNO_INIZIO.getIndex()) {
+			if (row.length <= StringValues.ANNO_INIZIO.getIndex()) {
 				continue;
 			}
 			try {
-				int annoInizio = Integer.parseInt(row[StringValue.ANNO_INIZIO.getIndex()]);
+				int annoInizio = Integer.parseInt(row[StringValues.ANNO_INIZIO.getIndex()]);
 				if (annoInizio >= annoInizioMin) {
 					result.add(row);
 				}
@@ -146,15 +146,15 @@ public class MainResearch {
 	 * @return lista di righe corrispondenti
 	 */
 	public static List<String[]> searchByMarker(int marker) {
-		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
+		List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
 		List<String[]> result = new ArrayList<>();
 
 		for (String[] row : allRows) {
-			if (row.length <= StringValue.RICHIAMI.getIndex()) {
+			if (row.length <= StringValues.RICHIAMI.getIndex()) {
 				continue;
 			}
 			try {
-				int mark = Integer.parseInt(row[StringValue.RICHIAMI.getIndex()]);
+				int mark = Integer.parseInt(row[StringValues.RICHIAMI.getIndex()]);
 				if (mark == marker) {
 					result.add(row);
 				}
@@ -177,12 +177,12 @@ public class MainResearch {
 	 *                      aziendale
 	 */
 	public static void saveSearchResult(String newFileName, List<String[]> rows, boolean includeHeader) {
-		File csvFile = ManageCsvFile.getTempCsvFile(newFileName);
+		File csvFile = CsvFileManager.getTempCsvFile(newFileName);
 
 		try (FileWriter writer = new FileWriter(csvFile)) {
 
 			if (includeHeader) {
-				String header = ManageCsvFile.readHeader(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+				String header = CsvFileManager.readHeader(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 				if (header != null) {
 					writer.write(header);
 					writer.write("\n");

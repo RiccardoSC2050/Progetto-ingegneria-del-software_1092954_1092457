@@ -8,15 +8,15 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import it.unibg.progetto.api.application.dto.CsvDto;
-import it.unibg.progetto.api.application.usecase.ActionOnCsv;
+import it.unibg.progetto.api.application.usecase.CsvUseCase;
 import it.unibg.progetto.api.cli.components.Constant;
-import it.unibg.progetto.api.cli.components.GlobalScaner;
+import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.cli.components.Quit;
-import it.unibg.progetto.api.cli.research.ResearchChoice;
+import it.unibg.progetto.api.cli.research.CsvResearchChoice;
 import it.unibg.progetto.api.domain.rules.CsvStandard;
-import it.unibg.progetto.api.infrastructure.csv.ManageCsvFile;
-import it.unibg.progetto.api.security.ManagerSession;
-import it.unibg.progetto.api.security.Session;
+import it.unibg.progetto.api.infrastructure.csv.CsvFileManager;
+import it.unibg.progetto.api.security.session.Session;
+import it.unibg.progetto.api.security.session.SessionManager;
 
 public class AppBlocksManageCsv {
 
@@ -24,7 +24,7 @@ public class AppBlocksManageCsv {
 	}
 
 	public void controllOnFolderCsv() {
-		ManageCsvFile.getTempFolder();
+		CsvFileManager.getTempFolder();
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class AppBlocksManageCsv {
 	 * @return
 	 */
 	private boolean checkControlImportMainFileCsv() {
-		List<CsvDto> csvDtoList = ActionOnCsv.getIstnce().returnAllFileCsvDtoFromData();
+		List<CsvDto> csvDtoList = CsvUseCase.getIstnce().returnAllFileCsvDtoFromData();
 		if (csvDtoList == null)
 			return false;
 		for (CsvDto c : csvDtoList) {
@@ -55,16 +55,16 @@ public class AppBlocksManageCsv {
 		try {
 			System.out.println("inserisci file aziendale di riferimento:");
 			System.out.println("inserire percorso file");
-			String path = GlobalScaner.scanner.nextLine();
+			String path = GlobalScanner.scanner.nextLine();
 
-			ActionOnCsv.getIstnce().importFileFromLocalPc(path, ManagerSession.getCurrent());
+			CsvUseCase.getIstnce().importFileFromLocalPc(path, SessionManager.getCurrent());
 		} catch (Exception e) {
 		}
 	}
 
 	public void clearFolderCsv() {
 		controllOnFolderCsv();
-		ActionOnCsv.getIstnce().deleteAllFileInRepo();
+		CsvUseCase.getIstnce().deleteAllFileInRepo();
 	}
 
 	/**
@@ -88,11 +88,11 @@ public class AppBlocksManageCsv {
 		String name;
 		do {
 			System.out.println("inserire il nome del file casuale");
-			name = GlobalScaner.scanner.nextLine();
-			if (!ActionOnCsv.getIstnce().checknameFileAlreadyExist(name, ManagerSession.getCurrent().getUuid()))
+			name = GlobalScanner.scanner.nextLine();
+			if (!CsvUseCase.getIstnce().checknameFileAlreadyExist(name, SessionManager.getCurrent().getUuid()))
 				break;
 		} while (true);
-		ManageCsvFile.createFileCsvOnFolder(name);
+		CsvFileManager.createFileCsvOnFolder(name);
 	}
 
 	/**
@@ -109,10 +109,10 @@ public class AppBlocksManageCsv {
 		for (File f : allFiles) {
 			String nameFile = f.getName().toString().replace(".csv", "");
 
-			if (!ActionOnCsv.getIstnce().checknameFileAlreadyExistOnlyInData(nameFile,
-					ManagerSession.getCurrent().getUuid()))
-				ActionOnCsv.getIstnce().addNewFileInCsvTableFromCsvDto(
-						ActionOnCsv.getIstnce().convertFileCsvToCsvDto(nameFile, ManagerSession.getCurrent()));
+			if (!CsvUseCase.getIstnce().checknameFileAlreadyExistOnlyInData(nameFile,
+					SessionManager.getCurrent().getUuid()))
+				CsvUseCase.getIstnce().addNewFileInCsvTableFromCsvDto(
+						CsvUseCase.getIstnce().convertFileCsvToCsvDto(nameFile, SessionManager.getCurrent()));
 		}
 	}
 
@@ -126,10 +126,10 @@ public class AppBlocksManageCsv {
 		boolean f;
 		do {
 			System.out.println("Quale vuoi visualizzare?");
-			String name = GlobalScaner.scanner.nextLine();
+			String name = GlobalScanner.scanner.nextLine();
 			if (Quit.quit(name))
 				return;
-			f = ActionOnCsv.getIstnce().showFileContent(name, ManagerSession.getCurrent().getUuid());
+			f = CsvUseCase.getIstnce().showFileContent(name, SessionManager.getCurrent().getUuid());
 
 		} while (!f);
 	}
@@ -139,7 +139,7 @@ public class AppBlocksManageCsv {
 	 */
 	public void lsFileUser() {
 		System.out.println("I tuoi file:");
-		ActionOnCsv.getIstnce().stampListOfMyCsv(ManagerSession.getCurrent().getUuid());
+		CsvUseCase.getIstnce().stampListOfMyCsv(SessionManager.getCurrent().getUuid());
 		System.out.println();
 	}
 
@@ -152,9 +152,9 @@ public class AppBlocksManageCsv {
 	public void searchOnBaseAndMaybeSave() throws Exception {
 
 		// 1) chiedo che tipo di ricerca fare e la eseguo
-		ResearchChoice.askAndExecuteSearch();
+		CsvResearchChoice.askAndExecuteSearch();
 
-		ActionOnCsv.getIstnce().deleteAllFileInRepo();
+		CsvUseCase.getIstnce().deleteAllFileInRepo();
 	}
 
 	/**
@@ -166,28 +166,28 @@ public class AppBlocksManageCsv {
 	public void searchOnBaseStatistic() throws Exception {
 
 		// 1) chiedo che tipo di ricerca fare e la eseguo
-		ResearchChoice.askAndExecuteStatisticSearch();
-		ActionOnCsv.getIstnce().deleteAllFileInRepo();
+		CsvResearchChoice.askAndExecuteStatisticSearch();
+		CsvUseCase.getIstnce().deleteAllFileInRepo();
 	}
 
 	/**
 	 * METODO CHE ELIMINA UN FILE CSV DAL DATABASE
 	 */
 	public void deleteMyCsvFromDatabase() {
-		Session current = ManagerSession.getCurrent();
+		Session current = SessionManager.getCurrent();
 
-		List<CsvDto> list = ActionOnCsv.getIstnce().returnAllFileCsvDtoFromDataOfUser(current.getUuid());
+		List<CsvDto> list = CsvUseCase.getIstnce().returnAllFileCsvDtoFromDataOfUser(current.getUuid());
 		if (list == null || list.isEmpty()) {
 			System.out.println("Non hai ancora nessun file CSV salvato nel database.\n");
 			return;
 		}
 
 		System.out.println("=== I FILE CSV CHE PUOI CANCELLARE ===");
-		ActionOnCsv.getIstnce().stampListOfMyCsv(ManagerSession.getCurrent().getUuid());
+		CsvUseCase.getIstnce().stampListOfMyCsv(SessionManager.getCurrent().getUuid());
 
 		System.out.print("Quale vuoi eliminare? [numero, oppure 'q' per annullare]: ");
 
-		String input = GlobalScaner.scanner.nextLine().trim();
+		String input = GlobalScanner.scanner.nextLine().trim();
 		if (Quit.quit(input))
 			return;
 
@@ -206,13 +206,13 @@ public class AppBlocksManageCsv {
 
 		CsvDto chosen = list.get(index);
 		System.out.print("Sei sicuro di voler eliminare \"" + chosen.getFileName() + "\"? [s/n]: ");
-		String confirm = GlobalScaner.scanner.nextLine().trim();
+		String confirm = GlobalScanner.scanner.nextLine().trim();
 		if (!confirm.equalsIgnoreCase("s")) {
 			System.out.println("Eliminazione annullata.\n");
 			return;
 		}
 
-		boolean deleted = ActionOnCsv.getIstnce().deleteMyCsvByIndex(index, current);
+		boolean deleted = CsvUseCase.getIstnce().deleteMyCsvByIndex(index, current);
 		if (deleted) {
 			System.out.println("File \"" + chosen.getFileName() + "\" eliminato.\n");
 		} else {

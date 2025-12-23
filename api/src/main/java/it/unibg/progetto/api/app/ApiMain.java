@@ -9,19 +9,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
-import it.unibg.progetto.api.application.usecase.ActionOnCsv;
-import it.unibg.progetto.api.application.usecase.ActionOnUseRS;
+import it.unibg.progetto.api.application.usecase.CsvUseCase;
+import it.unibg.progetto.api.application.usecase.UsersUseCase;
 import it.unibg.progetto.api.cli.AppBlocksManageCsv;
 import it.unibg.progetto.api.cli.AppBlocksManageUsers;
 import it.unibg.progetto.api.cli.components.ClearTerminal;
 import it.unibg.progetto.api.cli.components.Exit;
-import it.unibg.progetto.api.cli.components.GlobalScaner;
+import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.domain.Root;
-import it.unibg.progetto.api.domain.rules.Checks;
+import it.unibg.progetto.api.domain.rules.Validators;
 import it.unibg.progetto.api.mapping.CsvMapper;
 import it.unibg.progetto.api.mapping.RootMapper;
 import it.unibg.progetto.api.mapping.UserMapper;
-import it.unibg.progetto.api.security.ManagerSession;
+import it.unibg.progetto.api.security.session.SessionManager;
 import it.unibg.progetto.service.CsvService;
 import it.unibg.progetto.service.UsersService;
 
@@ -39,10 +39,10 @@ public class ApiMain {
     public CommandLineRunner createDefaultUser(
             UserMapper userMapper,
             UsersService service,
-            ActionOnUseRS conversionUseRS,
+            UsersUseCase conversionUseRS,
             RootMapper rootMapper,
             CsvService sercCsvService,
-            ActionOnCsv actionOnCsv,
+            CsvUseCase actionOnCsv,
             CsvMapper csvMapper
     ) {
         return args -> {
@@ -58,11 +58,11 @@ public class ApiMain {
             while (true) {
 
                 // Se per qualsiasi motivo la sessione non esiste, richiedi login
-                if (ManagerSession.getCurrent() == null) {
+                if (SessionManager.getCurrent() == null) {
                     System.out.println("Nessuna sessione attiva. Effettua nuovamente il login.");
                     blockUser.loginSession();
 
-                    if (ManagerSession.getCurrent() == null) {
+                    if (SessionManager.getCurrent() == null) {
                         System.out.println("Login non riuscito. Chiusura applicazione.");
                         return;
                     }
@@ -71,8 +71,8 @@ public class ApiMain {
                 blockCsv.controllOnFolderCsv();
                 blockCsv.manageImplementationOfMainFileCsv();
 
-                System.out.print(ManagerSession.getCurrent().getName() + "> ");
-                input = GlobalScaner.scanner.nextLine();
+                System.out.print(SessionManager.getCurrent().getName() + "> ");
+                input = GlobalScanner.scanner.nextLine();
 
                 switch (input) {
 
@@ -112,11 +112,11 @@ public class ApiMain {
                         break;
 
                     case "show -a -u":
-                        blockUser.showUsersIfRoot(Checks.neutral);
+                        blockUser.showUsersIfRoot(Validators.neutral);
                         break;
 
                     case "show -t -u":
-                        blockUser.showUsersIfRoot(Checks.affermative);
+                        blockUser.showUsersIfRoot(Validators.affermative);
                         break;
 
                     case "search":
@@ -131,6 +131,10 @@ public class ApiMain {
                         blockCsv.saveAllFileInFolderIntoCsvTable();
                         blockCsv.clearFolderCsv();
                         System.out.println("File CSV salvati nel database.\n");
+                        break;
+                        
+                    case "new p":
+                        blockUser.changePassword();
                         break;
 
                     case "in -u":

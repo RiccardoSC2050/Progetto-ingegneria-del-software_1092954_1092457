@@ -3,7 +3,7 @@ package it.unibg.progetto.api.mapping;
 
 import org.springframework.stereotype.Component;
 
-import it.unibg.progetto.api.application.dto.Rootdto;
+import it.unibg.progetto.api.application.dto.RootDto;
 import it.unibg.progetto.api.domain.User;
 import it.unibg.progetto.api.domain.rules.AccessLevel;
 import it.unibg.progetto.data.Users;
@@ -14,26 +14,26 @@ public class RootMapper {
 	// Root -> userdto -> users
 	// users -> userdto -> Root
 
-	public Rootdto toRootdtoFromRoot(String id, String name, String pw, AccessLevel al) {
-		return new Rootdto(id, name, pw, al);
+	public RootDto toRootdtoFromRoot(String id, String name, String pw, AccessLevel al) {
+		return new RootDto(id, name, pw, al);
 	}
 
-	public Users toUsersfromRootdto(Rootdto rootdto) {
+	public Users toUsersfromRootdto(RootDto rootdto) {
 		if (rootdto == null)
 			return null;
 		return new Users(rootdto.getUuid(), rootdto.getUsername(), rootdto.getPassword(), rootdto.getAccessLevel());
 	}
 
-	public Rootdto fromUsers(Users u) {
+	public RootDto fromUsers(Users u) {
 		if (u == null)
 			return null;
-		return new Rootdto(u.getUuid(), u.getName(), u.getPassword(), AccessLevel.fromLevel(u.getAccessLevel()));
+		return new RootDto(u.getUuid(), u.getName(), u.getPassword(), AccessLevel.fromLevel(u.getAccessLevel()));
 	}
 
-	public Rootdto fromUser(User u) {
+	public RootDto fromUser(User u) {
 		if (u == null)
 			return null;
-		Rootdto root = new Rootdto(u.getId(), u.getName(), u.getPassword(), u.getAccessLevel());
+		RootDto root = new RootDto(u.getId(), u.getName(), u.getPassword(), u.getAccessLevel());
 		return root;
 	}
 

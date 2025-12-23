@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import it.unibg.progetto.api.application.usecase.ActionOnCsv;
+import it.unibg.progetto.api.application.usecase.CsvUseCase;
 import it.unibg.progetto.api.domain.rules.CsvStandard;
-import it.unibg.progetto.api.domain.rules.StringValue;
-import it.unibg.progetto.api.infrastructure.csv.ManageCsvFile;
+import it.unibg.progetto.api.domain.rules.StringValues;
+import it.unibg.progetto.api.infrastructure.csv.CsvFileManager;
 
-public class StatisticResearch {
+public class CsvStatisticsResearch {
 
 	/**
 	 * STAT 1) Numero totale dipendenti (righe valide).
@@ -27,8 +27,8 @@ public class StatisticResearch {
 	 * @throws Exception
 	 */
 	public static int countTotalValidEmployees() throws Exception {
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
-		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true); // skip
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true); // skip
 																												// header
 		int count = 0;
 
@@ -49,12 +49,12 @@ public class StatisticResearch {
 			return false;
 
 		// deve contenere tutte le colonne previste (fino a RICHIAMI incluso)
-		if (row.length <= StringValue.RICHIAMI.getIndex())
+		if (row.length <= StringValues.RICHIAMI.getIndex())
 			return false;
 
-		String id = row[StringValue.ID.getIndex()];
-		String nome = row[StringValue.NOME.getIndex()];
-		String cognome = row[StringValue.COGNOME.getIndex()];
+		String id = row[StringValues.ID.getIndex()];
+		String nome = row[StringValues.NOME.getIndex()];
+		String cognome = row[StringValues.COGNOME.getIndex()];
 
 		if (id == null || id.isBlank())
 			return false;
@@ -76,7 +76,7 @@ public class StatisticResearch {
 	 */
 	public static Map<String, Integer> countEmployeesByRole() throws Exception {
 
-		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true); // skip
+		List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true); // skip
 																												// header
 		Map<String, Integer> counts = new LinkedHashMap<>();
 
@@ -87,7 +87,7 @@ public class StatisticResearch {
 			}
 
 			// colonna RUOLO (0-based) secondo il tuo enum StringValue
-			String ruolo = row[StringValue.RUOLO.getIndex()];
+			String ruolo = row[StringValues.RUOLO.getIndex()];
 
 			if (ruolo == null || ruolo.isBlank()) {
 				ruolo = "NON_SPECIFICATO";
@@ -137,17 +137,17 @@ public class StatisticResearch {
 	 * @return int[]{min, max} oppure null se non trova nessun anno valido.
 	 */
 	public static int[] minMaxAnnoInizio() {
-		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
+		List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
 
 		int min = Integer.MAX_VALUE;
 		int max = Integer.MIN_VALUE;
 		boolean found = false;
 
 		for (String[] row : allRows) {
-			if (row == null || row.length <= StringValue.ANNO_INIZIO.getIndex())
+			if (row == null || row.length <= StringValues.ANNO_INIZIO.getIndex())
 				continue;
 
-			String cell = row[StringValue.ANNO_INIZIO.getIndex()];
+			String cell = row[StringValues.ANNO_INIZIO.getIndex()];
 			if (cell == null || cell.isBlank())
 				continue;
 
@@ -175,7 +175,7 @@ public class StatisticResearch {
 	 *         valido.
 	 */
 	public static double[] averageAnnoInizioAndSeniority() {
-		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
+		List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
 
 		int currentYear = Year.now().getValue();
 
@@ -184,10 +184,10 @@ public class StatisticResearch {
 		int count = 0;
 
 		for (String[] row : allRows) {
-			if (row == null || row.length <= StringValue.ANNO_INIZIO.getIndex())
+			if (row == null || row.length <= StringValues.ANNO_INIZIO.getIndex())
 				continue;
 
-			String cell = row[StringValue.ANNO_INIZIO.getIndex()];
+			String cell = row[StringValues.ANNO_INIZIO.getIndex()];
 			if (cell == null || cell.isBlank())
 				continue;
 
@@ -222,16 +222,16 @@ public class StatisticResearch {
 	 * @return mappa ordinata anno -> conteggio
 	 */
 	public static Map<Integer, Integer> countEmployeesByStartYear() {
-		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
+		List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
 
 		Map<Integer, Integer> map = new TreeMap<>(); // ordinata per anno crescente
 		int currentYear = Year.now().getValue();
 
 		for (String[] row : allRows) {
-			if (row == null || row.length <= StringValue.ANNO_INIZIO.getIndex())
+			if (row == null || row.length <= StringValues.ANNO_INIZIO.getIndex())
 				continue;
 
-			String cell = row[StringValue.ANNO_INIZIO.getIndex()];
+			String cell = row[StringValues.ANNO_INIZIO.getIndex()];
 			if (cell == null || cell.isBlank())
 				continue;
 
@@ -258,7 +258,7 @@ public class StatisticResearch {
 	 * @return double[]{totale, media, min, max} oppure null se nessun dato valido.
 	 */
 	public static double[] statsRichiami() {
-		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
+		List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
 
 		long sum = 0;
 		int min = Integer.MAX_VALUE;
@@ -266,9 +266,9 @@ public class StatisticResearch {
 		int count = 0;
 
 		for (String[] row : allRows) {
-			if (row == null || row.length <= StringValue.RICHIAMI.getIndex()) continue;
+			if (row == null || row.length <= StringValues.RICHIAMI.getIndex()) continue;
 
-			String cell = row[StringValue.RICHIAMI.getIndex()];
+			String cell = row[StringValues.RICHIAMI.getIndex()];
 			if (cell == null || cell.isBlank()) continue;
 
 			try {
@@ -302,24 +302,24 @@ public class StatisticResearch {
 	 * @return lista righe (ID, NOME, COGNOME, RUOLO, RICHIAMI)
 	 */
 	public static List<String[]> topEmployeesByRichiami(int topN) {
-		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
+		List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
 
 		List<String[]> valid = new ArrayList<>();
 
 		for (String[] row : allRows) {
-			if (row == null || row.length <= StringValue.RICHIAMI.getIndex()) continue;
+			if (row == null || row.length <= StringValues.RICHIAMI.getIndex()) continue;
 
-			String cell = row[StringValue.RICHIAMI.getIndex()];
+			String cell = row[StringValues.RICHIAMI.getIndex()];
 			if (cell == null || cell.isBlank()) continue;
 
 			try {
 				int richiami = Integer.parseInt(cell.strip());
 				if (richiami < 0 || richiami > 4) continue;
 
-				String id = safeCell(row, StringValue.ID.getIndex());
-				String nome = safeCell(row, StringValue.NOME.getIndex());
-				String cognome = safeCell(row, StringValue.COGNOME.getIndex());
-				String ruolo = safeCell(row, StringValue.RUOLO.getIndex());
+				String id = safeCell(row, StringValues.ID.getIndex());
+				String nome = safeCell(row, StringValues.NOME.getIndex());
+				String cognome = safeCell(row, StringValues.COGNOME.getIndex());
+				String ruolo = safeCell(row, StringValues.RUOLO.getIndex());
 
 				valid.add(new String[] { id, nome, cognome, ruolo, String.valueOf(richiami) });
 
@@ -364,23 +364,23 @@ public class StatisticResearch {
 	 * @return lista righe (ID, NOME, COGNOME, RUOLO, RICHIAMI)
 	 */
 	public static List<String[]> employeesWithZeroRichiami() {
-	    List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
+	    List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
 	    List<String[]> result = new ArrayList<>();
 
 	    for (String[] row : allRows) {
-	        if (row == null || row.length <= StringValue.RICHIAMI.getIndex()) continue;
+	        if (row == null || row.length <= StringValues.RICHIAMI.getIndex()) continue;
 
-	        String cell = row[StringValue.RICHIAMI.getIndex()];
+	        String cell = row[StringValues.RICHIAMI.getIndex()];
 	        if (cell == null || cell.isBlank()) continue;
 
 	        try {
 	            int richiami = Integer.parseInt(cell.strip());
 	            if (richiami != 0) continue;
 
-	            String id = safeCell(row, StringValue.ID.getIndex());
-	            String nome = safeCell(row, StringValue.NOME.getIndex());
-	            String cognome = safeCell(row, StringValue.COGNOME.getIndex());
-	            String ruolo = safeCell(row, StringValue.RUOLO.getIndex());
+	            String id = safeCell(row, StringValues.ID.getIndex());
+	            String nome = safeCell(row, StringValues.NOME.getIndex());
+	            String cognome = safeCell(row, StringValues.COGNOME.getIndex());
+	            String ruolo = safeCell(row, StringValues.RUOLO.getIndex());
 
 	            result.add(new String[] { id, nome, cognome, ruolo, "0" });
 
@@ -400,7 +400,7 @@ public class StatisticResearch {
 	 * @return mappa "CAMPO" -> numero mancanti
 	 */
 	public static Map<String, Integer> countMissingFields() {
-		List<String[]> allRows = ManageCsvFile.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
+		List<String[]> allRows = CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true);
 
 		Map<String, Integer> miss = new LinkedHashMap<>();
 		miss.put("NOME", 0);
@@ -413,12 +413,12 @@ public class StatisticResearch {
 		for (String[] row : allRows) {
 			if (row == null) continue;
 
-			if (isMissing(row, StringValue.NOME.getIndex())) miss.put("NOME", miss.get("NOME") + 1);
-			if (isMissing(row, StringValue.COGNOME.getIndex())) miss.put("COGNOME", miss.get("COGNOME") + 1);
-			if (isMissing(row, StringValue.MAIL.getIndex())) miss.put("EMAIL", miss.get("EMAIL") + 1);
-			if (isMissing(row, StringValue.NUMERO_TELEFONO.getIndex())) miss.put("TELEFONO", miss.get("TELEFONO") + 1);
-			if (isMissing(row, StringValue.RUOLO.getIndex())) miss.put("RUOLO", miss.get("RUOLO") + 1);
-			if (isMissing(row, StringValue.ANNO_INIZIO.getIndex())) miss.put("ANNO_INIZIO", miss.get("ANNO_INIZIO") + 1);
+			if (isMissing(row, StringValues.NOME.getIndex())) miss.put("NOME", miss.get("NOME") + 1);
+			if (isMissing(row, StringValues.COGNOME.getIndex())) miss.put("COGNOME", miss.get("COGNOME") + 1);
+			if (isMissing(row, StringValues.MAIL.getIndex())) miss.put("EMAIL", miss.get("EMAIL") + 1);
+			if (isMissing(row, StringValues.NUMERO_TELEFONO.getIndex())) miss.put("TELEFONO", miss.get("TELEFONO") + 1);
+			if (isMissing(row, StringValues.RUOLO.getIndex())) miss.put("RUOLO", miss.get("RUOLO") + 1);
+			if (isMissing(row, StringValues.ANNO_INIZIO.getIndex())) miss.put("ANNO_INIZIO", miss.get("ANNO_INIZIO") + 1);
 		}
 
 		return miss;

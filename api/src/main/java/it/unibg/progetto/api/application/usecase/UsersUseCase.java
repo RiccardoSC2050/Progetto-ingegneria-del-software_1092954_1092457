@@ -1,6 +1,5 @@
 package it.unibg.progetto.api.application.usecase;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Component;
 
-import it.unibg.progetto.api.application.dto.Rootdto;
-import it.unibg.progetto.api.application.dto.Userdto;
+import it.unibg.progetto.api.application.dto.RootDto;
+import it.unibg.progetto.api.application.dto.UserDto;
 import it.unibg.progetto.api.domain.Root;
 import it.unibg.progetto.api.domain.User;
 import it.unibg.progetto.api.domain.rules.AccessLevel;
-import it.unibg.progetto.api.domain.rules.Checks;
-import it.unibg.progetto.api.domain.rules.StrangeValues;
+import it.unibg.progetto.api.domain.rules.Validators;
+import it.unibg.progetto.api.domain.rules.InvalidValues;
 import it.unibg.progetto.api.mapping.RootMapper;
 import it.unibg.progetto.api.mapping.UserMapper;
 import it.unibg.progetto.api.security.Hash;
@@ -22,15 +21,15 @@ import it.unibg.progetto.data.Users;
 import it.unibg.progetto.service.UsersService;
 
 @Component
-public class ActionOnUseRS {
+public class UsersUseCase {
 
-	private static ActionOnUseRS instance;
+	private static UsersUseCase instance;
 	private final UserMapper userMapper;
 	private final UsersService usersService;
 	private final RootMapper rootMapper;
 
 	@Autowired
-	public ActionOnUseRS(UserMapper userMapper, UsersService usersService, RootMapper rootMapper) {
+	public UsersUseCase(UserMapper userMapper, UsersService usersService, RootMapper rootMapper) {
 
 		this.userMapper = userMapper;
 		this.usersService = usersService;
@@ -38,7 +37,7 @@ public class ActionOnUseRS {
 		instance = this;
 	}
 
-	public static ActionOnUseRS getInstance() {
+	public static UsersUseCase getInstance() {
 		return instance;
 	}
 
@@ -57,13 +56,13 @@ public class ActionOnUseRS {
 
 	}
 
-	public Rootdto rootIsOnData() {
+	public RootDto rootIsOnData() {
 		List<User> userList = trasformListUsersIntoListUserComplite();
 		if (userList != null) {
 			for (User u : userList) {
-				if (u.getId().equals(String.valueOf(StrangeValues.ROOTid.getLevel()))
+				if (u.getId().equals(String.valueOf(InvalidValues.ROOTid.getLevel()))
 						// confronto case-insensitive, coerente con come salvi il root
-						&& u.getName().equalsIgnoreCase(StrangeValues.ROOT.toString())
+						&& u.getName().equalsIgnoreCase(InvalidValues.ROOT.toString())
 						&& u.getAccessLevelValue() == AccessLevel.AL5.getLevel()) {
 
 					return rootMapper.fromUser(u);
@@ -74,7 +73,7 @@ public class ActionOnUseRS {
 	}
 
 	public void addRootOnData(Root root) {
-		Rootdto rootdto = rootMapper.toRootdtoFromRoot(root.getId(), root.getName(), root.getPassword(),
+		RootDto rootdto = rootMapper.toRootdtoFromRoot(root.getId(), root.getName(), root.getPassword(),
 				AccessLevel.fromLevel(root.getAccessLevelValue()));
 		Users users = rootMapper.toUsersfromRootdto(rootdto);
 		usersService.addUsersIntoDataUsers(users);
@@ -113,12 +112,12 @@ public class ActionOnUseRS {
 		return userList;
 	}
 
-	public void printNameUserAll(Checks n, List<User> l) {
-		if (n.equals(Checks.neutral)) {
+	public void printNameUserAll(Validators n, List<User> l) {
+		if (n.equals(Validators.neutral)) {
 			for (User u : l) {
 				System.out.println(u.getName());
 			}
-		} else if (n.equals(Checks.affermative)) {
+		} else if (n.equals(Validators.affermative)) {
 			for (User u : l) {
 				System.out.println(u.toString());
 			}
@@ -163,7 +162,7 @@ public class ActionOnUseRS {
 	 * @return
 	 */
 	private Users converterUserToUsersEntity(User u, UserMapper userMapper) {
-		Userdto userdto = userMapper.toUserdtoFromUser(u.getId(), u.getName(), u.getPassword(), u.getAccessLevel());
+		UserDto userdto = userMapper.toUserdtoFromUser(u.getId(), u.getName(), u.getPassword(), u.getAccessLevel());
 		Users users = userMapper.toEntityUsersFromUserdto(userdto);
 		return users;
 	}
@@ -209,15 +208,20 @@ public class ActionOnUseRS {
 			return null;
 		} else {
 			System.out.println("nessun utente nella lista");
-			User u = new User(StrangeValues.secret.toString(), StrangeValues.secret.toString(),
-					StrangeValues.secret.toString(), null);
+			User u = new User(InvalidValues.secret.toString(), InvalidValues.secret.toString(),
+					InvalidValues.secret.toString(), null);
 			return u;
 		}
 	}
 
 	private User returnProtectedUser(User u) {
-		User user = new User(u.getId(), u.getName(), StrangeValues.secret.toString(), u.getAccessLevel());
+		User user = new User(u.getId(), u.getName(), InvalidValues.secret.toString(), u.getAccessLevel());
 		return user;
+	}
+
+	// change password
+	public void changePassordToUser(String pw, String id) {
+				usersService.changePw(id, pw);
 	}
 
 }

@@ -1,18 +1,17 @@
 package it.unibg.progetto.api.application.dto;
 import it.unibg.progetto.api.domain.rules.AccessLevel;
 
-public class Rootdto {
+public class UserDto {
 
 	private String uuid;
 	private String username;
 	private String password;
 	private int accessLevel;
 
-	public Rootdto() {
-		super();
+	public UserDto() {
 	}
 
-	public Rootdto(String uuid, String username, String password, AccessLevel accessLevel) {
+	public UserDto(String uuid, String username, String password, AccessLevel accessLevel) {
 		super();
 		this.uuid = uuid;
 		this.username = username;
@@ -51,5 +50,12 @@ public class Rootdto {
 	public void setAccessLevel(int accessLevel) {
 		this.accessLevel = accessLevel;
 	}
+	
+	public AccessLevel getAccessLevelvalue() {
+		return AccessLevel.fromLevel(accessLevel);
+	}
+
+	
+	
 
 }

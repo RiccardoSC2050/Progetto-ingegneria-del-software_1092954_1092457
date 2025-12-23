@@ -13,10 +13,10 @@ import org.springframework.test.context.ActiveProfiles;
 import it.unibg.progetto.api.app.ApiMain;
 import it.unibg.progetto.api.cli.Master;
 import it.unibg.progetto.api.domain.rules.AccessLevel;
-import it.unibg.progetto.api.domain.rules.Checks;
+import it.unibg.progetto.api.domain.rules.Validators;
 import it.unibg.progetto.api.security.Hash;
-import it.unibg.progetto.api.security.ManagerSession;
-import it.unibg.progetto.api.security.Session;
+import it.unibg.progetto.api.security.session.Session;
+import it.unibg.progetto.api.security.session.SessionManager;
 import it.unibg.progetto.data.Users;
 import it.unibg.progetto.service.UsersService;
 
@@ -38,7 +38,7 @@ class MasterTest {
         }
 
         // 2) azzero anche la sessione eventuale
-        ManagerSession.logout();
+        SessionManager.logout();
 
         // 3) creo un'istanza "pulita" di Master
         master = Master.getIstance();
@@ -61,13 +61,13 @@ class MasterTest {
         usersService.addUsersIntoDataUsers(entity);
 
         // eseguo il login tramite Master (che internamente usa ActionOnUseRS + ManagerSession)
-        Checks result = master.login("franco", plainPw);
+        Validators result = master.login("franco", plainPw);
 
         // 1) controllo il valore di ritorno
-        assertEquals(Checks.affermative, result);
+        assertEquals(Validators.affermative, result);
 
         // 2) controllo che la sessione sia stata creata correttamente
-        Session current = ManagerSession.getCurrent();
+        Session current = SessionManager.getCurrent();
         assertNotNull(current, "Dopo login affermative la sessione non dovrebbe essere null");
         assertEquals("id-master-login", current.getUuid());
         assertEquals("franco", current.getName());  // <-- il nome deve essere lo stesso salvato nel DB
@@ -91,13 +91,13 @@ class MasterTest {
         usersService.addUsersIntoDataUsers(entity);
 
         // provo login con password sbagliata
-        Checks result = master.login("franco", "password-sbagliata");
+        Validators result = master.login("franco", "password-sbagliata");
 
         // deve tornare NEGATIVE
-        assertEquals(Checks.negative, result);
+        assertEquals(Validators.negative, result);
 
         // e la sessione deve rimanere null
-        assertNull(ManagerSession.getCurrent(), "Con login fallito non deve essere creata nessuna sessione");
+        assertNull(SessionManager.getCurrent(), "Con login fallito non deve essere creata nessuna sessione");
     }
 
     // ---------- 3) login con DB vuoto (utente SECRET) ----------
@@ -106,14 +106,14 @@ class MasterTest {
     void login_dbVuoto_restituisceNeutralENonSettaSessione() {
         // DB users è vuoto grazie a @BeforeEach
 
-        Checks result = master.login("qualunque", "qualunque");
+        Validators result = master.login("qualunque", "qualunque");
 
         // Se ActionOnUseRS non trova utenti, ritorna l'utente "secret"
         // e Master deve rispondere NEUTRAL
-        assertEquals(Checks.neutral, result);
+        assertEquals(Validators.neutral, result);
 
         // In questo caso Master NON deve chiamare ManagerSession.login
-        assertNull(ManagerSession.getCurrent(), "Con utente secret la sessione non deve essere impostata");
+        assertNull(SessionManager.getCurrent(), "Con utente secret la sessione non deve essere impostata");
     }
 
     // ---------- 4) logout ----------
@@ -133,15 +133,15 @@ class MasterTest {
         usersService.addUsersIntoDataUsers(entity);
 
         // faccio login per creare la sessione
-        Checks result = master.login("luca", plainPw);
-        assertEquals(Checks.affermative, result);
-        assertNotNull(ManagerSession.getCurrent(), "Dopo login ci deve essere una sessione");
+        Validators result = master.login("luca", plainPw);
+        assertEquals(Validators.affermative, result);
+        assertNotNull(SessionManager.getCurrent(), "Dopo login ci deve essere una sessione");
 
         // ora faccio logout
         master.logout();
 
         // e controllo che la sessione sia stata azzerata
-        assertNull(ManagerSession.getCurrent(), "Dopo logout la sessione deve essere null");
+        assertNull(SessionManager.getCurrent(), "Dopo logout la sessione deve essere null");
     }
 
     // ---------- 5) RootInData non lancia eccezioni ----------

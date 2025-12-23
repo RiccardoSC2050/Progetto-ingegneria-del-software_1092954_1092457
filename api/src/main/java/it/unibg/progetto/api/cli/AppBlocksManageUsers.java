@@ -1,25 +1,26 @@
 package it.unibg.progetto.api.cli;
 
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.web.servlet.mvc.method.annotation.SessionAttributeMethodArgumentResolver;
+
 import it.unibg.progetto.api.application.dto.CsvDto;
-import it.unibg.progetto.api.application.dto.Rootdto;
-import it.unibg.progetto.api.application.usecase.ActionOnCsv;
-import it.unibg.progetto.api.application.usecase.ActionOnUseRS;
+import it.unibg.progetto.api.application.dto.RootDto;
+import it.unibg.progetto.api.application.usecase.CsvUseCase;
+import it.unibg.progetto.api.application.usecase.UsersUseCase;
 import it.unibg.progetto.api.cli.components.Exit;
-import it.unibg.progetto.api.cli.components.GlobalScaner;
+import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.cli.components.Quit;
 import it.unibg.progetto.api.domain.Root;
 import it.unibg.progetto.api.domain.User;
 import it.unibg.progetto.api.domain.rules.AccessLevel;
-import it.unibg.progetto.api.domain.rules.Checks;
-import it.unibg.progetto.api.domain.rules.StrangeValues;
+import it.unibg.progetto.api.domain.rules.Validators;
+import it.unibg.progetto.api.domain.rules.InvalidValues;
 import it.unibg.progetto.api.security.Hash;
-import it.unibg.progetto.api.security.ManagerSession;
+import it.unibg.progetto.api.security.session.SessionManager;
 
 public class AppBlocksManageUsers {
 
@@ -29,11 +30,14 @@ public class AppBlocksManageUsers {
 	public void rootCreation(Root root) {
 		try {
 
-			System.out.println("NOME SISTEMA: " + StrangeValues.ROOT.toString());
-			System.out.print("Inserire PASSWORD di SISTEMA: ");
-			String pw = Hash.hash(GlobalScaner.scanner.nextLine());
-			root = new Root(pw);
-			ActionOnUseRS.getInstance().addRootOnData(root);
+			System.out.println("NOME SISTEMA: " + InvalidValues.ROOT.toString());
+			String pw = "";
+			do {
+				System.out.print("Inserire PASSWORD di SISTEMA: ");
+				pw = GlobalScanner.scanner.nextLine();
+			} while (!Root.getInstanceRoot().checkLenghtPw(pw));
+			root = new Root(Hash.hash(pw));
+			UsersUseCase.getInstance().addRootOnData(root);
 			System.out.println();
 			System.out.println("PASSWORD SALVATA CON SUCCESSO");
 
@@ -46,8 +50,8 @@ public class AppBlocksManageUsers {
 		try {
 			boolean f = true;
 			AppBlocksManageCsv abCsv = new AppBlocksManageCsv();
-			Rootdto rootdto = ActionOnUseRS.getInstance().rootIsOnData();
-			if (rootdto == null && ActionOnUseRS.getInstance().numberOfAllOperators() == 0) {
+			RootDto rootdto = UsersUseCase.getInstance().rootIsOnData();
+			if (rootdto == null && UsersUseCase.getInstance().numberOfAllOperators() == 0) {
 				System.out.print("PRIMO ACCESSO, CREAZIONE NUOVO SISTEMA");
 				rootCreation(root);
 				abCsv.manageImplementationOfMainFileCsv();
@@ -67,47 +71,49 @@ public class AppBlocksManageUsers {
 		}
 	}
 
-	private Checks rootIsAlone() {
-		Rootdto rootdto = ActionOnUseRS.getInstance().rootIsOnData();
+	private Validators rootIsAlone() {
+		RootDto rootdto = UsersUseCase.getInstance().rootIsOnData();
 		if (rootdto == null)
-			return Checks.neutral;
-		if (ActionOnUseRS.getInstance().numberOfAllOperators() > 1) {
-			return Checks.negative;
+			return Validators.neutral;
+		if (UsersUseCase.getInstance().numberOfAllOperators() > 1) {
+			return Validators.negative;
 		}
-		return Checks.affermative;
+		return Validators.affermative;
 
 	}
 
 	public void loginSession() {
-		Checks flag;
+		Validators flag;
+		String name = "";
+		String pw = "";
 		do {
 
-			if (rootIsAlone().equals(Checks.neutral)) {// root is diapered from data
+			if (rootIsAlone().equals(Validators.neutral)) {// root is diapered from data
 				System.out.println("errore di sistema, ROOT inesistente [correzione immediata]");
 				Root.createRootErrorDatabase();
 
-			} else if (rootIsAlone().equals(Checks.affermative)) {
-				Checks c = changeRootOrCreateUsere();
+			} else if (rootIsAlone().equals(Validators.affermative)) {
+				Validators c = changeRootOrCreateUsere();
 				do {
-					if (c.equals(Checks.neutral))
+					if (c.equals(Validators.neutral))
 						System.out.println("Spiacente è importante scegliere");
 
-				} while (c.equals(Checks.neutral));
+				} while (c.equals(Validators.neutral));
 
-				if (c.equals(Checks.rootLog)) {
+				if (c.equals(Validators.rootLog)) {
 					return;
 				}
 			}
 			System.out.print("[LOGIN] Inserire nome utente: ");
-			String name = GlobalScaner.scanner.nextLine().toLowerCase();
+			name = GlobalScanner.scanner.nextLine().toLowerCase();
 			Exit.exit(name); // exit
 
 			System.out.print("[LOGIN] Inserire password: ");
-			String pw = GlobalScaner.scanner.nextLine().toLowerCase();
+			pw = GlobalScanner.scanner.nextLine().toLowerCase();
 			Exit.exit(pw); // exit
 
 			flag = Master.getIstance().login(name, pw);
-		} while (flag.equals(Checks.negative));
+		} while (flag.equals(Validators.negative));
 
 		switch (flag) {
 		case affermative:
@@ -126,16 +132,16 @@ public class AppBlocksManageUsers {
 	}
 
 	public boolean RootLoginSession() {
-		Checks flag;
+		Validators flag;
 		do {
 			System.out.println("[ROOT LOGIN] Nome: ROOT");
 			System.out.print("[ROOT LOGIN] Inserire password: ");
-			String pw = GlobalScaner.scanner.nextLine();
+			String pw = GlobalScanner.scanner.nextLine().trim();
 			Exit.exit(pw); // exit
 			if (Quit.quit(pw))
 				return false;
-			flag = Master.getIstance().login(StrangeValues.ROOT.toString().toLowerCase(), pw);
-		} while (flag == Checks.negative || flag == Checks.neutral);
+			flag = Master.getIstance().login(InvalidValues.ROOT.toString().toLowerCase(), pw);
+		} while (flag == Validators.negative || flag == Validators.neutral);
 		System.out.println("Connesso come ROOT");
 		return true;
 
@@ -145,27 +151,27 @@ public class AppBlocksManageUsers {
 		return Root.getInstanceRoot().createUser();
 	}
 
-	public Checks changeRootOrCreateUsere() {
+	public Validators changeRootOrCreateUsere() {
 		boolean f = true;
 		do {
 			System.out.println("Vuoi accedere come Root o vuoi creare un nuovo utente? [1|2]");
 			System.out.println("- 1 per accere come ROOT");
 			System.out.println("- 2 per creare nuovo utente");
-			String answare = GlobalScaner.scanner.nextLine();
+			String answare = GlobalScanner.scanner.nextLine();
 			if (Quit.quit(answare))
-				return Checks.neutral;
+				return Validators.neutral;
 			switch (answare) {
 			case "1":
 				boolean n = RootLoginSession();
 				if (n)
-					return Checks.rootLog;
+					return Validators.rootLog;
 
 				break;
 
 			case "2":
 				boolean n1 = createUserSession();
 				if (n1)
-					return Checks.creationUser;
+					return Validators.creationUser;
 
 				break;
 
@@ -173,7 +179,7 @@ public class AppBlocksManageUsers {
 				break;
 			}
 		} while (f);
-		return Checks.negative;
+		return Validators.negative;
 	}
 
 	public void logoutSession() {
@@ -184,7 +190,7 @@ public class AppBlocksManageUsers {
 	}
 
 	public void createUserIfRoot() {
-		if (ManagerSession.getCurrent().getAccessLevel() == AccessLevel.AL5.getLevel()) {
+		if (SessionManager.getCurrent().getAccessLevel() == AccessLevel.AL5.getLevel()) {
 			Root.getInstanceRoot().createUser();
 		} else {
 			System.out.println("Non sei ROOT, non puoi creare utente");
@@ -192,18 +198,18 @@ public class AppBlocksManageUsers {
 	}
 
 	public void deleteUserIfRoot() {
-		if (ManagerSession.getCurrent().getAccessLevel() == AccessLevel.AL5.getLevel()) {
+		if (SessionManager.getCurrent().getAccessLevel() == AccessLevel.AL5.getLevel()) {
 			Root.getInstanceRoot().deleteUser();
 		} else {
 			System.out.println("Non sei ROOT, non puoi cancellare utenti");
 		}
 	}
 
-	public void showUsersIfRoot(Checks n) {
-		if (ManagerSession.getCurrent().getAccessLevel() == AccessLevel.AL5.getLevel()) {
-			System.out.println("numero utenti: " + ActionOnUseRS.getInstance().numberOfAllOperators() + "\n");
-			ActionOnUseRS.getInstance().printNameUserAll(n,
-					ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword());
+	public void showUsersIfRoot(Validators n) {
+		if (SessionManager.getCurrent().getAccessLevel() == AccessLevel.AL5.getLevel()) {
+			System.out.println("numero utenti: " + UsersUseCase.getInstance().numberOfAllOperators() + "\n");
+			UsersUseCase.getInstance().printNameUserAll(n,
+					UsersUseCase.getInstance().trasformListUsersIntoListUserWithoutPassword());
 
 			System.out.println();
 
@@ -221,11 +227,11 @@ public class AppBlocksManageUsers {
 	 */
 	private List<User> getOtherUsersThatHaveAtLeastOneFile() {
 
-		String myId = ManagerSession.getCurrent().getUuid();
+		String myId = SessionManager.getCurrent().getUuid();
 
-		List<User> allUsers = ActionOnUseRS.getInstance().trasformListUsersIntoListUserWithoutPassword();
+		List<User> allUsers = UsersUseCase.getInstance().trasformListUsersIntoListUserWithoutPassword();
 
-		List<CsvDto> allCsv = ActionOnCsv.getIstnce().returnAllFileCsvDtoFromData();
+		List<CsvDto> allCsv = CsvUseCase.getIstnce().returnAllFileCsvDtoFromData();
 
 		List<String> userIdsWithFiles = new ArrayList<>();
 
@@ -264,7 +270,7 @@ public class AppBlocksManageUsers {
 	 */
 	public void viewOtherFiles() throws Exception {
 
-		if (ManagerSession.getCurrent().getAccessLevel() < AccessLevel.AL3.getLevel()) {
+		if (SessionManager.getCurrent().getAccessLevel() < AccessLevel.AL3.getLevel()) {
 			System.out.println("Non sei di livello 3, non puoi accedere alla lista file di altri utenti");
 			return;
 		}
@@ -294,7 +300,7 @@ public class AppBlocksManageUsers {
 			User selectedUser = otherUsersWithFiles.get(userChoice - 1);
 
 			System.out.println("\nI suoi file:");
-			List<CsvDto> userFiles = ActionOnCsv.getIstnce().returnAllFileCsvDtoFromDataOfUser(selectedUser.getId());
+			List<CsvDto> userFiles = CsvUseCase.getIstnce().returnAllFileCsvDtoFromDataOfUser(selectedUser.getId());
 
 			if (userFiles == null || userFiles.isEmpty()) {
 				// teoricamente non dovrebbe succedere (li abbiamo filtrati), ma meglio essere
@@ -336,14 +342,14 @@ public class AppBlocksManageUsers {
 			String chosenFileName = fileNames.get(fileChoice - 1);
 
 			// mostra contenuto file
-			ActionOnCsv.getIstnce().showFileContent(chosenFileName, selectedUser.getId());
+			CsvUseCase.getIstnce().showFileContent(chosenFileName, selectedUser.getId());
 		} while (true);
 	}
 
 	private Integer readChoice(int min, int max, String prompt) {
 		while (true) {
 			System.out.print(prompt);
-			String s = GlobalScaner.scanner.nextLine().strip();
+			String s = GlobalScanner.scanner.nextLine().strip();
 			if (Quit.quit(s))
 				return null;
 			try {
@@ -354,6 +360,16 @@ public class AppBlocksManageUsers {
 			}
 			System.out.println("Scelta non valida. Inserisci un numero tra " + min + " e " + max + ".");
 		}
+	}
+
+	public void changePassword() {
+		String id = SessionManager.getCurrent().getUuid();
+		String pw = "";
+		do {
+			System.out.print("inseire la nuova password: ");
+			pw = GlobalScanner.scanner.nextLine();
+		} while (!Root.getInstanceRoot().checkLenghtPw(pw));
+		UsersUseCase.getInstance().changePassordToUser(Hash.hash(pw), id);
 	}
 
 }

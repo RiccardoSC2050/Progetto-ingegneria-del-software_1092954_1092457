@@ -12,8 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import it.unibg.progetto.api.app.ApiMain;
-import it.unibg.progetto.api.application.usecase.ActionOnUseRS;
-import it.unibg.progetto.api.cli.components.GlobalScaner;
+import it.unibg.progetto.api.application.usecase.UsersUseCase;
+import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.domain.Root;
 import it.unibg.progetto.api.domain.User;
 
@@ -34,9 +34,9 @@ class RootCliIntegrationTest {
         ) + "\n";
 
         System.setIn(new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8)));
-        GlobalScaner.scanner = new Scanner(System.in);
+        GlobalScanner.scanner = new Scanner(System.in);
 
-        ActionOnUseRS service = ActionOnUseRS.getInstance();
+        UsersUseCase service = UsersUseCase.getInstance();
         List<User> beforeList = service.trasformListUsersIntoListUserWithoutPassword();
         long beforeCount = beforeList == null ? 0 :
                 beforeList.stream().filter(u -> "cliuser".equalsIgnoreCase(u.getName())).count();
@@ -55,7 +55,7 @@ class RootCliIntegrationTest {
     @Test
     void deleteUserFromConsoleFlowWorks() {
         Root root = Root.getInstanceRoot();
-        ActionOnUseRS service = ActionOnUseRS.getInstance();
+        UsersUseCase service = UsersUseCase.getInstance();
 
         // 1) Mi assicuro che esista un utente di prova "cliuser-del"
         String createInput = String.join("\n",
@@ -65,7 +65,7 @@ class RootCliIntegrationTest {
         ) + "\n";
 
         System.setIn(new ByteArrayInputStream(createInput.getBytes(StandardCharsets.UTF_8)));
-        GlobalScaner.scanner = new Scanner(System.in);
+        GlobalScanner.scanner = new Scanner(System.in);
         root.createUser();
 
         // 2) Ricavo il suo id dal DB di test
@@ -91,7 +91,7 @@ class RootCliIntegrationTest {
         ) + "\n";
 
         System.setIn(new ByteArrayInputStream(deleteInput.getBytes(StandardCharsets.UTF_8)));
-        GlobalScaner.scanner = new Scanner(System.in);
+        GlobalScanner.scanner = new Scanner(System.in);
 
         root.deleteUser();
 

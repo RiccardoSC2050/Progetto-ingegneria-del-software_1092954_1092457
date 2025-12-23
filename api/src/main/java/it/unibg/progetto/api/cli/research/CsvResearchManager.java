@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import it.unibg.progetto.api.application.usecase.ActionOnCsv;
-import it.unibg.progetto.api.cli.components.GlobalScaner;
+import it.unibg.progetto.api.application.usecase.CsvUseCase;
+import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.domain.rules.AccessLevel;
 import it.unibg.progetto.api.domain.rules.CsvStandard;
-import it.unibg.progetto.api.domain.rules.StringValue;
-import it.unibg.progetto.api.infrastructure.csv.ManageCsvFile;
-import it.unibg.progetto.api.security.ManagerSession;
-import it.unibg.progetto.api.security.Session;
+import it.unibg.progetto.api.domain.rules.StringValues;
+import it.unibg.progetto.api.infrastructure.csv.CsvFileManager;
+import it.unibg.progetto.api.security.session.Session;
+import it.unibg.progetto.api.security.session.SessionManager;
 
-public class ManageResearchOnCsv {
+public class CsvResearchManager {
 
 	// SISTEMA STANDARD PER SALVARE
 	/**
@@ -24,22 +24,22 @@ public class ManageResearchOnCsv {
 	 */
 	private static void askAndSaveResult(Session current, List<String[]> result) throws Exception {
 		System.out.print("Vuoi salvare questi risultati in un nuovo CSV? [s/n]: ");
-		String answer = GlobalScaner.scanner.nextLine().trim();
+		String answer = GlobalScanner.scanner.nextLine().trim();
 		if (!answer.equalsIgnoreCase("s")) {
 			return;
 		}
 
 		System.out.print("Inserisci il nome del nuovo file (senza .csv): ");
-		String finalName = GlobalScaner.scanner.nextLine().trim();
+		String finalName = GlobalScanner.scanner.nextLine().trim();
 
 		// 1) salvo i risultati in STANDARD.csv nella folder temporanea
-		MainResearch.saveSearchResult(CsvStandard.STANDARD.toString(), result, true);
+		CsvResearchCli.saveSearchResult(CsvStandard.STANDARD.toString(), result, true);
 
 		// 2) mando STANDARD nel DB con il nome scelto
-		ActionOnCsv.getIstnce().changeNameFile(finalName);
+		CsvUseCase.getIstnce().changeNameFile(finalName);
 
-		ActionOnCsv.getIstnce()
-				.addNewFileInCsvTableFromCsvDto(ActionOnCsv.getIstnce().convertFileCsvToCsvDto(finalName, current));
+		CsvUseCase.getIstnce()
+				.addNewFileInCsvTableFromCsvDto(CsvUseCase.getIstnce().convertFileCsvToCsvDto(finalName, current));
 
 		System.out.println("Ricerca salvata come file CSV \"" + finalName + "\" nel database.\n");
 	}
@@ -50,9 +50,9 @@ public class ManageResearchOnCsv {
 	 * 
 	 * @throws Exception
 	 */
-	public static void searchAndMaybeSave(StringValue v) throws Exception {
-		Session current = ManagerSession.getCurrent();
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+	public static void searchAndMaybeSave(StringValues v) throws Exception {
+		Session current = SessionManager.getCurrent();
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 		boolean f;
 		List<String[]> result = new ArrayList<String[]>();
 		String ruolo;
@@ -61,10 +61,10 @@ public class ManageResearchOnCsv {
 			ruolo = "";
 			System.out.println("Inserisci per cercare [ricerca per " + v.toString()
 					+ "]\n[SE SAI CHE VUOI RICERCARE PROPRIO UNA PAROLA SPECIFICA INSERISCI ! ALLA FINE]:");
-			ruolo = GlobalScaner.scanner.nextLine();
+			ruolo = GlobalScanner.scanner.nextLine();
 
 			// 1) Faccio la ricerca sul file aziendale
-			result = MainResearch.searchByStringValue(v, ruolo);
+			result = CsvResearchCli.searchByStringValue(v, ruolo);
 
 			if (result != null) {
 				f = false;
@@ -79,7 +79,7 @@ public class ManageResearchOnCsv {
 		}
 
 		System.out.println("Risultato della ricerca:");
-		ManageCsvFile.printRows(result);
+		CsvFileManager.printRows(result);
 
 		// 2) Controllo il livello di accesso
 		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
@@ -88,7 +88,7 @@ public class ManageResearchOnCsv {
 		}
 
 		// 3) Chiedo se vuole salvare
-		askAndSaveResult(ManagerSession.getCurrent(), result);
+		askAndSaveResult(SessionManager.getCurrent(), result);
 	}
 
 	/**
@@ -97,16 +97,16 @@ public class ManageResearchOnCsv {
 	 * @throws Exception
 	 */
 	public static void searchAndMaybeSaveByAnnoInizio() throws Exception {
-		Session current = ManagerSession.getCurrent();
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		Session current = SessionManager.getCurrent();
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
 		System.out.print("Inserisci l'anno minimo di inizio (es. 2018): ");
-		String annoStr = GlobalScaner.scanner.nextLine().trim();
+		String annoStr = GlobalScanner.scanner.nextLine().trim();
 		int anno = Integer.parseInt(annoStr);
-		List<String[]> result = MainResearch.searchByAnnoInizioMaggioreUguale(anno);
+		List<String[]> result = CsvResearchCli.searchByAnnoInizioMaggioreUguale(anno);
 
 		System.out.println("Risultato della ricerca:");
-		ManageCsvFile.printRows(result);
+		CsvFileManager.printRows(result);
 
 		// 2) Controllo il livello di accesso
 		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
@@ -115,23 +115,23 @@ public class ManageResearchOnCsv {
 		}
 
 		// 3) Chiedo se vuole salvare
-		askAndSaveResult(ManagerSession.getCurrent(), result);
+		askAndSaveResult(SessionManager.getCurrent(), result);
 	}
 
 	public static void searchAndMaybeSaveByMarker() throws Exception {
-		Session current = ManagerSession.getCurrent();
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		Session current = SessionManager.getCurrent();
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 		int marker;
 		do {
 			System.out.print("Inserisci il numero di segnalazioni (0-4): ");
-			String mark = GlobalScaner.scanner.nextLine().trim();
+			String mark = GlobalScanner.scanner.nextLine().trim();
 
 			marker = Integer.parseInt(mark);
 		} while (!(marker >= 0 && marker <= 4));
-		List<String[]> result = MainResearch.searchByMarker(marker);
+		List<String[]> result = CsvResearchCli.searchByMarker(marker);
 
 		System.out.println("Risultato della ricerca:");
-		ManageCsvFile.printRows(result);
+		CsvFileManager.printRows(result);
 
 		// 2) Controllo il livello di accesso
 		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
@@ -140,17 +140,17 @@ public class ManageResearchOnCsv {
 		}
 
 		// 3) Chiedo se vuole salvare
-		askAndSaveResult(ManagerSession.getCurrent(), result);
+		askAndSaveResult(SessionManager.getCurrent(), result);
 	}
 
 	// ricerche statistiche
 
 	public static void statsAndMaybeSaveCountByRole() throws Exception {
-		Session current = ManagerSession.getCurrent();
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		Session current = SessionManager.getCurrent();
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
 		// 1) Calcolo statistica
-		Map<String, Integer> counts = StatisticResearch.countEmployeesByRole();
+		Map<String, Integer> counts = CsvStatisticsResearch.countEmployeesByRole();
 
 		if (counts == null || counts.isEmpty()) {
 			System.out.println("Nessun dato disponibile per la statistica (conteggio per ruolo).");
@@ -171,7 +171,7 @@ public class ManageResearchOnCsv {
 		System.out.println("------------------------------------------");
 
 		// stampo il report (uso la tua printRows)
-		ManageCsvFile.printRows(reportRows);
+		CsvFileManager.printRows(reportRows);
 
 		// 3) Controllo livello accesso (stesso stile)
 		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
@@ -186,15 +186,15 @@ public class ManageResearchOnCsv {
 		// solo reportRows (senza header finto)
 		// -> rimuovo la prima riga (RUOLO,CONTEGGIO) e salvo solo i dati.
 		List<String[]> onlyData = reportRows.subList(1, reportRows.size());
-		askAndSaveResult(ManagerSession.getCurrent(), onlyData);
+		askAndSaveResult(SessionManager.getCurrent(), onlyData);
 	}
 
 	public static void statsAndMaybeSavePercentByRole() throws Exception {
-		Session current = ManagerSession.getCurrent();
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		Session current = SessionManager.getCurrent();
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
 		// 1) Calcolo statistica
-		Map<String, Double> perc = StatisticResearch.percentEmployeesByRole();
+		Map<String, Double> perc = CsvStatisticsResearch.percentEmployeesByRole();
 
 		if (perc == null || perc.isEmpty()) {
 			System.out.println("Nessun dato disponibile per la statistica (percentuali per ruolo).");
@@ -216,7 +216,7 @@ public class ManageResearchOnCsv {
 		System.out.println("==========================================");
 		System.out.println("------------------------------------------");
 
-		ManageCsvFile.printRows(reportRows);
+		CsvFileManager.printRows(reportRows);
 
 		// 3) Controllo permessi
 		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
@@ -226,14 +226,14 @@ public class ManageResearchOnCsv {
 
 		// 4) Salvataggio (solo dati, senza header finto)
 		List<String[]> onlyData = reportRows.subList(1, reportRows.size());
-		askAndSaveResult(ManagerSession.getCurrent(), onlyData);
+		askAndSaveResult(SessionManager.getCurrent(), onlyData);
 	}
 
 	public static void statsAndMaybeSaveMinMaxAnnoInizio() throws Exception {
-		Session current = ManagerSession.getCurrent();
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		Session current = SessionManager.getCurrent();
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-		int[] mm = StatisticResearch.minMaxAnnoInizio();
+		int[] mm = CsvStatisticsResearch.minMaxAnnoInizio();
 
 		if (mm == null) {
 			System.out.println("Nessun anno di inizio valido trovato nel documento aziendale.");
@@ -256,7 +256,7 @@ public class ManageResearchOnCsv {
 		reportRows.add(new String[] { String.valueOf(min), String.valueOf(max) });
 
 		// stampa stile tuo
-		ManageCsvFile.printRows(reportRows);
+		CsvFileManager.printRows(reportRows);
 
 		// permessi
 		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
@@ -266,14 +266,14 @@ public class ManageResearchOnCsv {
 
 		// salvo solo i dati (senza header finto)
 		List<String[]> onlyData = reportRows.subList(1, reportRows.size());
-		askAndSaveResult(ManagerSession.getCurrent(), onlyData);
+		askAndSaveResult(SessionManager.getCurrent(), onlyData);
 	}
 	
 	public static void statsAndMaybeSaveAverageAnnoInizio() throws Exception {
-		Session current = ManagerSession.getCurrent();
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		Session current = SessionManager.getCurrent();
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-		double[] res = StatisticResearch.averageAnnoInizioAndSeniority();
+		double[] res = CsvStatisticsResearch.averageAnnoInizioAndSeniority();
 
 		if (res == null) {
 			System.out.println("Nessun anno di inizio valido trovato per calcolare la media.");
@@ -298,7 +298,7 @@ public class ManageResearchOnCsv {
 				String.format(Locale.US, "%.2f", anzianitaMedia)
 		});
 
-		ManageCsvFile.printRows(reportRows);
+		CsvFileManager.printRows(reportRows);
 
 		// permessi
 		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
@@ -308,14 +308,14 @@ public class ManageResearchOnCsv {
 
 		// salvo solo i dati (senza header finto)
 		List<String[]> onlyData = reportRows.subList(1, reportRows.size());
-		askAndSaveResult(ManagerSession.getCurrent(), onlyData);
+		askAndSaveResult(SessionManager.getCurrent(), onlyData);
 	}
 
 	public static void statsAndMaybeSaveDistributionByStartYear() throws Exception {
-		Session current = ManagerSession.getCurrent();
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		Session current = SessionManager.getCurrent();
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-		Map<Integer, Integer> dist = StatisticResearch.countEmployeesByStartYear();
+		Map<Integer, Integer> dist = CsvStatisticsResearch.countEmployeesByStartYear();
 
 		if (dist == null || dist.isEmpty()) {
 			System.out.println("Nessun dato disponibile per la distribuzione per anno di inizio.");
@@ -339,7 +339,7 @@ public class ManageResearchOnCsv {
 		System.out.println("Totale righe conteggiate: " + total);
 		System.out.println("------------------------------------------");
 
-		ManageCsvFile.printRows(reportRows);
+		CsvFileManager.printRows(reportRows);
 
 		// permessi
 		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
@@ -349,14 +349,14 @@ public class ManageResearchOnCsv {
 
 		// salvo solo i dati
 		List<String[]> onlyData = reportRows.subList(1, reportRows.size());
-		askAndSaveResult(ManagerSession.getCurrent(), onlyData);
+		askAndSaveResult(SessionManager.getCurrent(), onlyData);
 	}
 	
 	public static void statsAndMaybeSaveRichiamiSummary() throws Exception {
-		Session current = ManagerSession.getCurrent();
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		Session current = SessionManager.getCurrent();
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-		double[] s = StatisticResearch.statsRichiami();
+		double[] s = CsvStatisticsResearch.statsRichiami();
 
 		if (s == null) {
 			System.out.println("Nessun dato valido sui richiami trovato.");
@@ -386,7 +386,7 @@ public class ManageResearchOnCsv {
 				String.valueOf(max)
 		});
 
-		ManageCsvFile.printRows(reportRows);
+		CsvFileManager.printRows(reportRows);
 
 		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
 			System.out.println("Non hai i permessi per salvare la statistica (access level < 2).");
@@ -394,14 +394,14 @@ public class ManageResearchOnCsv {
 		}
 
 		List<String[]> onlyData = reportRows.subList(1, reportRows.size());
-		askAndSaveResult(ManagerSession.getCurrent(), onlyData);
+		askAndSaveResult(SessionManager.getCurrent(), onlyData);
 	}
 	
 	public static void statsAndMaybeSaveTop5Richiami() throws Exception {
-		Session current = ManagerSession.getCurrent();
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		Session current = SessionManager.getCurrent();
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-		List<String[]> top = StatisticResearch.topEmployeesByRichiami(5);
+		List<String[]> top = CsvStatisticsResearch.topEmployeesByRichiami(5);
 
 		if (top == null || top.isEmpty()) {
 			System.out.println("Nessun dato valido per calcolare la Top 5 richiami.");
@@ -417,7 +417,7 @@ public class ManageResearchOnCsv {
 		reportRows.add(new String[] { "ID", "NOME", "COGNOME", "RUOLO", "RICHIAMI" });
 		reportRows.addAll(top);
 
-		ManageCsvFile.printRows(reportRows);
+		CsvFileManager.printRows(reportRows);
 
 		// permessi
 		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
@@ -427,14 +427,14 @@ public class ManageResearchOnCsv {
 
 		// salvo solo i dati
 		List<String[]> onlyData = reportRows.subList(1, reportRows.size());
-		askAndSaveResult(ManagerSession.getCurrent(), onlyData);
+		askAndSaveResult(SessionManager.getCurrent(), onlyData);
 	}
 	
 	public static void statsAndMaybeSaveZeroRichiami() throws Exception {
-	    Session current = ManagerSession.getCurrent();
-	    ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+	    Session current = SessionManager.getCurrent();
+	    CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-	    List<String[]> rows = StatisticResearch.employeesWithZeroRichiami();
+	    List<String[]> rows = CsvStatisticsResearch.employeesWithZeroRichiami();
 
 	    if (rows == null || rows.isEmpty()) {
 	        System.out.println("Nessun dipendente con 0 richiami trovato.");
@@ -451,7 +451,7 @@ public class ManageResearchOnCsv {
 	    reportRows.add(new String[] { "ID", "NOME", "COGNOME", "RUOLO", "RICHIAMI" });
 	    reportRows.addAll(rows);
 
-	    ManageCsvFile.printRows(reportRows);
+	    CsvFileManager.printRows(reportRows);
 
 	    if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
 	        System.out.println("Non hai i permessi per salvare la statistica (access level < 2).");
@@ -459,14 +459,14 @@ public class ManageResearchOnCsv {
 	    }
 
 	    List<String[]> onlyData = reportRows.subList(1, reportRows.size());
-	    askAndSaveResult(ManagerSession.getCurrent(), onlyData);
+	    askAndSaveResult(SessionManager.getCurrent(), onlyData);
 	}
 	
 	public static void statsAndMaybeSaveMissingFields() throws Exception {
-		Session current = ManagerSession.getCurrent();
-		ActionOnCsv.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
+		Session current = SessionManager.getCurrent();
+		CsvUseCase.getIstnce().saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-		Map<String, Integer> miss = StatisticResearch.countMissingFields();
+		Map<String, Integer> miss = CsvStatisticsResearch.countMissingFields();
 
 		if (miss == null || miss.isEmpty()) {
 			System.out.println("Nessun dato disponibile per il controllo qualità dati.");
@@ -484,7 +484,7 @@ public class ManageResearchOnCsv {
 			reportRows.add(new String[] { e.getKey(), String.valueOf(e.getValue()) });
 		}
 
-		ManageCsvFile.printRows(reportRows);
+		CsvFileManager.printRows(reportRows);
 
 		if (current.getAccessLevel() < AccessLevel.AL2.getLevel()) {
 			System.out.println("Non hai i permessi per salvare la statistica (access level < 2).");
@@ -492,7 +492,7 @@ public class ManageResearchOnCsv {
 		}
 
 		List<String[]> onlyData = reportRows.subList(1, reportRows.size());
-		askAndSaveResult(ManagerSession.getCurrent(), onlyData);
+		askAndSaveResult(SessionManager.getCurrent(), onlyData);
 	}
 
 

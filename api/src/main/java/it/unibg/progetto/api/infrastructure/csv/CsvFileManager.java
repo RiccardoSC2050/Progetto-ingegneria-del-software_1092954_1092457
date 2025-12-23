@@ -11,9 +11,9 @@ import java.util.List;
 
 import it.unibg.progetto.api.cli.components.Constant;
 
-public class ManageCsvFile {
+public class CsvFileManager {
 
-	public ManageCsvFile() {
+	public CsvFileManager() {
 	}
 
 	/**

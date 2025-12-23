@@ -6,7 +6,7 @@ import java.util.Scanner;
 /**
  * it has to be closed in the main
  */
-public class GlobalScaner {
+public class GlobalScanner {
 
 	public static Scanner scanner = new Scanner(System.in);
 	

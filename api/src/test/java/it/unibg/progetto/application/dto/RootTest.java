@@ -14,8 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
-import it.unibg.progetto.api.application.usecase.ActionOnUseRS;
-import it.unibg.progetto.api.cli.components.GlobalScaner;
+import it.unibg.progetto.api.application.usecase.UsersUseCase;
+import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.domain.Root;
 import it.unibg.progetto.api.application.dto.*;
 import it.unibg.progetto.api.domain.User;
@@ -38,11 +38,11 @@ class RootTest {
 
     @Test
     void getInstanceRootReturnsSameInstance() {
-        try (MockedStatic<ActionOnUseRS> mockedStatic = mockStatic(ActionOnUseRS.class)) {
-            ActionOnUseRS mockService = mock(ActionOnUseRS.class);
-            mockedStatic.when(ActionOnUseRS::getInstance).thenReturn(mockService);
+        try (MockedStatic<UsersUseCase> mockedStatic = mockStatic(UsersUseCase.class)) {
+            UsersUseCase mockService = mock(UsersUseCase.class);
+            mockedStatic.when(UsersUseCase::getInstance).thenReturn(mockService);
 
-            Rootdto dto = new Rootdto();
+            RootDto dto = new RootDto();
             dto.setPassword("pwd");
             when(mockService.rootIsOnData()).thenReturn(dto);
 
@@ -55,11 +55,11 @@ class RootTest {
 
     @Test
     void getInstanceRootInitializesRootWithFixedValues() {
-        try (MockedStatic<ActionOnUseRS> mockedStatic = mockStatic(ActionOnUseRS.class)) {
-            ActionOnUseRS mockService = mock(ActionOnUseRS.class);
-            mockedStatic.when(ActionOnUseRS::getInstance).thenReturn(mockService);
+        try (MockedStatic<UsersUseCase> mockedStatic = mockStatic(UsersUseCase.class)) {
+            UsersUseCase mockService = mock(UsersUseCase.class);
+            mockedStatic.when(UsersUseCase::getInstance).thenReturn(mockService);
 
-            Rootdto dto = new Rootdto();
+            RootDto dto = new RootDto();
             dto.setPassword("pwd");
             when(mockService.rootIsOnData()).thenReturn(dto);
 
@@ -97,11 +97,11 @@ class RootTest {
         ) + "\n";
 
         System.setIn(new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8)));
-        GlobalScaner.scanner = new Scanner(System.in);
+        GlobalScanner.scanner = new Scanner(System.in);
 
-        try (MockedStatic<ActionOnUseRS> mockedStatic = mockStatic(ActionOnUseRS.class)) {
-            ActionOnUseRS mockService = mock(ActionOnUseRS.class);
-            mockedStatic.when(ActionOnUseRS::getInstance).thenReturn(mockService);
+        try (MockedStatic<UsersUseCase> mockedStatic = mockStatic(UsersUseCase.class)) {
+            UsersUseCase mockService = mock(UsersUseCase.class);
+            mockedStatic.when(UsersUseCase::getInstance).thenReturn(mockService);
 
             when(mockService.trasformListUsersIntoListUserWithoutPassword())
                     .thenReturn(Collections.emptyList());
@@ -119,9 +119,9 @@ class RootTest {
     void deleteUserWithNullUserListDoesNotThrow() {
         Root root = new Root("pwd");
 
-        try (MockedStatic<ActionOnUseRS> mockedStatic = mockStatic(ActionOnUseRS.class)) {
-            ActionOnUseRS mockService = mock(ActionOnUseRS.class);
-            mockedStatic.when(ActionOnUseRS::getInstance).thenReturn(mockService);
+        try (MockedStatic<UsersUseCase> mockedStatic = mockStatic(UsersUseCase.class)) {
+            UsersUseCase mockService = mock(UsersUseCase.class);
+            mockedStatic.when(UsersUseCase::getInstance).thenReturn(mockService);
 
             when(mockService.trasformListUsersIntoListUserWithoutPassword())
                     .thenReturn(null);
@@ -147,11 +147,11 @@ class RootTest {
         ) + "\n";
 
         System.setIn(new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8)));
-        GlobalScaner.scanner = new Scanner(System.in);
+        GlobalScanner.scanner = new Scanner(System.in);
 
-        try (MockedStatic<ActionOnUseRS> mockedStatic = mockStatic(ActionOnUseRS.class)) {
-            ActionOnUseRS mockService = mock(ActionOnUseRS.class);
-            mockedStatic.when(ActionOnUseRS::getInstance).thenReturn(mockService);
+        try (MockedStatic<UsersUseCase> mockedStatic = mockStatic(UsersUseCase.class)) {
+            UsersUseCase mockService = mock(UsersUseCase.class);
+            mockedStatic.when(UsersUseCase::getInstance).thenReturn(mockService);
 
             when(mockService.trasformListUsersIntoListUserWithoutPassword())
                     .thenReturn(userList);

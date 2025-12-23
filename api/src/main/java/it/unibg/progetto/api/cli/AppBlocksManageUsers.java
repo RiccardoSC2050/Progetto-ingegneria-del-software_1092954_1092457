@@ -34,7 +34,7 @@ public class AppBlocksManageUsers {
 			String pw = "";
 			do {
 				System.out.print("Inserire PASSWORD di SISTEMA: ");
-				pw = GlobalScanner.scanner.nextLine();
+				pw = GlobalScanner.scanner.nextLine().strip();
 			} while (!Root.getInstanceRoot().checkLenghtPw(pw));
 			root = new Root(Hash.hash(pw));
 			UsersUseCase.getInstance().addRootOnData(root);
@@ -105,11 +105,11 @@ public class AppBlocksManageUsers {
 				}
 			}
 			System.out.print("[LOGIN] Inserire nome utente: ");
-			name = GlobalScanner.scanner.nextLine().toLowerCase();
+			name = GlobalScanner.scanner.nextLine().strip().toLowerCase();
 			Exit.exit(name); // exit
 
 			System.out.print("[LOGIN] Inserire password: ");
-			pw = GlobalScanner.scanner.nextLine().toLowerCase();
+			pw = GlobalScanner.scanner.nextLine().strip().toLowerCase();
 			Exit.exit(pw); // exit
 
 			flag = Master.getIstance().login(name, pw);
@@ -157,7 +157,7 @@ public class AppBlocksManageUsers {
 			System.out.println("Vuoi accedere come Root o vuoi creare un nuovo utente? [1|2]");
 			System.out.println("- 1 per accere come ROOT");
 			System.out.println("- 2 per creare nuovo utente");
-			String answare = GlobalScanner.scanner.nextLine();
+			String answare = GlobalScanner.scanner.nextLine().strip();
 			if (Quit.quit(answare))
 				return Validators.neutral;
 			switch (answare) {
@@ -367,7 +367,7 @@ public class AppBlocksManageUsers {
 		String pw = "";
 		do {
 			System.out.print("inseire la nuova password: ");
-			pw = GlobalScanner.scanner.nextLine();
+			pw = GlobalScanner.scanner.nextLine().strip();
 		} while (!Root.getInstanceRoot().checkLenghtPw(pw));
 		UsersUseCase.getInstance().changePassordToUser(Hash.hash(pw), id);
 	}

@@ -115,7 +115,7 @@ public class Root extends Operator {
 			String pw = "";
 			do {
 				System.out.print("Inserire password utente [min 8 caratteri]: ");
-				pw = GlobalScanner.scanner.nextLine();
+				pw = GlobalScanner.scanner.nextLine().strip();
 			} while (!checkLenghtPw(pw));
 			if (Quit.quit(pw))
 				return Validators.neutral;
@@ -124,7 +124,7 @@ public class Root extends Operator {
 			do {
 
 				System.out.println("Inserire il livello di accesso utente [1-3]: ");
-				String al = GlobalScanner.scanner.nextLine();
+				String al = GlobalScanner.scanner.nextLine().strip();
 				if (Quit.quit(pw))
 					return Validators.neutral;
 				if (Input.isNumeric(al) && !al.isEmpty())
@@ -153,7 +153,7 @@ public class Root extends Operator {
 		do {
 			System.out.println("CREAZIONE NUOVO UTENTE\n");
 			System.out.println("Inserire nome utente: ");
-			String name = GlobalScanner.scanner.nextLine().toLowerCase();
+			String name = GlobalScanner.scanner.nextLine().strip().toLowerCase();
 			if (Quit.quit(name))
 				return false;
 
@@ -274,7 +274,7 @@ public class Root extends Operator {
 						System.out.println("- " + u.getName());
 					}
 
-					name = GlobalScanner.scanner.nextLine();
+					name = GlobalScanner.scanner.nextLine().strip();
 					Exit.exit(name);
 
 					for (User u : userList) {
@@ -294,7 +294,7 @@ public class Root extends Operator {
 						 */
 					a = "";
 					System.out.println(name + " è l'utente corretto che vuoi eliminare? [s|n]");
-					String r = GlobalScanner.scanner.nextLine();
+					String r = GlobalScanner.scanner.nextLine().strip();
 					Exit.exit(r);
 					a = r;
 				} while (!(a.equals("s") | a.equals("n")));
@@ -325,7 +325,7 @@ public class Root extends Operator {
 			do {
 				k = "";
 				System.out.println("Conosci già l'id dell'utente? [s|n]");
-				String r = GlobalScanner.scanner.nextLine();
+				String r = GlobalScanner.scanner.nextLine().strip();
 				Exit.exit(r);
 				k = r;
 			} while (!(k.equals("s") | k.equals("n")));
@@ -359,7 +359,7 @@ public class Root extends Operator {
 				k = Validators.neutral;
 
 				System.out.println("Inserisci l'id utente per completare l'eliminazione");
-				id = GlobalScanner.scanner.nextLine();
+				id = GlobalScanner.scanner.nextLine().strip();
 				Exit.exit(id);
 
 				for (User u : userList) {

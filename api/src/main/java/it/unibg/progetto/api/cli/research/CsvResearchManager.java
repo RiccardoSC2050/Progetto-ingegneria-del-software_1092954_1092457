@@ -61,7 +61,7 @@ public class CsvResearchManager {
 			ruolo = "";
 			System.out.println("Inserisci per cercare [ricerca per " + v.toString()
 					+ "]\n[SE SAI CHE VUOI RICERCARE PROPRIO UNA PAROLA SPECIFICA INSERISCI ! ALLA FINE]:");
-			ruolo = GlobalScanner.scanner.nextLine();
+			ruolo = GlobalScanner.scanner.nextLine().strip();
 
 			// 1) Faccio la ricerca sul file aziendale
 			result = CsvResearchCli.searchByStringValue(v, ruolo);

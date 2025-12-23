@@ -72,7 +72,7 @@ public class ApiMain {
                 blockCsv.manageImplementationOfMainFileCsv();
 
                 System.out.print(SessionManager.getCurrent().getName() + "> ");
-                input = GlobalScanner.scanner.nextLine();
+                input = GlobalScanner.scanner.nextLine().strip();
 
                 switch (input) {
 

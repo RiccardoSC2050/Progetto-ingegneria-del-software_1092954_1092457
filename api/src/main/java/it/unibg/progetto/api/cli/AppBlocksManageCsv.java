@@ -55,7 +55,7 @@ public class AppBlocksManageCsv {
 		try {
 			System.out.println("inserisci file aziendale di riferimento:");
 			System.out.println("inserire percorso file");
-			String path = GlobalScanner.scanner.nextLine();
+			String path = GlobalScanner.scanner.nextLine().strip();
 
 			CsvUseCase.getIstnce().importFileFromLocalPc(path, SessionManager.getCurrent());
 		} catch (Exception e) {
@@ -88,7 +88,7 @@ public class AppBlocksManageCsv {
 		String name;
 		do {
 			System.out.println("inserire il nome del file casuale");
-			name = GlobalScanner.scanner.nextLine();
+			name = GlobalScanner.scanner.nextLine().strip();
 			if (!CsvUseCase.getIstnce().checknameFileAlreadyExist(name, SessionManager.getCurrent().getUuid()))
 				break;
 		} while (true);
@@ -126,7 +126,7 @@ public class AppBlocksManageCsv {
 		boolean f;
 		do {
 			System.out.println("Quale vuoi visualizzare?");
-			String name = GlobalScanner.scanner.nextLine();
+			String name = GlobalScanner.scanner.nextLine().strip();
 			if (Quit.quit(name))
 				return;
 			f = CsvUseCase.getIstnce().showFileContent(name, SessionManager.getCurrent().getUuid());

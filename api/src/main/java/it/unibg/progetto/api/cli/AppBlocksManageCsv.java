@@ -1,10 +1,13 @@
 package it.unibg.progetto.api.cli;
 
-
 import java.io.File;
 import java.io.IOException;
-
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unibg.progetto.api.application.dto.CsvDto;
@@ -13,6 +16,7 @@ import it.unibg.progetto.api.cli.components.Constant;
 import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.cli.components.Quit;
 import it.unibg.progetto.api.cli.research.CsvResearchChoice;
+import it.unibg.progetto.api.domain.rules.AccessLevel;
 import it.unibg.progetto.api.domain.rules.CsvStandard;
 import it.unibg.progetto.api.infrastructure.csv.CsvFileManager;
 import it.unibg.progetto.api.security.session.Session;
@@ -74,7 +78,7 @@ public class AppBlocksManageCsv {
 	 */
 	public void manageImplementationOfMainFileCsv() throws IOException {
 		if (!checkControlImportMainFileCsv()) {
-			System.out.println("IMPORTANTE CARICARE IL FILE DI RIFERIMENTO DELL'AZIENDA");
+			System.err.println("IMPORTANTE CARICARE IL FILE DI RIFERIMENTO DELL'AZIENDA");
 			importMainFile();
 		}
 	}
@@ -83,16 +87,56 @@ public class AppBlocksManageCsv {
 	/**
 	 * permette di creare un file csv a caso nel folder sarà un file personale
 	 * dell'utente
+	 * 
+	 * @throws Exception
 	 */
-	public void createGeneralFileCsv() {
+	public void createGeneralFileCsv() throws Exception {
 		String name;
 		do {
-			System.out.println("inserire il nome del file casuale");
+			System.out.println("Inserire il nome del file");
 			name = GlobalScanner.scanner.nextLine().strip();
 			if (!CsvUseCase.getIstnce().checknameFileAlreadyExist(name, SessionManager.getCurrent().getUuid()))
 				break;
 		} while (true);
 		CsvFileManager.createFileCsvOnFolder(name);
+		modifyFileCsv(name);
+
+	}
+
+	private void modifyFileCsv(String name) throws Exception {
+		String input = "";
+		do {
+			input = "";
+			System.out.println("Vuoi modificare il file? [s/n]");
+
+			input = GlobalScanner.scanner.nextLine().strip();
+
+		} while (!(input.equals("s") || input.equals("n")));
+		if (input.equals("n"))
+			return;
+		else if (input.equals("s")) {
+			CsvFileManager.writeCsvLikeEditor(Constant.getFilePathCsv() + name + ".csv");
+		}
+	}
+
+	public void editFileCsvFile() throws Exception {
+		CsvUseCase.getIstnce().saveAllFileCsvFromDataOfUser(SessionManager.getCurrent());
+		if (SessionManager.getCurrent().getAccessLevel() == AccessLevel.AL1.getLevel()) {
+			System.out.println("non puoi modificare file, non hai i permessi");
+			return;
+		}
+		if (!lsFileUser()) {
+			return;
+		}
+		System.out.println("Quale file vuoi modificare?");
+		String input = GlobalScanner.scanner.nextLine().strip();
+		String path = Constant.getFilePathCsv() + input + ".csv";
+		Path p = Paths.get(path);
+		if (!Files.exists(p)) {
+			System.out.println("Errore: il file non esiste.");
+			return;
+		}
+		CsvFileManager.writeCsvLikeEditor(path);
 	}
 
 	/**
@@ -137,10 +181,10 @@ public class AppBlocksManageCsv {
 	/**
 	 * ritorna i file dell'utente loggato
 	 */
-	public void lsFileUser() {
+	public boolean lsFileUser() {
 		System.out.println("I tuoi file:");
-		CsvUseCase.getIstnce().stampListOfMyCsv(SessionManager.getCurrent().getUuid());
-		System.out.println();
+		return CsvUseCase.getIstnce().stampListOfMyCsv(SessionManager.getCurrent().getUuid());
+
 	}
 
 	/**
@@ -219,7 +263,5 @@ public class AppBlocksManageCsv {
 			System.out.println("Impossibile eliminare il file.\n");
 		}
 	}
-	
-	
 
 }

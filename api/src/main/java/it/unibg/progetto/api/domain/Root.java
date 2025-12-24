@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import it.unibg.progetto.api.application.dto.RootDto;
+import it.unibg.progetto.api.application.usecase.CsvUseCase;
 import it.unibg.progetto.api.application.usecase.UsersUseCase;
 import it.unibg.progetto.api.cli.AppBlocksManageUsers;
 import it.unibg.progetto.api.cli.components.Exit;
@@ -14,6 +15,7 @@ import it.unibg.progetto.api.domain.rules.AccessLevel;
 import it.unibg.progetto.api.domain.rules.Validators;
 import it.unibg.progetto.api.domain.rules.InvalidValues;
 import it.unibg.progetto.api.security.Hash;
+import it.unibg.progetto.api.security.session.SessionManager;
 
 /**
  * Root administrator class extending Operator with maximum privileges.
@@ -184,6 +186,7 @@ public class Root extends Operator {
 		if (n == "")
 			return;
 		String id = userIdControl(n);
+		CsvUseCase.getIstnce().deleteAllFileOfUserDeleted(id);
 		delUser(n, id);
 
 	}

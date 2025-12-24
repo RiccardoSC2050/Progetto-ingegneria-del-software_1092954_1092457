@@ -88,6 +88,8 @@ public class ApiMain {
 
                     case "w -c":
                         blockCsv.createGeneralFileCsv();
+                        blockCsv.saveAllFileInFolderIntoCsvTable();
+                        blockCsv.clearFolderCsv();
                         break;
 
                     case "r -c":
@@ -125,6 +127,12 @@ public class ApiMain {
 
                     case "search -s":
                         blockCsv.searchOnBaseStatistic();
+                        break;
+                        
+                    case "e -f":
+                        blockCsv.editFileCsvFile();
+                        blockCsv.saveAllFileInFolderIntoCsvTable();
+                        blockCsv.clearFolderCsv();
                         break;
 
                     case "save":

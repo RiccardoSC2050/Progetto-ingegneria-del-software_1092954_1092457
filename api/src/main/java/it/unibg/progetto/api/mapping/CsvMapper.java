@@ -106,8 +106,7 @@ public class CsvMapper {
 	 * @param c
 	 */
 	public void deleteCsvEntityFromData(CsvService csvService, CsvDto c) {
-		toCsvFromCsvDtoWithId(c);
-		csvService.deleteFileCsv(null);
+		csvService.deleteFileCsv(toCsvFromCsvDtoWithId(c));
 
 	}
 }

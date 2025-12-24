@@ -200,6 +200,7 @@ public class AppBlocksManageUsers {
 	public void deleteUserIfRoot() {
 		if (SessionManager.getCurrent().getAccessLevel() == AccessLevel.AL5.getLevel()) {
 			Root.getInstanceRoot().deleteUser();
+			;
 		} else {
 			System.out.println("Non sei ROOT, non puoi cancellare utenti");
 		}

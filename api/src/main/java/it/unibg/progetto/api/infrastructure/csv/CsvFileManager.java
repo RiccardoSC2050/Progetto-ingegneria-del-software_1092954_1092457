@@ -1,15 +1,23 @@
 package it.unibg.progetto.api.infrastructure.csv;
 
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
+import it.unibg.progetto.api.application.usecase.CsvUseCase;
 import it.unibg.progetto.api.cli.components.Constant;
+import it.unibg.progetto.api.cli.components.GlobalScanner;
+import it.unibg.progetto.api.security.session.SessionManager;
 
 public class CsvFileManager {
 
@@ -55,20 +63,24 @@ public class CsvFileManager {
 	}
 
 	public static void readFileCsv(String name) {
-		String p = Constant.getFilePathCsv() + name + ".csv";
-		try (BufferedReader br = new BufferedReader(new FileReader(p))) {
+		name = name.strip();
+		if (name.endsWith(".csv"))
+			name = name.substring(0, name.length() - 4);
 
+		String p = Constant.getFilePathCsv() + name + ".csv";
+
+		try (BufferedReader br = new BufferedReader(new FileReader(p))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-				String[] columns = line.split(",");
-
-				// stampa in formato tabella
-				for (String col : columns) {
-					System.out.print(col + "\t"); // \t = tabulazione
+				if (line.contains(",")) {
+					String[] columns = line.split(",");
+					for (String col : columns)
+						System.out.print(col + "\t");
+					System.out.println();
+				} else {
+					System.out.println(line);
 				}
-				System.out.println();
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -133,6 +145,39 @@ public class CsvFileManager {
 			}
 			System.out.println();
 		}
+	}
+
+	public static void writeCsvLikeEditor(String filePath) throws Exception {
+
+		Path path = Paths.get(filePath);
+
+		if (!Files.exists(path)) {
+			System.out.println("Errore: il file non esiste.");
+			return;
+		}
+
+		Scanner scanner = GlobalScanner.scanner; // NON creare un nuovo Scanner
+		List<String> out = new ArrayList<>();
+
+		System.out.println("--- MODALITÀ SCRITTURA CSV ---");
+		System.out.println("Scrivi righe libere.");
+		System.out.println("Digita :wq per salvare e uscire");
+		System.out.println("-----------------------------");
+
+		while (true) {
+			System.out.print("> ");
+			String line = scanner.nextLine();
+
+			String cmd = line.strip();
+			if (cmd.equalsIgnoreCase(":wq"))
+				break;
+
+			out.add(line + System.lineSeparator()); // newline garantita
+		}
+
+		Files.write(path, out, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+
+		System.out.println("File salvato correttamente.");
 	}
 
 }

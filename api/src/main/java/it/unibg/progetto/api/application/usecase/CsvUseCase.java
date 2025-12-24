@@ -1,6 +1,5 @@
 package it.unibg.progetto.api.application.usecase;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.unibg.progetto.api.application.dto.CsvDto;
+import it.unibg.progetto.api.application.dto.UserDto;
 import it.unibg.progetto.api.cli.components.Constant;
 import it.unibg.progetto.api.domain.rules.CsvStandard;
 import it.unibg.progetto.api.infrastructure.csv.CsvFileManager;
@@ -342,12 +342,17 @@ public class CsvUseCase {
 	/**
 	 * STAMPA LISTA DI TUTTI I FILE CHE L'UTENTE POSSIEDE
 	 */
-	public void stampListOfMyCsv(String uuid) {
+	public boolean stampListOfMyCsv(String uuid) {
 		List<CsvDto> cList = returnAllFileCsvDtoFromDataOfUser(uuid);
 
+		if(cList.isEmpty()) {
+			System.out.println("Nessun file disponibile");
+			return false;
+		}
 		for (CsvDto c : cList) {
 			System.out.println(c.getFileName());
 		}
+		return true;
 	}
 
 	/**
@@ -425,6 +430,13 @@ public class CsvUseCase {
 	 */
 	public void deleteOneFileInData(CsvDto c) {
 		csvMapper.deleteCsvEntityFromData(csvService, c);
+	}
+
+	public void deleteAllFileOfUserDeleted(String id) {
+		List<CsvDto> cdtoList = returnAllFileCsvDtoFromDataOfUser(id);
+		for (CsvDto c : cdtoList) {
+			deleteOneFileInData(c);
+		}
 	}
 
 }

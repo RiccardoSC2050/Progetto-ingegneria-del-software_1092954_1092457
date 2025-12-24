@@ -370,6 +370,7 @@ public class AppBlocksManageUsers {
 		do {
 			System.out.print("inseire la nuova password: ");
 			pw = GlobalScanner.scanner.nextLine().strip();
+			if(Quit.quit(pw))return;
 		} while (!Root.getInstanceRoot().checkLenghtPw(pw));
 		UsersUseCase.getInstance().changePassordToUser(Hash.hash(pw), id);
 	}
@@ -380,16 +381,19 @@ public class AppBlocksManageUsers {
 		}
 		boolean f;
 		String id = "";
+		int al=0;
 		do {
 			f = true;
 			System.out.println("Scegli a quale utente modificare il livello di acccesso");
 			List<User> ulist = UsersUseCase.getInstance().trasformListUsersIntoListUserWithoutPassword();
 			UsersUseCase.getInstance().printNameUserAll(Validators.neutral, ulist);
 			String input = GlobalScanner.scanner.nextLine();
+			if(Quit.quit(input))return;
 			for (User u : ulist) {
 				if (u.getName().equals(input)) {
 					f = false;
 					id = u.getId();
+					al=u.getAccessLevelValue();
 					break;
 				}
 			}
@@ -400,8 +404,9 @@ public class AppBlocksManageUsers {
 		do {
 			System.out.print("inseire il nuovo livello di accesso: ");
 			String in = GlobalScanner.scanner.nextLine().strip();
+			if(Quit.quit(in))return;
 			i = Integer.parseInt(in);
-		} while (!AccessLevel.isAPossibleValue(i));
+		} while (!(AccessLevel.isAPossibleValue(i)&&i!=al));
 		UsersUseCase.getInstance().changeAccessLevelToUser(i, id);
 	}
 

@@ -118,6 +118,7 @@ public class AppBlocksManageUsers {
 		switch (flag) {
 		case affermative:
 			System.out.println("Connesso");
+			SessionManager.accessLevelOption();
 			break;
 
 		case neutral:

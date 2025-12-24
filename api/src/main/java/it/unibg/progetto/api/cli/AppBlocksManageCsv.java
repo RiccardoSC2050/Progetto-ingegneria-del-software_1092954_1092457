@@ -166,7 +166,7 @@ public class AppBlocksManageCsv {
 	 * @throws Exception
 	 */
 	public void readFileCsv() throws Exception {
-		lsFileUser();
+		if(!lsFileUser())return;
 		boolean f;
 		do {
 			System.out.println("Quale vuoi visualizzare?");

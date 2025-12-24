@@ -30,4 +30,18 @@ public final class SessionManager {
 		return current;
 	}
 
+	public static void accessLevelOption() {
+		if(current.getAccessLevel()==AccessLevel.AL1.getLevel()) {
+			System.out.println("[LIVELLO DI ACCESSO 1: SOLO LETTURA");
+		}
+		else if(current.getAccessLevel()==AccessLevel.AL2.getLevel()) {
+			System.out.println("[LIVELLO DI ACCESSO 2: SALVATAGGIO E MODIFICA FILE PERSONALI");
+		}
+		else if(current.getAccessLevel()==AccessLevel.AL3.getLevel()) {
+			System.out.println("[LIVELLO DI ACCESSO 3: SALVATAGGIO E MODIFICA DI FILE PERSONALI, LETTURA DI FILE ALTRUI");
+		}
+		else if(current.getAccessLevel()==AccessLevel.AL5.getLevel()) {
+			System.out.println("[LIVELLO DI ACCESSO ROOT: CREAZIONE ED ELIMINAZIONE UTENTI, LETTURA DEI FILE E CANCELLAZIONE DI QUALSIASI");
+		}
+	}
 }

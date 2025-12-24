@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -69,21 +70,70 @@ public class CsvFileManager {
 
 		String p = Constant.getFilePathCsv() + name + ".csv";
 
+		List<String[]> rows = new ArrayList<>();
+		int[] maxWidths = null;
+
 		try (BufferedReader br = new BufferedReader(new FileReader(p))) {
 			String line;
 			while ((line = br.readLine()) != null) {
-				if (line.contains(",")) {
-					String[] columns = line.split(",");
-					for (String col : columns)
-						System.out.print(col + "\t");
-					System.out.println();
-				} else {
-					System.out.println(line);
+				String[] cols = line.split(",", -1); // -1 mantiene anche colonne vuote
+				rows.add(cols);
+
+				// inizializzo maxWidths alla prima riga
+				if (maxWidths == null)
+					maxWidths = new int[cols.length];
+
+				// se una riga ha più colonne, espando maxWidths
+				if (cols.length > maxWidths.length) {
+					maxWidths = Arrays.copyOf(maxWidths, cols.length);
+				}
+
+				for (int i = 0; i < cols.length; i++) {
+					String cell = cols[i] == null ? "" : cols[i].strip();
+					maxWidths[i] = Math.max(maxWidths[i], cell.length());
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			return;
 		}
+
+		if (rows.isEmpty()) {
+			System.out.println("(file vuoto)");
+			return;
+		}
+
+		// stampa con padding + separatori
+		for (int r = 0; r < rows.size(); r++) {
+			String[] cols = rows.get(r);
+
+			// riga
+			System.out.print("| ");
+			for (int i = 0; i < maxWidths.length; i++) {
+				String cell = (i < cols.length && cols[i] != null) ? cols[i].strip() : "";
+				System.out.print(padRight(cell, maxWidths[i]));
+				System.out.print(" | ");
+			}
+			System.out.println();
+
+			// separatore dopo header (prima riga)
+			if (r == 0) {
+				System.out.print("|-");
+				for (int i = 0; i < maxWidths.length; i++) {
+					System.out.print("-".repeat(maxWidths[i]));
+					System.out.print("-|-");
+				}
+				System.out.println();
+			}
+		}
+	}
+
+	private static String padRight(String s, int width) {
+		if (s == null)
+			s = "";
+		if (s.length() >= width)
+			return s;
+		return s + " ".repeat(width - s.length());
 	}
 
 	/**
@@ -137,15 +187,46 @@ public class CsvFileManager {
 			throw new RuntimeException("Errore nella lettura dell'header del file CSV: " + csvFile.getPath(), e);
 		}
 	}
-
+	
+	//ciao
 	public static void printRows(List<String[]> rows) {
-		for (String[] row : rows) {
-			for (String col : row) {
-				System.out.print(col + "\t");
-			}
-			System.out.println();
-		}
+	    if (rows == null || rows.isEmpty()) {
+	        System.out.println("(nessun dato)");
+	        return;
+	    }
+
+	    // calcola numero massimo di colonne
+	    int colsCount = 0;
+	    for (String[] row : rows) {
+	        if (row != null) {
+	            colsCount = Math.max(colsCount, row.length);
+	        }
+	    }
+
+	    // calcola larghezza massima per colonna
+	    int[] maxWidths = new int[colsCount];
+	    for (String[] row : rows) {
+	        if (row == null) continue;
+	        for (int i = 0; i < row.length; i++) {
+	            String cell = row[i] == null ? "" : row[i];
+	            maxWidths[i] = Math.max(maxWidths[i], cell.length());
+	        }
+	    }
+
+	    // stampa righe
+	    for (String[] row : rows) {
+	        if (row == null) continue;
+
+	        System.out.print("| ");
+	        for (int i = 0; i < colsCount; i++) {
+	            String cell = (i < row.length && row[i] != null) ? row[i] : "";
+	            System.out.print(padRight(cell, maxWidths[i]));
+	            System.out.print(" | ");
+	        }
+	        System.out.println();
+	    }
 	}
+
 
 	public static void writeCsvLikeEditor(String filePath) throws Exception {
 

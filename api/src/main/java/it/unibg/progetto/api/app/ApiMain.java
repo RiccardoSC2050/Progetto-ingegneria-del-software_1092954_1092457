@@ -1,6 +1,5 @@
 package it.unibg.progetto.api.app;
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -30,137 +29,135 @@ import it.unibg.progetto.service.UsersService;
 @EntityScan(basePackages = "it.unibg.progetto.data")
 public class ApiMain {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ApiMain.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(ApiMain.class, args);
+	}
 
-    @Bean
-    @Profile("!test")
-    public CommandLineRunner createDefaultUser(
-            UserMapper userMapper,
-            UsersService service,
-            UsersUseCase conversionUseRS,
-            RootMapper rootMapper,
-            CsvService sercCsvService,
-            CsvUseCase actionOnCsv,
-            CsvMapper csvMapper
-    ) {
-        return args -> {
-            AppBlocksManageUsers blockUser = new AppBlocksManageUsers();
-            AppBlocksManageCsv blockCsv = new AppBlocksManageCsv();
+	@Bean
+	@Profile("!test")
+	public CommandLineRunner createDefaultUser(UserMapper userMapper, UsersService service,
+			UsersUseCase conversionUseRS, RootMapper rootMapper, CsvService sercCsvService, CsvUseCase actionOnCsv,
+			CsvMapper csvMapper) {
+		return args -> {
+			AppBlocksManageUsers blockUser = new AppBlocksManageUsers();
+			AppBlocksManageCsv blockCsv = new AppBlocksManageCsv();
 
-            String input;
+			String input;
 
-            blockCsv.clearFolderCsv();
-            Root.configurationOfRoot();
-            blockUser.loginSession();
+			blockCsv.clearFolderCsv();
+			Root.configurationOfRoot();
+			blockUser.loginSession();
 
-            while (true) {
+			while (true) {
 
-                // Se per qualsiasi motivo la sessione non esiste, richiedi login
-                if (SessionManager.getCurrent() == null) {
-                    System.out.println("Nessuna sessione attiva. Effettua nuovamente il login.");
-                    blockUser.loginSession();
+				// Se per qualsiasi motivo la sessione non esiste, richiedi login
+				if (SessionManager.getCurrent() == null) {
+					System.out.println("Nessuna sessione attiva. Effettua nuovamente il login.");
+					blockUser.loginSession();
 
-                    if (SessionManager.getCurrent() == null) {
-                        System.out.println("Login non riuscito. Chiusura applicazione.");
-                        return;
-                    }
-                }
+					if (SessionManager.getCurrent() == null) {
+						System.out.println("Login non riuscito. Chiusura applicazione.");
+						return;
+					}
+				}
 
-                blockCsv.controllOnFolderCsv();
-                blockCsv.manageImplementationOfMainFileCsv();
+				blockCsv.controllOnFolderCsv();
+				blockCsv.manageImplementationOfMainFileCsv();
 
-                System.out.print(SessionManager.getCurrent().getName() + "> ");
-                input = GlobalScanner.scanner.nextLine().strip();
+				System.out.print(SessionManager.getCurrent().getName() + "> ");
+				input = GlobalScanner.scanner.nextLine().strip();
 
-                switch (input) {
+				switch (input) {
 
-                    case "exit":
-                        blockCsv.saveAllFileInFolderIntoCsvTable();
-                        blockCsv.clearFolderCsv();
-                        Exit.exit(input);
-                        break;
+				case "exit":
+					blockCsv.saveAllFileInFolderIntoCsvTable();
+					blockCsv.clearFolderCsv();
+					Exit.exit(input);
+					break;
 
-                    case "clear":
-                        ClearTerminal.clearTerminal(input);
-                        break;
+				case "clear":
+					ClearTerminal.clearTerminal(input);
+					break;
 
-                    case "w -c":
-                        blockCsv.createGeneralFileCsv();
-                        blockCsv.saveAllFileInFolderIntoCsvTable();
-                        blockCsv.clearFolderCsv();
-                        break;
+				case "w -c":
+					blockCsv.createGeneralFileCsv();
+					blockCsv.saveAllFileInFolderIntoCsvTable();
+					blockCsv.clearFolderCsv();
+					break;
 
-                    case "r -c":
-                        blockCsv.readFileCsv();
-                        blockCsv.clearFolderCsv();
-                        break;
+				case "r -c":
+					blockCsv.readFileCsv();
+					blockCsv.clearFolderCsv();
+					break;
 
-                    case "ls -f":
-                        blockCsv.lsFileUser();
-                        break;
+				case "ls -f":
+					blockCsv.lsFileUser();
+					break;
 
-                    case "crt -u":
-                        blockUser.createUserIfRoot();
-                        break;
+				case "crt -u":
+					blockUser.createUserIfRoot();
+					break;
 
-                    case "dlt -u":
-                        blockUser.deleteUserIfRoot();
-                        break;
+				case "dlt -u":
+					blockUser.deleteUserIfRoot();
+					break;
 
-                    case "dlt -c":
-                        blockCsv.deleteMyCsvFromDatabase();
-                        break;
+				case "new -al":
+					blockUser.changeAccLev();
+					break;
 
-                    case "show -a -u":
-                        blockUser.showUsersIfRoot(Validators.neutral);
-                        break;
+				case "dlt -c":
+					blockCsv.deleteMyCsvFromDatabase();
+					break;
 
-                    case "show -t -u":
-                        blockUser.showUsersIfRoot(Validators.affermative);
-                        break;
+				case "show -a -u":
+					blockUser.showUsersIfRoot(Validators.neutral);
+					break;
 
-                    case "search":
-                        blockCsv.searchOnBaseAndMaybeSave();
-                        break;
+				case "show -t -u":
+					blockUser.showUsersIfRoot(Validators.affermative);
+					break;
 
-                    case "search -s":
-                        blockCsv.searchOnBaseStatistic();
-                        break;
-                        
-                    case "e -f":
-                        blockCsv.editFileCsvFile();
-                        blockCsv.saveAllFileInFolderIntoCsvTable();
-                        blockCsv.clearFolderCsv();
-                        break;
+				case "search":
+					blockCsv.searchOnBaseAndMaybeSave();
+					break;
 
-                    case "save":
-                        blockCsv.saveAllFileInFolderIntoCsvTable();
-                        blockCsv.clearFolderCsv();
-                        System.out.println("File CSV salvati nel database.\n");
-                        break;
-                        
-                    case "new p":
-                        blockUser.changePassword();
-                        break;
+				case "search -s":
+					blockCsv.searchOnBaseStatistic();
+					break;
 
-                    case "in -u":
-                        blockCsv.saveAllFileInFolderIntoCsvTable();
-                        blockUser.viewOtherFiles();
-                        break;
+				case "e -f":
+					blockCsv.editFileCsvFile();
+					blockCsv.saveAllFileInFolderIntoCsvTable();
+					blockCsv.clearFolderCsv();
+					break;
 
-                    case "out":
-                        blockCsv.saveAllFileInFolderIntoCsvTable();
-                        blockCsv.clearFolderCsv();
-                        blockUser.logoutSession();
-                        break;
+				case "save":
+					blockCsv.saveAllFileInFolderIntoCsvTable();
+					blockCsv.clearFolderCsv();
+					System.out.println("File CSV salvati nel database.\n");
+					break;
 
-                    default:
-                        System.out.print("Comando errato o non esistente\n\n");
-                        break;
-                }
-            }
-        };
-    }
+				case "new p":
+					blockUser.changePassword();
+					break;
+
+				case "in -u":
+					blockCsv.saveAllFileInFolderIntoCsvTable();
+					blockUser.viewOtherFiles();
+					break;
+
+				case "out":
+					blockCsv.saveAllFileInFolderIntoCsvTable();
+					blockCsv.clearFolderCsv();
+					blockUser.logoutSession();
+					break;
+
+				default:
+					System.out.print("Comando errato o non esistente\n\n");
+					break;
+				}
+			}
+		};
+	}
 }

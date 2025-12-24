@@ -221,7 +221,11 @@ public class UsersUseCase {
 
 	// change password
 	public void changePassordToUser(String pw, String id) {
-				usersService.changePw(id, pw);
+		usersService.changePw(id, pw);
+	}
+
+	public void changeAccessLevelToUser(int i, String id) {
+		usersService.changeAl(id, i);
 	}
 
 }

@@ -374,4 +374,35 @@ public class AppBlocksManageUsers {
 		UsersUseCase.getInstance().changePassordToUser(Hash.hash(pw), id);
 	}
 
+	public void changeAccLev() {
+		if (SessionManager.getCurrent().getAccessLevel() != AccessLevel.AL5.getLevel()) {
+			System.out.println("Non hai i permessi root per modificare");
+		}
+		boolean f;
+		String id = "";
+		do {
+			f = true;
+			System.out.println("Scegli a quale utente modificare il livello di acccesso");
+			List<User> ulist = UsersUseCase.getInstance().trasformListUsersIntoListUserWithoutPassword();
+			UsersUseCase.getInstance().printNameUserAll(Validators.neutral, ulist);
+			String input = GlobalScanner.scanner.nextLine();
+			for (User u : ulist) {
+				if (u.getName().equals(input)) {
+					f = false;
+					id = u.getId();
+					break;
+				}
+			}
+
+		} while (f);
+
+		int i;
+		do {
+			System.out.print("inseire il nuovo livello di accesso: ");
+			String in = GlobalScanner.scanner.nextLine().strip();
+			i = Integer.parseInt(in);
+		} while (!AccessLevel.isAPossibleValue(i));
+		UsersUseCase.getInstance().changeAccessLevelToUser(i, id);
+	}
+
 }

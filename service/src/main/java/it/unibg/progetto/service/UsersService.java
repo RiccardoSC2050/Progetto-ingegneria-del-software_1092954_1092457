@@ -38,4 +38,14 @@ public class UsersService {
 			}
 		}
 	}
+
+	public void changeAl(String id, int i) {
+
+		for (Users u : repository.findAll()) {
+			if (u.getUuid().equals(id)) {
+				u.setAccessLevel(i);
+				repository.save(u);
+			}
+		}
+	}
 }

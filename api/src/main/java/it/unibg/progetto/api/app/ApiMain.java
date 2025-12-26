@@ -154,6 +154,10 @@ public class ApiMain {
 					blockCsv.clearFolderCsv();
 					blockUser.logoutSession();
 					break;
+					
+				case "man":
+					ManualHelper.printMan();
+					break;
 
 				default:
 					System.out.print("Comando errato o non esistente\n\n");

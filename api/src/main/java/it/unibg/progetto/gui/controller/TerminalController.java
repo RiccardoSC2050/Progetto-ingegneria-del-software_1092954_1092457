@@ -42,7 +42,6 @@ public class TerminalController {
 			}
 		}, "backend-thread").start();
 
-		view.appendLine("AVVIO IN CORSO...");
 		view.focusInput();
 	}
 

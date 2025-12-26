@@ -6,89 +6,94 @@ import it.unibg.progetto.gui.view.TerminalFrame;
 
 public class TerminalController {
 
-    private final TerminalFrame view;
-    private final ConsoleBridge bridge;
+	private final TerminalFrame view;
+	private final ConsoleBridge bridge;
 
-    // Stato UI: ultima riga stampata nel terminale
-    private String lastLine = "";
+	// ✅ Ultima "richiesta" / ultimo output del BACKEND (quello che ti serve
+	// rivedere)
+	private String lastBackendMessage = "";
 
-    public TerminalController(TerminalFrame view) {
-        this.view = view;
-        this.bridge = new ConsoleBridge(view);
-    }
+	public TerminalController(TerminalFrame view) {
+		this.view = view;
+		this.bridge = new ConsoleBridge(view);
+	}
 
-    public void init() {
-        try {
-            bridge.start();
-        } catch (Exception e) {
-            appendAndRemember("Errore bridge: " + e.getMessage());
-            return;
-        }
+	public void init() {
+		try {
+			bridge.start();
+		} catch (Exception e) {
+			view.appendLine("Errore bridge: " + e.getMessage());
+			return;
+		}
 
-        // Se il tuo ConsoleBridge supporta l'hook, abilitalo:
-        // bridge.setOnOutput(this::rememberLastLine);
+		// ✅ intercetta l'output del backend e salva l'ultimo messaggio utile
+		bridge.setOnOutput(this::captureBackendOutput);
 
-        // Eventi GUI
-        view.onSubmit(this::handleSubmit);
-        view.onClear(this::handleClear);
+		// Eventi GUI
+		view.onSubmit(this::handleSubmit);
+		view.onClear(this::handleClear);
 
-        // Avvio backend/CLI in thread separato (non blocca la GUI)
-        new Thread(() -> {
-            try {
-                ApiMain.main(new String[] { "--spring.main.web-application-type=none" });
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }, "backend-thread").start();
+		// Avvio backend/CLI
+		new Thread(() -> {
+			try {
+				ApiMain.main(new String[] { "--spring.main.web-application-type=none" });
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}, "backend-thread").start();
 
-        appendAndRemember("GUI collegata. Scrivi comandi come nel terminale.");
-        view.focusInput();
-    }
+		view.appendLine("AVVIO IN CORSO...");
+		view.focusInput();
+	}
 
-    private void handleSubmit() {
-        String cmd = view.getInputText();
-        if (cmd == null) cmd = "";
-        cmd = cmd.strip(); // se Java 8: trim()
+	private void handleSubmit() {
+		String cmd = view.getInputText();
+		if (cmd == null)
+			cmd = "";
+		cmd = cmd.strip(); // Java 11+. Se Java 8: trim()
 
-        view.clearInput();
-        view.focusInput();
+		view.clearInput();
+		view.focusInput();
 
-        if (cmd.isEmpty()) return;
+		if (cmd.isEmpty())
+			return;
 
-        // Echo comando (così resta nel log)
-        appendAndRemember("> " + cmd);
+		// (opzionale) mostra il comando digitato
+		view.appendLine("> " + cmd);
 
-        // Inoltra al programma esistente (che legge da GlobalScanner)
-        bridge.sendLine(cmd);
-    }
+		// invia al programma esistente
+		bridge.sendLine(cmd);
+	}
 
-    private void handleClear() {
-        view.clearOutput();
+	private void handleClear() {
+		view.clearOutput();
 
-        // Mostra l’ultima stampa (se esiste)
-        if (lastLine != null && !lastLine.isBlank()) {
-            view.appendLine(lastLine);
-        }
+		// ✅ dopo clear, ristampa l’ultima richiesta del BACKEND
+		if (lastBackendMessage != null && !lastBackendMessage.isBlank()) {
+			view.appendLine(lastBackendMessage);
+		} else {
+			view.appendLine("(nessun messaggio da ripristinare)");
+		}
 
-        view.focusInput();
-    }
+		view.focusInput();
+	}
 
-    public void shutdown() {
-        bridge.stop();
-    }
+	public void shutdown() {
+		bridge.stop();
+	}
 
-    // ===== Helpers =====
+	// ====== qui decidiamo cosa considerare "ultima richiesta utile" ======
+	private void captureBackendOutput(String text) {
+		if (text == null)
+			return;
 
-    private void appendAndRemember(String line) {
-        view.appendLine(line);
-        rememberLastLine(line);
-    }
+		// normalizza
+		String s = text.replace("\r", "").strip();
+		if (s.isEmpty())
+			return;
 
-    private void rememberLastLine(String line) {
-        if (line == null) return;
-        String normalized = line.strip();
-        if (!normalized.isEmpty()) {
-            lastLine = normalized;
-        }
-    }
+		// Qui: SALVIAMO l’ultimo output non vuoto del backend.
+		// Questo copre "OK", "Inserisci ..." ecc.
+		lastBackendMessage = s;
+	}
 }

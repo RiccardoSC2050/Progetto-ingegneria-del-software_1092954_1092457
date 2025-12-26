@@ -28,8 +28,10 @@ import it.unibg.progetto.service.UsersService;
 @EnableJpaRepositories(basePackages = "it.unibg.progetto.data")
 @EntityScan(basePackages = "it.unibg.progetto.data")
 public class ApiMain {
+	
 
 	public static void main(String[] args) {
+		System.out.println("Avvio in corso, attendere prego...\n");
 		SpringApplication.run(ApiMain.class, args);
 	}
 

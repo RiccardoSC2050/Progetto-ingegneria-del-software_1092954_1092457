@@ -1,87 +1,100 @@
 package it.unibg.progetto.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class TerminalFrame extends JFrame {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final JTextArea outputArea;
-    private final JTextField inputField;
-    private final JButton sendButton;
-    private final JButton clearButton;
+	private final JTextArea outputArea;
+	private final JTextField inputField;
+	private final JButton sendButton;
+	private final JButton clearButton;
 
-    public TerminalFrame() {
-        setTitle("APP");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 700, 450);
+	public TerminalFrame() {
+		setTitle("APP");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(0, 0, 1200, 800);
+		setLocationRelativeTo(null);
 
-        JPanel contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(8, 8, 8, 8));
-        contentPane.setLayout(new BorderLayout(8, 8));
-        setContentPane(contentPane);
 
-        // OUTPUT
-        outputArea = new JTextArea();
-        outputArea.setEditable(false);
-        outputArea.setLineWrap(true);
-        outputArea.setWrapStyleWord(true);
+		JPanel contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(8, 8, 8, 8));
+		contentPane.setLayout(new BorderLayout(8, 8));
+		setContentPane(contentPane);
 
-        JScrollPane scrollPane = new JScrollPane(outputArea);
-        contentPane.add(scrollPane, BorderLayout.CENTER);
+		// OUTPUT
+		outputArea = new JTextArea();
+		outputArea.setEditable(false);
 
-        // INPUT BAR
-        JPanel bottom = new JPanel(new BorderLayout(8, 8));
-        contentPane.add(bottom, BorderLayout.SOUTH);
+		// ✅ IMPORTANTI per tabelle allineate (stile terminale)
+		outputArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
+		outputArea.setLineWrap(false); // niente wrap (rompe le colonne)
+		outputArea.setWrapStyleWord(false);
 
-        inputField = new JTextField();
-        bottom.add(inputField, BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane(outputArea);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		contentPane.add(scrollPane, BorderLayout.CENTER);
 
-        JPanel buttons = new JPanel();
-        bottom.add(buttons, BorderLayout.EAST);
+		// INPUT BAR
+		JPanel bottom = new JPanel(new BorderLayout(8, 8));
+		contentPane.add(bottom, BorderLayout.SOUTH);
 
-        sendButton = new JButton("Invia");
-        buttons.add(sendButton);
+		inputField = new JTextField();
+		bottom.add(inputField, BorderLayout.CENTER);
 
-        clearButton = new JButton("Clear");
-        buttons.add(clearButton);
-    }
+		JPanel buttons = new JPanel();
+		bottom.add(buttons, BorderLayout.EAST);
 
-    // ===== Metodi "View API" (usati dal Controller) =====
+		sendButton = new JButton("Invia");
+		buttons.add(sendButton);
 
-    public void appendLine(String s) {
-        outputArea.append(s + System.lineSeparator());
-        outputArea.setCaretPosition(outputArea.getDocument().getLength()); // auto-scroll
-    }
+		clearButton = new JButton("Clear");
+		buttons.add(clearButton);
+	}
 
-    public String getInputText() {
-        return inputField.getText();
-    }
+	// ===== Metodi "View API" (usati dal Controller) =====
 
-    public void clearInput() {
-        inputField.setText("");
-    }
+	public void appendLine(String s) {
+		outputArea.append(s + System.lineSeparator());
+		outputArea.setCaretPosition(outputArea.getDocument().getLength()); // auto-scroll
+	}
 
-    public void clearOutput() {
-        outputArea.setText("");
-    }
+	public String getInputText() {
+		return inputField.getText();
+	}
 
-    public void focusInput() {
-        inputField.requestFocusInWindow();
-    }
+	public void clearInput() {
+		inputField.setText("");
+	}
 
-    // ===== Hook per eventi (il controller registra i listener) =====
+	public void clearOutput() {
+		outputArea.setText("");
+	}
 
-    public void onSubmit(Runnable handler) {
-        // Enter nel field
-        inputField.addActionListener(e -> handler.run());
-        // Click su invia
-        sendButton.addActionListener(e -> handler.run());
-    }
+	public void focusInput() {
+		inputField.requestFocusInWindow();
+	}
+	
+	public void appendRaw(String s) {
+	    outputArea.append(s);
+	    outputArea.setCaretPosition(outputArea.getDocument().getLength());
+	}
 
-    public void onClear(Runnable handler) {
-        clearButton.addActionListener(e -> handler.run());
-    }
+
+	// ===== Hook per eventi (il controller registra i listener) =====
+
+	public void onSubmit(Runnable handler) {
+		inputField.addActionListener(e -> handler.run());
+		sendButton.addActionListener(e -> handler.run());
+	}
+
+	public void onClear(Runnable handler) {
+		clearButton.addActionListener(e -> handler.run());
+	}
 }

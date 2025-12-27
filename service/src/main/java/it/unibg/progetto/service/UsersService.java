@@ -16,16 +16,36 @@ public class UsersService {
 		super();
 		this.repository = repository;
 	}
-	
+
 	public List<Users> getAllUsersFromDataBase() {
 		return repository.findAll();
 	}
-	
+
 	public Users addUsersIntoDataUsers(Users user) {
-	    return repository.save(user);
+		return repository.save(user);
 	}
-	
+
 	public void deleteUsers(Users user) {
 		repository.delete(user);
+	}
+
+	public void changePw(String id, String pw) {
+
+		for (Users u : repository.findAll()) {
+			if (u.getUuid().equals(id)) {
+				u.setPassword(pw);
+				repository.save(u);
+			}
+		}
+	}
+
+	public void changeAl(String id, int i) {
+
+		for (Users u : repository.findAll()) {
+			if (u.getUuid().equals(id)) {
+				u.setAccessLevel(i);
+				repository.save(u);
+			}
+		}
 	}
 }

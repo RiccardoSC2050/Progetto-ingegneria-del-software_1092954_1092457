@@ -1,4 +1,4 @@
-package it.unibg.progetto.cli;
+package it.unibg.progetto.api.cli;
 
 import static org.junit.jupiter.api.Assertions.*;
 

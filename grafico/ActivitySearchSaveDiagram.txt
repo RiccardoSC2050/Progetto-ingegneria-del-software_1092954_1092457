@@ -1,0 +1,45 @@
+@startuml
+skinparam shadowing false
+skinparam linetype ortho
+
+|Utente|
+start
+:Inserisce comando "search";
+:Inserisce filtro/valore;
+
+|Sistema|
+:Legge DOCUMENTO_AZIENDALE.csv;
+if (Input valido?) then (si)
+  :Esegue filtro su righe CSV;
+  :Mostra risultati;
+
+  if (AccessLevel >= 2 ?) then (si)
+    |Utente|
+    :Vuoi salvare i risultati? (y/n);
+
+    if (y) then (salva)
+      |Sistema|
+      :Crea file temporaneo risultati.csv;
+      :Scrive righe risultato;
+      :Chiede nome file;
+      :Rinomina file;
+      :Salva su DB (CsvUseCase -> CsvService -> Repository);
+      :Conferma salvataggio;
+    else (no)
+      |Sistema|
+      :Non salva;
+    endif
+
+  else (no)
+    |Sistema|
+    :Blocco salvataggio (solo lettura);
+  endif
+
+else (no)
+  :Mostra errore input;
+endif
+
+|Utente|
+:Continua con altri comandi;
+stop
+@enduml

@@ -1,0 +1,83 @@
+@startuml
+left to right direction
+skinparam shadowing false
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+' ===== Attori =====
+actor "Utente\n(Autenticato)" as U
+actor "Utente AL1" as AL1
+actor "Utente AL2" as AL2
+actor "Utente AL3" as AL3
+actor "Root (Admin)" as ROOT
+
+AL1 --|> U
+AL2 --|> U
+AL3 --|> U
+ROOT --|> U
+
+rectangle "Gestione Dipendenti Azienda (CLI)" as SYS {
+
+  package "Autenticazione" {
+    (Login) as UC_Login
+    (Logout) as UC_Logout
+    (Cambia password) as UC_Pw
+  }
+
+  package "Documento aziendale" {
+    (Visualizza documento aziendale) as UC_ViewDoc
+    (Cerca dipendenti\nnel documento) as UC_Search
+    (Statistiche sul documento) as UC_Stats
+    (Salva risultati ricerca\ncome CSV) as UC_SaveSearch
+  }
+
+  package "CSV personali" {
+    (Leggi CSV personale) as UC_ReadCsv
+    (Crea CSV personale) as UC_CreateCsv
+    (Modifica CSV personale) as UC_EditCsv
+    (Elimina CSV personale) as UC_DeleteCsv
+  }
+
+  package "Persistenza (DB)" {
+    (Scarica CSV da database) as UC_DownloadDb
+    (Salva CSV su database) as UC_SaveDb
+  }
+
+  package "Amministrazione" {
+    (Visualizza file di altri utenti) as UC_Others
+    (Gestisci utenti) as UC_UserAdmin
+  }
+}
+
+' ===== Associazioni attori (senza frecce) =====
+U -- UC_Login
+U -- UC_Logout
+U -- UC_Pw
+
+AL1 -- UC_ViewDoc
+AL1 -- UC_Search
+AL1 -- UC_Stats
+AL1 -- UC_ReadCsv
+
+AL2 -- UC_CreateCsv
+AL2 -- UC_EditCsv
+AL2 -- UC_DeleteCsv
+AL2 -- UC_SaveSearch
+
+AL3 -- UC_Others
+ROOT -- UC_UserAdmin
+
+' ===== Include / Extend =====
+UC_SaveSearch ..> UC_Search : <<extend>>\n[AL>=2]
+UC_ReadCsv ..> UC_DownloadDb : <<include>>
+UC_EditCsv ..> UC_DownloadDb : <<include>>
+UC_CreateCsv ..> UC_SaveDb : <<include>>
+
+' ===== Link invisibili per forzare colonne/ordine =====
+UC_Login -[hidden]-> UC_ViewDoc
+UC_ViewDoc -[hidden]-> UC_ReadCsv
+UC_ReadCsv -[hidden]-> UC_DownloadDb
+UC_DownloadDb -[hidden]-> UC_UserAdmin
+UC_SaveDb -[hidden]-> UC_UserAdmin
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+skinparam shadowing false
+
+[*] --> LoggedOut
+
+LoggedOut --> LoggingIn : login(name,pw)
+LoggingIn --> LoggedIn : [credentialsOK] / createSession()
+LoggingIn --> LoggedOut : [credentialsFail] / showError()
+
+state LoggedIn {
+  [*] --> Idle
+  Idle --> DoingCommand : commandEntered
+  DoingCommand --> Idle : commandCompleted
+  DoingCommand --> Error : exceptionRaised
+  Error --> Idle : handled
+}
+
+LoggedIn --> LoggingOut : logout / clearTempFiles()
+LoggingOut --> LoggedOut : sessionClosed
+
+@enduml

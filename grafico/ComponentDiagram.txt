@@ -1,0 +1,19 @@
+@startuml
+left to right direction
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam linetype ortho
+
+component "API (Spring Boot CLI)\nmodule: api" as C_API
+component "Business Services\nmodule: service" as C_SRV
+component "Persistence (JPA Repos)\nmodule: data" as C_DATA
+
+database "H2 Database" as DB
+folder "File System\n(temp CSV folder)" as FS
+
+C_API --> C_SRV : use cases / services
+C_SRV --> C_DATA : repositories
+C_DATA --> DB : JDBC/JPA
+
+C_API --> FS : read/write temp CSV
+@enduml

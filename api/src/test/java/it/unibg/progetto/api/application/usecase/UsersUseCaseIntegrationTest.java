@@ -12,8 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import it.unibg.progetto.api.app.ApiMain;
-import it.unibg.progetto.api.application.dto.RootDto;
-import it.unibg.progetto.api.domain.Root;
+
 import it.unibg.progetto.api.domain.User;
 import it.unibg.progetto.api.domain.rules.AccessLevel;
 import it.unibg.progetto.api.domain.rules.InvalidValues;

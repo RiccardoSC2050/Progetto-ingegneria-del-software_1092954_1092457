@@ -4,9 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.Year;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,8 @@ class CsvStatisticsResearchTest {
 		}
 		String[] r = new String[max + 1];
 		// default null va bene, ma per evitare NPE in alcuni accessi metto "" ovunque
-		for (int i = 0; i < r.length; i++) r[i] = "";
+		for (int i = 0; i < r.length; i++)
+			r[i] = "";
 
 		for (int i = 0; i < pairs.length; i += 2) {
 			StringValues key = (StringValues) pairs[i];
@@ -45,17 +45,18 @@ class CsvStatisticsResearchTest {
 	void countTotalValidEmployees_countsOnlyValidRows() throws Exception {
 		List<String[]> rows = Arrays.asList(
 				row(StringValues.ID, "1", StringValues.NOME, "Mario", StringValues.COGNOME, "Rossi"),
-				row(StringValues.ID, "",  StringValues.NOME, "Luigi", StringValues.COGNOME, "Bianchi"), // invalid (id blank)
-				row(StringValues.ID, "3", StringValues.NOME, "Anna",  StringValues.COGNOME, "Verdi")
-		);
+				row(StringValues.ID, "", StringValues.NOME, "Luigi", StringValues.COGNOME, "Bianchi"), // invalid (id
+																										// blank)
+				row(StringValues.ID, "3", StringValues.NOME, "Anna", StringValues.COGNOME, "Verdi"));
 
 		CsvUseCase ucInstance = mock(CsvUseCase.class);
 
 		try (MockedStatic<CsvUseCase> uc = mockStatic(CsvUseCase.class);
-			 MockedStatic<CsvFileManager> fm = mockStatic(CsvFileManager.class)) {
+				MockedStatic<CsvFileManager> fm = mockStatic(CsvFileManager.class)) {
 
 			uc.when(CsvUseCase::getIstnce).thenReturn(ucInstance);
-			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true)).thenReturn(rows);
+			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true))
+					.thenReturn(rows);
 
 			int n = CsvStatisticsResearch.countTotalValidEmployees();
 
@@ -70,14 +71,17 @@ class CsvStatisticsResearchTest {
 	@Test
 	void countEmployeesByRole_countsRolesSkippingInvalidRows() throws Exception {
 		List<String[]> rows = Arrays.asList(
-				row(StringValues.ID, "1", StringValues.NOME, "Mario", StringValues.COGNOME, "Rossi", StringValues.RUOLO, "DEV"),
-				row(StringValues.ID, "2", StringValues.NOME, "Anna",  StringValues.COGNOME, "Verdi", StringValues.RUOLO, "QA"),
-				row(StringValues.ID, "",  StringValues.NOME, "X",     StringValues.COGNOME, "Y",     StringValues.RUOLO, "DEV"), // invalid
-				row(StringValues.ID, "3", StringValues.NOME, "Luca",  StringValues.COGNOME, "Neri",  StringValues.RUOLO, "DEV")
-		);
+				row(StringValues.ID, "1", StringValues.NOME, "Mario", StringValues.COGNOME, "Rossi", StringValues.RUOLO,
+						"DEV"),
+				row(StringValues.ID, "2", StringValues.NOME, "Anna", StringValues.COGNOME, "Verdi", StringValues.RUOLO,
+						"QA"),
+				row(StringValues.ID, "", StringValues.NOME, "X", StringValues.COGNOME, "Y", StringValues.RUOLO, "DEV"), // invalid
+				row(StringValues.ID, "3", StringValues.NOME, "Luca", StringValues.COGNOME, "Neri", StringValues.RUOLO,
+						"DEV"));
 
 		try (MockedStatic<CsvFileManager> fm = mockStatic(CsvFileManager.class)) {
-			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true)).thenReturn(rows);
+			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true))
+					.thenReturn(rows);
 
 			Map<String, Integer> m = CsvStatisticsResearch.countEmployeesByRole();
 
@@ -95,11 +99,11 @@ class CsvStatisticsResearchTest {
 		List<String[]> rows = Arrays.asList(
 				row(StringValues.ID, "1", StringValues.NOME, "A", StringValues.COGNOME, "A", StringValues.RUOLO, "DEV"),
 				row(StringValues.ID, "2", StringValues.NOME, "B", StringValues.COGNOME, "B", StringValues.RUOLO, "DEV"),
-				row(StringValues.ID, "3", StringValues.NOME, "C", StringValues.COGNOME, "C", StringValues.RUOLO, "QA")
-		);
+				row(StringValues.ID, "3", StringValues.NOME, "C", StringValues.COGNOME, "C", StringValues.RUOLO, "QA"));
 
 		try (MockedStatic<CsvFileManager> fm = mockStatic(CsvFileManager.class)) {
-			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true)).thenReturn(rows);
+			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true))
+					.thenReturn(rows);
 
 			Map<String, Double> p = CsvStatisticsResearch.percentEmployeesByRole();
 
@@ -115,14 +119,12 @@ class CsvStatisticsResearchTest {
 	// =========================
 	@Test
 	void minMaxAnnoInizio_returnsMinAndMax() {
-		List<String[]> rows = Arrays.asList(
-				row(StringValues.ANNO_INIZIO, "2018"),
-				row(StringValues.ANNO_INIZIO, "2010"),
-				row(StringValues.ANNO_INIZIO, "2020")
-		);
+		List<String[]> rows = Arrays.asList(row(StringValues.ANNO_INIZIO, "2018"),
+				row(StringValues.ANNO_INIZIO, "2010"), row(StringValues.ANNO_INIZIO, "2020"));
 
 		try (MockedStatic<CsvFileManager> fm = mockStatic(CsvFileManager.class)) {
-			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true)).thenReturn(rows);
+			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true))
+					.thenReturn(rows);
 
 			int[] mm = CsvStatisticsResearch.minMaxAnnoInizio();
 
@@ -139,13 +141,12 @@ class CsvStatisticsResearchTest {
 	void averageAnnoInizioAndSeniority_computesAverages() {
 		int current = Year.now().getValue();
 
-		List<String[]> rows = Arrays.asList(
-				row(StringValues.ANNO_INIZIO, "2010"),
-				row(StringValues.ANNO_INIZIO, "2020")
-		);
+		List<String[]> rows = Arrays.asList(row(StringValues.ANNO_INIZIO, "2010"),
+				row(StringValues.ANNO_INIZIO, "2020"));
 
 		try (MockedStatic<CsvFileManager> fm = mockStatic(CsvFileManager.class)) {
-			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true)).thenReturn(rows);
+			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true))
+					.thenReturn(rows);
 
 			double[] res = CsvStatisticsResearch.averageAnnoInizioAndSeniority();
 
@@ -163,14 +164,12 @@ class CsvStatisticsResearchTest {
 	// =========================
 	@Test
 	void countEmployeesByStartYear_countsByYearSorted() {
-		List<String[]> rows = Arrays.asList(
-				row(StringValues.ANNO_INIZIO, "2020"),
-				row(StringValues.ANNO_INIZIO, "2020"),
-				row(StringValues.ANNO_INIZIO, "2019")
-		);
+		List<String[]> rows = Arrays.asList(row(StringValues.ANNO_INIZIO, "2020"),
+				row(StringValues.ANNO_INIZIO, "2020"), row(StringValues.ANNO_INIZIO, "2019"));
 
 		try (MockedStatic<CsvFileManager> fm = mockStatic(CsvFileManager.class)) {
-			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true)).thenReturn(rows);
+			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true))
+					.thenReturn(rows);
 
 			Map<Integer, Integer> m = CsvStatisticsResearch.countEmployeesByStartYear();
 
@@ -184,22 +183,20 @@ class CsvStatisticsResearchTest {
 	// =========================
 	@Test
 	void statsRichiami_returnsTotalAvgMinMax() {
-		List<String[]> rows = Arrays.asList(
-				row(StringValues.RICHIAMI, "0"),
-				row(StringValues.RICHIAMI, "2"),
-				row(StringValues.RICHIAMI, "4")
-		);
+		List<String[]> rows = Arrays.asList(row(StringValues.RICHIAMI, "0"), row(StringValues.RICHIAMI, "2"),
+				row(StringValues.RICHIAMI, "4"));
 
 		try (MockedStatic<CsvFileManager> fm = mockStatic(CsvFileManager.class)) {
-			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true)).thenReturn(rows);
+			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true))
+					.thenReturn(rows);
 
 			double[] s = CsvStatisticsResearch.statsRichiami();
 
 			assertNotNull(s);
-			assertEquals(6.0, s[0], 0.0001);     // totale
-			assertEquals(2.0, s[1], 0.0001);     // media
-			assertEquals(0.0, s[2], 0.0001);     // min
-			assertEquals(4.0, s[3], 0.0001);     // max
+			assertEquals(6.0, s[0], 0.0001); // totale
+			assertEquals(2.0, s[1], 0.0001); // media
+			assertEquals(0.0, s[2], 0.0001); // min
+			assertEquals(4.0, s[3], 0.0001); // max
 		}
 	}
 
@@ -209,13 +206,16 @@ class CsvStatisticsResearchTest {
 	@Test
 	void topEmployeesByRichiami_returnsTopNOrderedDesc() {
 		List<String[]> rows = Arrays.asList(
-				row(StringValues.ID, "1", StringValues.NOME, "Mario", StringValues.COGNOME, "Rossi", StringValues.RUOLO, "DEV", StringValues.RICHIAMI, "3"),
-				row(StringValues.ID, "2", StringValues.NOME, "Anna",  StringValues.COGNOME, "Verdi", StringValues.RUOLO, "QA",  StringValues.RICHIAMI, "4"),
-				row(StringValues.ID, "3", StringValues.NOME, "Luca",  StringValues.COGNOME, "Neri",  StringValues.RUOLO, "DEV", StringValues.RICHIAMI, "1")
-		);
+				row(StringValues.ID, "1", StringValues.NOME, "Mario", StringValues.COGNOME, "Rossi", StringValues.RUOLO,
+						"DEV", StringValues.RICHIAMI, "3"),
+				row(StringValues.ID, "2", StringValues.NOME, "Anna", StringValues.COGNOME, "Verdi", StringValues.RUOLO,
+						"QA", StringValues.RICHIAMI, "4"),
+				row(StringValues.ID, "3", StringValues.NOME, "Luca", StringValues.COGNOME, "Neri", StringValues.RUOLO,
+						"DEV", StringValues.RICHIAMI, "1"));
 
 		try (MockedStatic<CsvFileManager> fm = mockStatic(CsvFileManager.class)) {
-			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true)).thenReturn(rows);
+			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true))
+					.thenReturn(rows);
 
 			List<String[]> top2 = CsvStatisticsResearch.topEmployeesByRichiami(2);
 
@@ -233,13 +233,16 @@ class CsvStatisticsResearchTest {
 	@Test
 	void employeesWithZeroRichiami_returnsOnlyZero() {
 		List<String[]> rows = Arrays.asList(
-				row(StringValues.ID, "1", StringValues.NOME, "A", StringValues.COGNOME, "A", StringValues.RUOLO, "DEV", StringValues.RICHIAMI, "0"),
-				row(StringValues.ID, "2", StringValues.NOME, "B", StringValues.COGNOME, "B", StringValues.RUOLO, "QA",  StringValues.RICHIAMI, "2"),
-				row(StringValues.ID, "3", StringValues.NOME, "C", StringValues.COGNOME, "C", StringValues.RUOLO, "DEV", StringValues.RICHIAMI, "0")
-		);
+				row(StringValues.ID, "1", StringValues.NOME, "A", StringValues.COGNOME, "A", StringValues.RUOLO, "DEV",
+						StringValues.RICHIAMI, "0"),
+				row(StringValues.ID, "2", StringValues.NOME, "B", StringValues.COGNOME, "B", StringValues.RUOLO, "QA",
+						StringValues.RICHIAMI, "2"),
+				row(StringValues.ID, "3", StringValues.NOME, "C", StringValues.COGNOME, "C", StringValues.RUOLO, "DEV",
+						StringValues.RICHIAMI, "0"));
 
 		try (MockedStatic<CsvFileManager> fm = mockStatic(CsvFileManager.class)) {
-			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true)).thenReturn(rows);
+			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true))
+					.thenReturn(rows);
 
 			List<String[]> z = CsvStatisticsResearch.employeesWithZeroRichiami();
 
@@ -255,40 +258,24 @@ class CsvStatisticsResearchTest {
 	@Test
 	void countMissingFields_countsMissingByColumn() {
 		// r1 completo, r2 manca EMAIL e TELEFONO, r3 manca NOME
-		String[] r1 = row(
-				StringValues.ID, "1",
-				StringValues.NOME, "Mario",
-				StringValues.COGNOME, "Rossi",
-				StringValues.MAIL, "m@x.it",
-				StringValues.NUMERO_TELEFONO, "123",
-				StringValues.RUOLO, "DEV",
-				StringValues.ANNO_INIZIO, "2020"
-		);
+		String[] r1 = row(StringValues.ID, "1", StringValues.NOME, "Mario", StringValues.COGNOME, "Rossi",
+				StringValues.MAIL, "m@x.it", StringValues.NUMERO_TELEFONO, "123", StringValues.RUOLO, "DEV",
+				StringValues.ANNO_INIZIO, "2020");
 
-		String[] r2 = row(
-				StringValues.ID, "2",
-				StringValues.NOME, "Anna",
-				StringValues.COGNOME, "Verdi",
-				StringValues.MAIL, "",                 // missing
-				StringValues.NUMERO_TELEFONO, "   ",    // missing
-				StringValues.RUOLO, "QA",
-				StringValues.ANNO_INIZIO, "2019"
-		);
+		String[] r2 = row(StringValues.ID, "2", StringValues.NOME, "Anna", StringValues.COGNOME, "Verdi",
+				StringValues.MAIL, "", // missing
+				StringValues.NUMERO_TELEFONO, "   ", // missing
+				StringValues.RUOLO, "QA", StringValues.ANNO_INIZIO, "2019");
 
-		String[] r3 = row(
-				StringValues.ID, "3",
-				StringValues.NOME, "",                  // missing
-				StringValues.COGNOME, "Neri",
-				StringValues.MAIL, "c@x.it",
-				StringValues.NUMERO_TELEFONO, "999",
-				StringValues.RUOLO, "DEV",
-				StringValues.ANNO_INIZIO, "2018"
-		);
+		String[] r3 = row(StringValues.ID, "3", StringValues.NOME, "", // missing
+				StringValues.COGNOME, "Neri", StringValues.MAIL, "c@x.it", StringValues.NUMERO_TELEFONO, "999",
+				StringValues.RUOLO, "DEV", StringValues.ANNO_INIZIO, "2018");
 
 		List<String[]> rows = Arrays.asList(r1, r2, r3);
 
 		try (MockedStatic<CsvFileManager> fm = mockStatic(CsvFileManager.class)) {
-			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true)).thenReturn(rows);
+			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true))
+					.thenReturn(rows);
 
 			Map<String, Integer> miss = CsvStatisticsResearch.countMissingFields();
 

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.unibg.progetto.api.application.dto.CsvDto;
-import it.unibg.progetto.api.application.dto.UserDto;
+
 import it.unibg.progetto.api.cli.components.Constant;
 import it.unibg.progetto.api.domain.rules.CsvStandard;
 import it.unibg.progetto.api.infrastructure.csv.CsvFileManager;
@@ -345,7 +345,7 @@ public class CsvUseCase {
 	public boolean stampListOfMyCsv(String uuid) {
 		List<CsvDto> cList = returnAllFileCsvDtoFromDataOfUser(uuid);
 
-		if(cList.isEmpty()) {
+		if (cList.isEmpty()) {
 			System.out.println("Nessun file disponibile");
 			return false;
 		}

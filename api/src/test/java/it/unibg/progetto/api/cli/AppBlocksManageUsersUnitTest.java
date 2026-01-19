@@ -6,14 +6,13 @@ import static org.mockito.Mockito.*;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Collections;
+
 import java.util.Scanner;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
-import it.unibg.progetto.api.application.usecase.CsvUseCase;
 import it.unibg.progetto.api.application.usecase.UsersUseCase;
 import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.cli.components.Quit;
@@ -22,7 +21,7 @@ import it.unibg.progetto.api.domain.User;
 import it.unibg.progetto.api.domain.rules.AccessLevel;
 import it.unibg.progetto.api.domain.rules.InvalidValues;
 import it.unibg.progetto.api.domain.rules.Validators;
-import it.unibg.progetto.api.security.Hash;
+
 import it.unibg.progetto.api.security.session.Session;
 import it.unibg.progetto.api.security.session.SessionManager;
 
@@ -181,45 +180,43 @@ class AppBlocksManageUsersUnitTest {
 
 	@Test
 	void changePassword_updatesPasswordInUseCase_whenValidPw() {
-	    AppBlocksManageUsers sut = new AppBlocksManageUsers();
+		AppBlocksManageUsers sut = new AppBlocksManageUsers();
 
-	    GlobalScanner.scanner = new Scanner(
-	            new ByteArrayInputStream("password99\n".getBytes(StandardCharsets.UTF_8))
-	    );
+		GlobalScanner.scanner = new Scanner(new ByteArrayInputStream("password99\n".getBytes(StandardCharsets.UTF_8)));
 
-	    Session session = mock(Session.class);
-	    when(session.getUuid()).thenReturn("ID1");
+		Session session = mock(Session.class);
+		when(session.getUuid()).thenReturn("ID1");
 
-	    Root root = mock(Root.class);
-	    when(root.checkLenghtPw("password99")).thenReturn(true);
+		Root root = mock(Root.class);
+		when(root.checkLenghtPw("password99")).thenReturn(true);
 
-	    UsersUseCase usersUseCase = mock(UsersUseCase.class);
+		UsersUseCase usersUseCase = mock(UsersUseCase.class);
 
-	    try (MockedStatic<SessionManager> sm = mockStatic(SessionManager.class);
-	         MockedStatic<Root> rt = mockStatic(Root.class);
-	         MockedStatic<UsersUseCase> uu = mockStatic(UsersUseCase.class);
-	         MockedStatic<Quit> qt = mockStatic(Quit.class)) {
+		try (MockedStatic<SessionManager> sm = mockStatic(SessionManager.class);
+				MockedStatic<Root> rt = mockStatic(Root.class);
+				MockedStatic<UsersUseCase> uu = mockStatic(UsersUseCase.class);
+				MockedStatic<Quit> qt = mockStatic(Quit.class)) {
 
-	        sm.when(SessionManager::getCurrent).thenReturn(session);
-	        rt.when(Root::getInstanceRoot).thenReturn(root);
-	        uu.when(UsersUseCase::getInstance).thenReturn(usersUseCase);
-	        qt.when(() -> Quit.quit(anyString())).thenReturn(false);
+			sm.when(SessionManager::getCurrent).thenReturn(session);
+			rt.when(Root::getInstanceRoot).thenReturn(root);
+			uu.when(UsersUseCase::getInstance).thenReturn(usersUseCase);
+			qt.when(() -> Quit.quit(anyString())).thenReturn(false);
 
-	        sut.changePassword();
+			sut.changePassword();
 
-	        // catturo argomenti reali
-	        var pwCaptor = org.mockito.ArgumentCaptor.forClass(String.class);
-	        verify(usersUseCase).changePassordToUser(pwCaptor.capture(), eq("ID1"));
+			// catturo argomenti reali
+			var pwCaptor = org.mockito.ArgumentCaptor.forClass(String.class);
+			verify(usersUseCase).changePassordToUser(pwCaptor.capture(), eq("ID1"));
 
-	        String passedHash = pwCaptor.getValue();
-	        assertNotNull(passedHash);
-	        assertNotEquals("password99", passedHash); // non deve passare in chiaro
+			String passedHash = pwCaptor.getValue();
+			assertNotNull(passedHash);
+			assertNotEquals("password99", passedHash); // non deve passare in chiaro
 
-	        // se è BCrypt (molto probabile), puoi anche usare questa:
-	        // assertTrue(passedHash.startsWith("$2a$") || passedHash.startsWith("$2b$") || passedHash.startsWith("$2y$"));
-	    }
+			// se è BCrypt (molto probabile), puoi anche usare questa:
+			// assertTrue(passedHash.startsWith("$2a$") || passedHash.startsWith("$2b$") ||
+			// passedHash.startsWith("$2y$"));
+		}
 	}
-
 
 	@Test
 	void changePassword_returns_whenQuit() {

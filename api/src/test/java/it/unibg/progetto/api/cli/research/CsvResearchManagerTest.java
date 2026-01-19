@@ -1,13 +1,12 @@
 package it.unibg.progetto.api.cli.research;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Locale;
+
 import java.util.Map;
 import java.util.Scanner;
 

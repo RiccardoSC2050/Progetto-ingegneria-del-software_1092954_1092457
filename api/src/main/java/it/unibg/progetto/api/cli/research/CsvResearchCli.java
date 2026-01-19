@@ -14,19 +14,21 @@ import java.util.ArrayList;
 
 public class CsvResearchCli {
 
+	private static final String X = "*";
+
 	/**
-	 * CONTOLLA SE IL ! è PRESNETE IN FONDO ALLA PAROLA O MENO
+	 * CONTOLLA SE IL * è PRESNETE IN FONDO ALLA PAROLA O MENO
 	 * 
 	 * @param value
 	 * @return
 	 */
 	private static boolean controlofSpecialChar(String value) {
 		int l = value.length();
-		if (value.contains("!")) {
-			if (value.charAt(l - 1) == '!') {
+		if (value.contains(X)) {
+			if (value.charAt(l - 1) == X.charAt(0)) {
 				return true;
 			}
-		} else if (!value.contains("!")) {
+		} else if (!value.contains(X)) {
 			return true;
 		}
 		return false;
@@ -51,7 +53,7 @@ public class CsvResearchCli {
 																												// salta
 																												// header
 
-		// controllo di '!'
+		// controllo di '*'
 		if (controlofSpecialChar(value) == false) {
 			System.out.println("errore di inserimento");
 			return null;
@@ -67,8 +69,8 @@ public class CsvResearchCli {
 
 			if (columnIndex == 4) {
 				value.toLowerCase().strip().replace("+39", "").strip();
-				if (value.toLowerCase().contains("!")
-						&& value.toLowerCase().replace("!", "").strip().equals(cell.toLowerCase()))
+				if (value.toLowerCase().contains(X)
+						&& value.toLowerCase().replace(value, "").strip().equals(cell.toLowerCase()))
 					result.add(row);
 				// aggiunge una riga se inizia con lettere dell'attributo colonna
 				else if (cell.toLowerCase().replace("+39", "").strip().startsWith(value.toLowerCase().strip()))
@@ -80,8 +82,8 @@ public class CsvResearchCli {
 			{
 				// aggiunge una riga se contiene punto esclamativo in fondo (ontrollato prima) e
 				// se ovviaente è uguale al valore colonna
-				if (value.toLowerCase().contains("!")
-						&& value.toLowerCase().replace("!", "").strip().equals(cell.toLowerCase()))
+				if (value.toLowerCase().contains(X)
+						&& value.toLowerCase().replace(X, "").strip().equals(cell.toLowerCase()))
 					result.add(row);
 				// aggiunge una riga se inizia con lettere dell'attributo colonna
 				else if (cell.toLowerCase().startsWith(value.toLowerCase().strip()))

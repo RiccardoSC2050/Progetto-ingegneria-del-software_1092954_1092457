@@ -15,7 +15,6 @@ import it.unibg.progetto.api.domain.rules.AccessLevel;
 import it.unibg.progetto.api.domain.rules.Validators;
 import it.unibg.progetto.api.domain.rules.InvalidValues;
 import it.unibg.progetto.api.security.Hash;
-import it.unibg.progetto.api.security.session.SessionManager;
 
 /**
  * Root administrator class extending Operator with maximum privileges.

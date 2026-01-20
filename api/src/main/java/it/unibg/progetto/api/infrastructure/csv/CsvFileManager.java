@@ -15,11 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import it.unibg.progetto.api.application.usecase.CsvUseCase;
 import it.unibg.progetto.api.cli.components.Constant;
 import it.unibg.progetto.api.cli.components.GlobalScanner;
-import it.unibg.progetto.api.security.session.SessionManager;
-
 public class CsvFileManager {
 
 	public CsvFileManager() {

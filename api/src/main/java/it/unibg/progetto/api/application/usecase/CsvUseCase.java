@@ -345,7 +345,7 @@ public class CsvUseCase {
 	public boolean stampListOfMyCsv(String uuid) {
 		List<CsvDto> cList = returnAllFileCsvDtoFromDataOfUser(uuid);
 
-		if(cList.isEmpty()) {
+		if (cList.isEmpty()) {
 			System.out.println("Nessun file disponibile");
 			return false;
 		}

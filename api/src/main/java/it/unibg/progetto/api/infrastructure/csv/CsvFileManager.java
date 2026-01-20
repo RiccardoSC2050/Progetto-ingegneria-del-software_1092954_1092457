@@ -17,6 +17,7 @@ import java.util.Scanner;
 
 import it.unibg.progetto.api.cli.components.Constant;
 import it.unibg.progetto.api.cli.components.GlobalScanner;
+
 public class CsvFileManager {
 
 	public CsvFileManager() {
@@ -184,46 +185,47 @@ public class CsvFileManager {
 			throw new RuntimeException("Errore nella lettura dell'header del file CSV: " + csvFile.getPath(), e);
 		}
 	}
-	
-	//ciao
+
+	// ciao
 	public static void printRows(List<String[]> rows) {
-	    if (rows == null || rows.isEmpty()) {
-	        System.out.println("(nessun dato)");
-	        return;
-	    }
+		if (rows == null || rows.isEmpty()) {
+			System.out.println("(nessun dato)");
+			return;
+		}
 
-	    // calcola numero massimo di colonne
-	    int colsCount = 0;
-	    for (String[] row : rows) {
-	        if (row != null) {
-	            colsCount = Math.max(colsCount, row.length);
-	        }
-	    }
+		// calcola numero massimo di colonne
+		int colsCount = 0;
+		for (String[] row : rows) {
+			if (row != null) {
+				colsCount = Math.max(colsCount, row.length);
+			}
+		}
 
-	    // calcola larghezza massima per colonna
-	    int[] maxWidths = new int[colsCount];
-	    for (String[] row : rows) {
-	        if (row == null) continue;
-	        for (int i = 0; i < row.length; i++) {
-	            String cell = row[i] == null ? "" : row[i];
-	            maxWidths[i] = Math.max(maxWidths[i], cell.length());
-	        }
-	    }
+		// calcola larghezza massima per colonna
+		int[] maxWidths = new int[colsCount];
+		for (String[] row : rows) {
+			if (row == null)
+				continue;
+			for (int i = 0; i < row.length; i++) {
+				String cell = row[i] == null ? "" : row[i];
+				maxWidths[i] = Math.max(maxWidths[i], cell.length());
+			}
+		}
 
-	    // stampa righe
-	    for (String[] row : rows) {
-	        if (row == null) continue;
+		// stampa righe
+		for (String[] row : rows) {
+			if (row == null)
+				continue;
 
-	        System.out.print("| ");
-	        for (int i = 0; i < colsCount; i++) {
-	            String cell = (i < row.length && row[i] != null) ? row[i] : "";
-	            System.out.print(padRight(cell, maxWidths[i]));
-	            System.out.print(" | ");
-	        }
-	        System.out.println();
-	    }
+			System.out.print("| ");
+			for (int i = 0; i < colsCount; i++) {
+				String cell = (i < row.length && row[i] != null) ? row[i] : "";
+				System.out.print(padRight(cell, maxWidths[i]));
+				System.out.print(" | ");
+			}
+			System.out.println();
+		}
 	}
-
 
 	public static void writeCsvLikeEditor(String filePath) throws Exception {
 

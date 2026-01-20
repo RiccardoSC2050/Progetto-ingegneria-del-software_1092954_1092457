@@ -2,9 +2,11 @@ package it.unibg.progetto.api.cli;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import java.util.List;
 
 import it.unibg.progetto.api.application.dto.CsvDto;
@@ -163,7 +165,8 @@ public class AppBlocksManageCsv {
 	 * @throws Exception
 	 */
 	public void readFileCsv() throws Exception {
-		if(!lsFileUser())return;
+		if (!lsFileUser())
+			return;
 		boolean f;
 		do {
 			System.out.println("Quale vuoi visualizzare?");

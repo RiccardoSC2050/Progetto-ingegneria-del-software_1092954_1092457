@@ -1,171 +1,223 @@
-# Software Maintenance & Refactoring
-## Gestione Dipendenti
+# SOFTWARE MAINTENANCE
 
-Questo documento descrive le attività di **manutenzione del software** svolte
-durante lo sviluppo del progetto **Gestione Dipendenti**, in conformità con
-le linee guida del corso di **Ingegneria del Software (AA 2025/26)**.
+Questo documento descrive in modo completo e approfondito le attività di
+**manutenzione del software** svolte durante e dopo lo sviluppo del progetto
+**Gestione Dipendenti**, realizzato nell’ambito del corso di
+**Ingegneria del Software (AA 2025/26)**.
 
-La manutenzione è intesa non come semplice correzione di errori, ma come
-attività sistematica di **miglioramento della qualità del software**, della
-sua struttura e della sua manutenibilità.
+La manutenzione non è stata intesa come una fase finale isolata, ma come un
+**processo continuo**, strettamente collegato alle attività di progettazione,
+implementazione e testing.
 
 ---
 
 ## 1. Obiettivi della manutenzione
 
-Gli obiettivi principali delle attività di manutenzione sono:
-- migliorare la **leggibilità e comprensibilità del codice**;
-- ridurre il **debito tecnico**;
-- aumentare la **manutenibilità** del sistema;
-- facilitare l’estensione futura del software;
-- migliorare l’allineamento tra architettura progettata e implementazione.
+Gli obiettivi principali delle attività di manutenzione sono stati:
 
-La manutenzione è considerata una parte integrante del ciclo di vita del
-software e non una fase secondaria.
+- migliorare la qualità complessiva del codice;
+- ridurre il debito tecnico accumulato durante lo sviluppo;
+- aumentare la manutenibilità e la leggibilità del sistema;
+- correggere difetti emersi durante il testing;
+- adattare il software all’evoluzione dell’architettura.
+
+La manutenzione è stata considerata una parte integrante del ciclo di vita del
+software, in linea con quanto discusso durante il corso.
 
 ---
 
-## 2. Tipologie di manutenzione adottate
+## 2. Tipologie di manutenzione applicate
 
-Nel progetto sono state applicate principalmente le seguenti tipologie di
-manutenzione.
+Nel progetto sono state applicate diverse tipologie di manutenzione, spesso in
+modo combinato.
 
 ### 2.1 Manutenzione correttiva
 
-La manutenzione correttiva riguarda:
-- correzione di errori logici individuati durante lo sviluppo;
-- risoluzione di bug emersi durante il testing;
-- gestione di casi limite non previsti inizialmente.
+La manutenzione correttiva ha riguardato:
 
-Queste attività sono state svolte in modo incrementale e tracciate tramite
-commit Git.
+- correzione di errori logici individuati durante il testing;
+- gestione di casi limite non previsti inizialmente;
+- correzione di comportamenti incoerenti tra moduli.
+
+Questi interventi sono stati effettuati principalmente:
+- a seguito dell’esecuzione dei test JUnit;
+- durante l’integrazione dei moduli;
+- in fase di validazione finale del sistema.
 
 ---
 
-### 2.2 Manutenzione migliorativa (refactoring)
+### 2.2 Manutenzione migliorativa
 
-La manutenzione migliorativa ha avuto un ruolo centrale nel progetto ed è
-stata realizzata principalmente tramite **attività di refactoring**.
+La manutenzione migliorativa ha avuto un ruolo centrale nel progetto ed è stata
+svolta principalmente tramite **attività di refactoring**.
 
-Il refactoring è stato utilizzato per:
-- migliorare la struttura del codice;
-- ridurre duplicazioni;
+Gli obiettivi della manutenzione migliorativa sono stati:
+- migliorare la struttura interna del codice;
+- ridurre la complessità dei moduli;
 - chiarire le responsabilità delle classi;
-- migliorare la coesione dei package.
+- migliorare l’allineamento con il design architetturale.
 
 ---
 
-## 3. Attività di refactoring principali
+### 2.3 Manutenzione adattiva
+
+Alcune attività di manutenzione sono state di tipo **adattivo**, in quanto
+necessarie per:
+
+- adattare il codice all’introduzione di Spring Boot;
+- integrare la GUI a falso terminale;
+- modificare la struttura dei package in seguito all’evoluzione del progetto.
+
+Queste modifiche non hanno introdotto nuove funzionalità, ma hanno permesso al
+sistema di adattarsi a un contesto tecnico più complesso.
+
+---
+
+## 3. Refactoring strutturale del codice
 
 ### 3.1 Riorganizzazione dei package
 
 Una delle principali attività di manutenzione ha riguardato la
-**riorganizzazione dei package**, al fine di:
-- riflettere meglio l’architettura logica del sistema;
-- separare le responsabilità;
-- ridurre accoppiamenti indesiderati.
+**riorganizzazione dei package**.
 
-La struttura è stata progressivamente allineata a una suddivisione logica
-ispirata a:
-- domain
-- application
-- infrastructure
-- presentation (CLI / GUI a falso terminale)
+In particolare:
+- sono stati separati i package di dominio da quelli applicativi;
+- è stata migliorata la distinzione tra logica di business e persistenza;
+- sono stati ridotti riferimenti incrociati non necessari.
+
+Questa riorganizzazione ha contribuito a:
+- migliorare la leggibilità del progetto;
+- facilitare il testing per package;
+- rendere più chiara l’architettura complessiva.
 
 ---
 
 ### 3.2 Miglioramento della separazione Domain / Application
 
-Durante lo sviluppo è emersa una difficoltà concreta nel mantenere una
-separazione perfettamente rigida tra **domain layer** e **application layer**.
+Durante la manutenzione si è cercato di mitigare i problemi emersi nella
+separazione tra **domain layer** e **application layer**.
 
-Questa criticità è stata affrontata in modo consapevole:
-- cercando di spostare la logica di business nel dominio;
-- limitando la presenza di logica applicativa nelle entità;
-- mantenendo l’orchestrazione dei casi d’uso nel livello applicativo.
+Le attività svolte includono:
+- spostamento di logica impropriamente collocata nel dominio;
+- riduzione delle dipendenze dirette tra livelli;
+- introduzione di metodi di servizio più chiari.
 
-Pur non raggiungendo una separazione ideale in ogni punto, il team ha
-perseguito con decisione un approccio **professionale e realistico**, coerente
-con la dimensione e il contesto del progetto.
+Nonostante questi interventi, non è stato possibile ottenere una separazione
+perfettamente pulita in ogni punto, a causa della struttura ormai consolidata
+del codice.
 
----
-
-### 3.3 Rinomina di classi e metodi
-
-Sono state effettuate attività di:
-- rinomina di classi;
-- rinomina di metodi;
-- standardizzazione della nomenclatura.
-
-Queste modifiche hanno migliorato:
-- la leggibilità del codice;
-- la comprensione delle responsabilità;
-- la coerenza con le convenzioni Java.
+Questa limitazione è stata accettata come compromesso realistico.
 
 ---
 
-### 3.4 Pulizia e semplificazione del codice
+## 4. Manutenzione guidata dal testing
 
-Ulteriori attività di manutenzione hanno incluso:
-- rimozione di codice non utilizzato;
-- semplificazione di metodi troppo complessi;
-- suddivisione di metodi con responsabilità multiple;
-- miglioramento dei commenti e della documentazione inline.
+Il testing ha svolto un ruolo fondamentale nel guidare le attività di
+manutenzione.
 
----
+In particolare:
+- i test hanno evidenziato metodi troppo complessi;
+- alcuni moduli sono risultati difficili da testare in isolamento;
+- il testing ha reso visibili accoppiamenti nascosti.
 
-## 4. Collegamento con architettura e testing
+A seguito di questi risultati, sono stati effettuati:
+- refactoring mirati;
+- semplificazioni di metodi;
+- suddivisione di operazioni troppo complesse.
 
-Le attività di manutenzione sono state svolte in stretta relazione con:
-- la revisione dell’architettura;
-- l’evoluzione dei diagrammi UML;
-- le attività di testing.
-
-Il refactoring è stato spesso guidato dai risultati dei test:
-- errori individuati → analisi → modifica del codice → riesecuzione dei test.
-
-Questo approccio garantisce:
-- maggiore affidabilità;
-- riduzione del rischio di regressioni;
-- miglioramento continuo della qualità.
+Questo approccio conferma il ruolo del testing come strumento di
+**validazione architetturale**, non solo di verifica funzionale.
 
 ---
 
-## 5. Tracciabilità delle attività di manutenzione
+## 5. Manutenzione della gestione dei dati
+
+La gestione dei dati e del database ha richiesto interventi di manutenzione
+specifici.
+
+Le attività principali includono:
+- miglioramento della gestione delle connessioni;
+- consolidamento dell’uso del pattern Singleton per il database;
+- riduzione di accessi diretti non controllati ai dati.
+
+Questi interventi hanno aumentato:
+- la stabilità del sistema;
+- la prevedibilità dei comportamenti;
+- la sicurezza complessiva della gestione dei dati.
+
+---
+
+## 6. Manutenzione della sicurezza
+
+Durante le attività di manutenzione è stata rivista la gestione della sicurezza,
+in particolare per quanto riguarda:
+
+- hashing delle password;
+- gestione degli identificativi utente;
+- accesso ai dati sensibili.
+
+È stata individuata una criticità nella gestione uniforme dei controlli di
+sicurezza, che non è stata completamente risolta, ma è stata:
+
+- compresa;
+- documentata;
+- identificata come possibile miglioramento futuro.
+
+---
+
+## 7. Manutenzione della GUI
+
+La GUI a falso terminale ha richiesto attività di manutenzione specifiche,
+legate principalmente a:
+
+- miglioramento della chiarezza dell’interazione;
+- gestione più ordinata dei flussi di input/output;
+- integrazione stabile con il `main` originale tramite il ponte.
+
+La manutenzione della GUI si è concentrata sulla **stabilità e coerenza**,
+piuttosto che sull’introduzione di nuove funzionalità.
+
+---
+
+## 8. Tracciabilità delle attività di manutenzione
 
 Le attività di manutenzione sono tracciabili tramite:
+
 - commit Git descrittivi;
-- branch dedicati;
-- pull request di integrazione.
+- modifiche incrementali;
+- riorganizzazione progressiva del codice.
 
-Questo consente di:
-- ricostruire l’evoluzione del sistema;
-- comprendere le motivazioni delle modifiche;
-- facilitare la revisione in fase di valutazione.
-
----
-
-## 6. Ruolo della manutenzione nel ciclo di vita
-
-La manutenzione ha accompagnato l’intero ciclo di sviluppo del progetto e non
-è stata relegata a una fase finale.
-
-Questo approccio riflette una visione moderna dell’ingegneria del software,
-in cui:
-- il codice è costantemente migliorato;
-- la qualità è un obiettivo continuo;
-- il software è considerato un prodotto evolutivo.
+Questo consente di ricostruire:
+- l’evoluzione del progetto;
+- le motivazioni delle modifiche;
+- l’impatto delle attività di manutenzione.
 
 ---
 
-## 7. Conclusioni
+## 9. Lezioni apprese
 
-Le attività di manutenzione e refactoring svolte nel progetto
-Gestione Dipendenti dimostrano:
+Le attività di manutenzione hanno evidenziato diversi aspetti rilevanti:
+
+- l’importanza di una buona separazione architetturale fin dall’inizio;
+- il ruolo centrale del testing nel miglioramento del codice;
+- la difficoltà di integrare nuovi framework in progetti esistenti;
+- la necessità di accettare compromessi realistici.
+
+Queste lezioni rappresentano uno degli aspetti più significativi del progetto
+dal punto di vista formativo.
+
+---
+
+## 10. Conclusioni
+
+La manutenzione del progetto **Gestione Dipendenti** non è stata un’attività
+secondaria, ma una parte essenziale del ciclo di vita del software.
+
+Le attività svolte dimostrano:
 - attenzione alla qualità del codice;
-- consapevolezza architetturale;
-- capacità di migliorare software esistente.
+- capacità di analisi critica;
+- comprensione dei concetti di manutenzione software.
 
-Questo documento completa la documentazione di progetto, evidenziando come il
-team abbia applicato in modo concreto i principi della **Software Maintenance**
-studiati durante il corso.
+Questo documento conclude la descrizione delle attività di manutenzione e si
+integra con gli altri file di progetto, fornendo una visione completa e
+realistica del lavoro svolto.

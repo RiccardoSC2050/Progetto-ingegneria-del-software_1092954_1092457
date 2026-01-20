@@ -1,13 +1,13 @@
 # Software Testing Specification (STP)
-## Gestione Dipendenti
 
-Questo documento descrive le attività di **Software Testing** svolte per il
-progetto **Gestione Dipendenti**, sviluppato nell’ambito del corso di
-Ingegneria del Software (AA 2025/26).
+Questo documento descrive in modo completo e definitivo le attività di
+**Software Testing** svolte per il progetto **Gestione Dipendenti**, sviluppato
+nell’ambito del corso di **Ingegneria del Software (AA 2025/26)**.
 
-Il testing è stato progettato, realizzato ed eseguito come **fase conclusiva
-del progetto**, con l’obiettivo di verificare la correttezza funzionale,
-l’integrazione dei componenti e la qualità complessiva del software.
+Il testing è stato affrontato come **fase strutturata e conclusiva** del ciclo
+di sviluppo, con l’obiettivo di validare il comportamento del sistema, la
+correttezza dell’implementazione e la conformità ai requisiti definiti nella
+SRC.
 
 ---
 
@@ -15,67 +15,66 @@ l’integrazione dei componenti e la qualità complessiva del software.
 
 Le attività di testing hanno avuto i seguenti obiettivi:
 
-- verificare la corretta implementazione dei requisiti definiti nella SRC;
-- individuare e correggere errori logici e di integrazione;
-- validare il comportamento del sistema in condizioni normali e limite;
-- garantire stabilità, affidabilità e coerenza del software;
-- supportare la manutenzione e il refactoring finale del codice.
+- verificare l’implementazione dei requisiti funzionali;
+- individuare errori logici e di integrazione;
+- validare la stabilità dei moduli principali;
+- supportare il refactoring finale del codice;
+- garantire un livello di qualità coerente con un progetto accademico avanzato.
 
-Il testing rappresenta la **fase di validazione finale** del progetto,
-in coerenza con il modello di sviluppo adottato.
+Il testing è stato utilizzato come **strumento di verifica formale** e non come
+semplice controllo manuale del software.
 
 ---
 
-## 2. Inquadramento metodologico
+## 2. Approccio metodologico
 
-Il progetto segue un **modello di sviluppo ibrido** che combina:
+Il progetto segue un **modello di sviluppo ibrido**, che combina:
 
 - approccio a cascata per analisi e progettazione;
 - **V-Model** per verifica e validazione;
-- iterazioni Scrum per lo sviluppo incrementale.
+- sviluppo incrementale ispirato a Scrum.
 
-In questo contesto, il testing è stato eseguito **dopo l’implementazione delle
-funzionalità**, secondo una logica di verifica strutturata e controllata.
-
-Il flusso adottato è stato:
+In coerenza con il V-Model, il testing è stato eseguito **dopo il completamento
+dell’implementazione**, seguendo una logica sequenziale e controllata:
 
 1. progettazione delle classi;
-2. implementazione del codice;
+2. implementazione dei metodi;
 3. definizione dei casi di test;
 4. esecuzione dei test;
 5. analisi dei risultati;
-6. correzione e refactoring;
+6. correzioni e refactoring;
 7. riesecuzione dei test.
 
 ---
 
-## 3. Tipologie di testing effettuate
+## 3. Tipologie di testing adottate
 
 ### 3.1 Unit Testing
 
-Il **testing di unità** è stato utilizzato per verificare il corretto
-funzionamento dei singoli metodi e delle singole classi.
+Il **testing di unità** è stato effettuato utilizzando **JUnit** ed è stato
+applicato a tutte le componenti testabili del sistema.
 
 Caratteristiche principali:
-- utilizzo di **JUnit**;
-- test focalizzati su una sola unità alla volta;
+- test focalizzati su singoli metodi e classi;
 - verifica di casi normali e casi limite;
-- isolamento della logica di business.
+- isolamento della logica di business;
+- controllo esplicito dei risultati attesi.
 
-Le classi testate includono:
-- entità di dominio;
-- servizi applicativi;
-- componenti di utilità.
+Sono stati testati:
+- domain layer;
+- application / service layer;
+- moduli di utilità;
+- componenti di gestione dei dati.
 
 ---
 
 ### 3.2 Integration Testing
 
-Il **testing di integrazione** ha verificato la corretta interazione tra:
+Il **testing di integrazione** ha verificato la corretta cooperazione tra:
 
-- service layer e data layer;
-- logica applicativa e database;
-- componenti che cooperano nello stesso flusso funzionale.
+- servizi applicativi e dominio;
+- logica applicativa e persistenza;
+- moduli coinvolti negli stessi flussi funzionali.
 
 Questa fase ha permesso di individuare errori non rilevabili tramite unit test
 isolati.
@@ -85,170 +84,203 @@ isolati.
 ### 3.3 System Testing
 
 Il **testing di sistema** ha validato il comportamento complessivo
-dell’applicazione, simulando l’utilizzo reale del sistema.
+dell’applicazione, simulando scenari di utilizzo realistici.
 
 Sono stati verificati:
-- flussi completi di utilizzo;
-- controlli di accesso;
-- gestione degli errori;
-- coerenza dei risultati prodotti.
+- flussi funzionali completi;
+- gestione delle eccezioni;
+- coerenza dei risultati;
+- stabilità del sistema.
 
 ---
 
 ### 3.4 Acceptance Testing
 
 Il **testing di accettazione** ha verificato la conformità del sistema ai
-requisiti funzionali definiti nella SRC.
+requisiti definiti nella **SRC**.
 
-Ogni requisito è stato validato tramite uno o più casi di test,
-garantendo che il sistema soddisfi le aspettative previste.
-
----
-
-## 4. Organizzazione dei package di test
-
-I test sono organizzati seguendo una struttura coerente con quella del codice
-applicativo, al fine di migliorare leggibilità, manutenibilità e tracciabilità.
+Ogni requisito funzionale è stato validato tramite uno o più casi di test,
+garantendo la tracciabilità tra requisiti, codice e test.
 
 ---
 
-## 5. Strategia di testing del database
+## 4. Copertura del testing
 
-Il testing della componente di persistenza è stato progettato e realizzato come
-parte integrante del processo di validazione finale del sistema.
-
-Data la centralità del database nel progetto, è stata adottata una strategia
-di testing mirata a garantire **consistenza dei dati, affidabilità delle
-operazioni e ripetibilità dei test**.
-
-### 5.1 Isolamento dell’ambiente di test
-
-Tutti i test che coinvolgono il database sono eseguiti in un **ambiente di test
-dedicato**, separato dal contesto di utilizzo principale del sistema.
-
-Questo approccio consente di:
-- evitare interferenze tra dati di test e dati applicativi;
-- garantire risultati deterministici;
-- prevenire effetti collaterali indesiderati.
-
-Lo stato iniziale del database è noto e controllato prima dell’esecuzione
-dei test.
-
----
-
-### 5.2 Gestione della connessione tramite Singleton
-
-La connessione al database nei test è gestita tramite il **pattern Singleton**.
-
-Questa scelta progettuale consente di:
-- garantire un unico punto di accesso alla risorsa database;
-- evitare la creazione non controllata di connessioni multiple;
-- mantenere coerenza tra i test che operano sullo stesso contesto dati.
-
-L’utilizzo del Singleton migliora inoltre:
-- la stabilità dell’esecuzione dei test;
-- la ripetibilità;
-- il controllo delle risorse.
-
----
-
-### 5.3 Controllo dello stato del database
-
-Prima dell’esecuzione dei test:
-- il database viene inizializzato con un insieme noto di dati;
-- vengono verificate le condizioni di partenza attese.
-
-Al termine dei test:
-- lo stato del database viene ripristinato o ripulito;
-- nessuna modifica introdotta dai test persiste oltre l’esecuzione.
-
-Questo garantisce:
-- indipendenza tra i casi di test;
-- prevedibilità dei risultati;
-- maggiore facilità di analisi in caso di errore.
-
----
-
-## 6. Testing e approccio sequenziale controllato
-
-Il testing è stato eseguito seguendo una logica **sequenziale e controllata**,
-coerente con il modello a cascata e con il **V-Model** definito nel Project Plan.
-
-Il flusso adottato è stato il seguente:
-
-1. progettazione delle classi;
-2. implementazione dei metodi;
-3. definizione dei casi di test;
-4. esecuzione dei test sui metodi;
-5. analisi dei risultati;
-6. modifica o refactoring del codice;
-7. riesecuzione dei test.
-
-Questo approccio consente di:
-- verificare il comportamento del codice dopo la sua implementazione;
-- individuare errori logici in modo sistematico;
-- migliorare progressivamente la qualità del software.
-
-Il testing è utilizzato come **strumento di verifica formale**, non come fase
-esplorativa.
-
----
-
-## 7. Integrazione del testing con la struttura a package
-
-La struttura dei test riflette direttamente la struttura del codice
-applicativo, in coerenza con l’architettura del sistema.
+Le attività di testing hanno raggiunto una **copertura superiore al 75% per ogni
+modulo e package testabile** del sistema.
 
 In particolare:
-- il **domain layer** è testato tramite unit test mirati;
-- l’**application layer** è testato tramite test di servizio;
-- il livello di persistenza è testato tramite test specifici sul database;
-- l’interazione complessiva è verificata tramite integration e system test.
+- tutti i moduli di dominio sono stati testati;
+- tutti i servizi applicativi sono stati verificati;
+- la persistenza è stata testata tramite test dedicati;
+- le parti non testabili automaticamente sono state identificate e motivate.
 
-Questa organizzazione consente di:
-- rispettare la separazione delle responsabilità;
-- individuare rapidamente il livello in cui si manifesta un errore;
-- mantenere i test semplici, leggibili e manutenibili.
+Il livello di copertura ottenuto è considerato **ampiamente soddisfacente** per
+la dimensione e la complessità del progetto.
 
 ---
 
-## 8. Gestione degli errori e dei casi limite
+## 5. Organizzazione dei test
 
-I casi di test includono:
-- scenari di utilizzo standard;
-- casi limite;
-- input non validi;
-- situazioni di errore previste.
+I test sono organizzati in modo coerente con la struttura del codice
+applicativo:
 
-Il sistema è stato verificato affinché:
-- gli errori siano gestiti in modo controllato;
-- non si verifichino stati inconsistenti;
-- l’applicazione mantenga stabilità in ogni condizione testata.
+- ogni package di test riflette il package corrispondente del codice;
+- è rispettata la separazione tra domain, application e data;
+- i test sono facilmente individuabili e manutenibili.
+
+Questa struttura favorisce:
+- tracciabilità;
+- manutenibilità;
+- analisi rapida degli errori.
 
 ---
 
-## 9. Tracciabilità tra requisiti e testing
+## 6. Testing del database
 
-Ogni requisito funzionale definito nella SRC è associato ad almeno un caso di
-test.
+Il database è stato testato in un **ambiente dedicato e isolato**.
 
-La tracciabilità è garantita tramite:
-- identificativi coerenti dei requisiti;
-- organizzazione dei test per responsabilità;
-- collegamento logico tra requisiti, codice e test.
+La strategia adottata prevede:
+- utilizzo di un **pattern Singleton** per la gestione della connessione;
+- inizializzazione controllata dello stato dei dati;
+- ripristino dello stato al termine dei test.
 
-Questo consente di dimostrare in modo chiaro che **tutti i requisiti sono stati
-verificati**.
+Questo approccio garantisce:
+- indipendenza tra i casi di test;
+- risultati deterministici;
+- ripetibilità delle esecuzioni.
+
+---
+
+## 7. Limiti emersi durante il testing
+
+Durante le attività di testing sono emerse alcune criticità strutturali:
+
+- difficoltà nell’integrare in modo ottimale **function decomposition** e
+  **object-oriented design**;
+- presenza di moduli con un numero elevato di metodi;
+- metodi eccessivamente complessi, difficili da testare in modo isolato;
+- accoppiamento tra componenti che ha limitato la testabilità di alcune parti.
+
+Queste criticità rappresentano **limiti architetturali emersi durante la fase di
+validazione** e sono stati analizzati e documentati anche nel file di Design.
+
+---
+
+## 8. Testing della GUI (scelta progettuale)
+
+La **GUI a falso terminale** non è stata sottoposta a testing automatico.
+
+La GUI è stata sviluppata:
+- seguendo il pattern **Model–View–Controller**;
+- utilizzando un **ponte** verso il `main` originale;
+- riutilizzando integralmente la logica già testata del sistema.
+
+La scelta di non testare automaticamente la GUI è stata motivata da:
+- natura testuale e non web dell’interfaccia;
+- separazione completa dalla logica di business;
+- vincoli temporali accademici e universitari.
+
+La GUI è stata comunque:
+- verificata manualmente;
+- valutata in termini di funzionamento ed efficienza;
+- considerata correttamente integrata nel sistema.
+
+---
+
+## 9. Strumenti utilizzati
+
+- **JUnit** per unit e integration testing;
+- **Maven** per la gestione del build;
+- **Eclipse** come ambiente di sviluppo;
+- database locale / embedded per i test.
 
 ---
 
 ## 10. Conclusioni
 
-Le attività di testing confermano che il sistema **Gestione Dipendenti** è
-corretto dal punto di vista funzionale, stabile e conforme ai requisiti
-definiti.
+Le attività di testing confermano che il sistema **Gestione Dipendenti** è:
 
-Il completamento del testing rappresenta la **chiusura tecnica del progetto**,
-garantendo un prodotto software completo, verificato e pronto alla consegna.
+- funzionalmente corretto;
+- stabile;
+- conforme ai requisiti definiti;
+- testato in modo esteso e sistematico.
 
+Il testing automatico del core del sistema, unito alla validazione manuale della
+GUI, consente di considerare **conclusa la fase di testing del progetto**.
 
+---
+
+## 11. Criteri di completamento del testing
+
+La fase di testing è stata considerata **completata** sulla base di criteri
+chiari e misurabili, definiti prima della chiusura del progetto.
+
+In particolare, il testing è stato ritenuto concluso quando:
+
+- tutti i requisiti funzionali definiti nella **SRC** risultano implementati;
+- ogni modulo e package testabile ha raggiunto una **copertura superiore al 75%**;
+- il domain layer e l’application layer sono stati completamente testati
+  tramite JUnit;
+- i flussi funzionali principali sono stati verificati tramite system e
+  integration test;
+- le parti non testate automaticamente sono state **identificate, motivate e
+  documentate**.
+
+Il soddisfacimento di questi criteri consente di considerare il sistema
+sufficientemente verificato rispetto agli obiettivi del progetto.
+
+---
+
+## 12. Valutazione del rischio residuo
+
+Come in ogni progetto software reale, al termine della fase di testing rimane
+un **rischio residuo**, legato alle parti non coperte da test automatici.
+
+Nel progetto Gestione Dipendenti, il rischio residuo è limitato a:
+
+- la **GUI a falso terminale**, non sottoposta a test automatici.
+
+Tale rischio è considerato **accettabile** per i seguenti motivi:
+
+- la GUI rappresenta esclusivamente un livello di presentazione;
+- tutta la logica di business sottostante è già stata testata;
+- la GUI riutilizza il `main` originale tramite un ponte e un controller;
+- eventuali malfunzionamenti della GUI non compromettono l’integrità dei dati
+  né la correttezza del dominio.
+
+La GUI è stata comunque sottoposta a **validazione manuale**, riducendo ulteriormente
+il rischio operativo.
+
+---
+
+## 13. Allineamento con il Project Plan
+
+Le attività di testing sono state svolte in piena coerenza con quanto definito
+nel **Project Plan**.
+
+In particolare:
+- il testing è previsto come fase conclusiva del ciclo di sviluppo;
+- le attività di verifica e validazione sono allineate al **V-Model**;
+- il completamento del testing coincide con la chiusura tecnica del progetto.
+
+Il rispetto del piano di progetto e il raggiungimento degli obiettivi di
+testing confermano che il sistema ha raggiunto un livello di qualità adeguato
+alla consegna finale.
+
+---
+
+## 14. Considerazioni finali sul testing
+
+Il testing del progetto Gestione Dipendenti non si è limitato a una verifica
+superficiale del codice, ma ha rappresentato un’attività strutturata,
+sistematica e consapevole.
+
+I risultati ottenuti dimostrano che:
+- il core del sistema è stato ampiamente testato;
+- i limiti emersi sono noti e documentati;
+- le scelte progettuali sono state validate in modo critico.
+
+Alla luce di quanto sopra, la fase di testing può essere considerata
+**completata e conclusa**, fornendo un software stabile, verificato e coerente
+con gli obiettivi del progetto.

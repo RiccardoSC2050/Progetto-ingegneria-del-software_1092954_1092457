@@ -107,43 +107,7 @@ L’unit testing ha evidenziato:
 
 ---
 
-### 4.2 Integration Testing
-
-Il **testing di integrazione** ha verificato la corretta cooperazione tra:
-
-- domain layer e application layer;
-- application layer e data layer;
-- componenti che condividono lo stesso flusso funzionale.
-
-Questa fase ha permesso di individuare:
-- errori di integrazione;
-- dipendenze non previste;
-- problemi legati alla gestione dello stato.
-
-L’integration testing è stato particolarmente rilevante per:
-- gestione del database;
-- operazioni sugli utenti;
-- flussi di import/export dei dati.
-
----
-
-### 4.3 System Testing
-
-Il **testing di sistema** ha validato il comportamento complessivo
-dell’applicazione, simulando scenari di utilizzo realistici.
-
-Sono stati verificati:
-- flussi completi di utilizzo;
-- gestione degli errori;
-- stabilità dell’applicazione;
-- coerenza dei risultati prodotti.
-
-Il system testing ha confermato il corretto funzionamento del sistema nel suo
-insieme.
-
----
-
-### 4.4 Acceptance Testing
+### 4.2 Acceptance Testing
 
 Il **testing di accettazione** è stato condotto verificando la conformità del
 sistema ai requisiti definiti nella `SRC.md`.
@@ -368,7 +332,7 @@ Il suo utilizzo ha riguardato in particolare:
 - i casi di test sono stati definiti e compresi dal team;
 - il supporto è stato utilizzato per chiarire e non per delegare.
 
-Si stima che circa **il 30% dei test** sia stato supportato da strumenti di
+Si stima che circa **il 60% dei test** sia stato supportato da strumenti di
 vibe coding, principalmente per casi tecnici specifici.
 
 ---

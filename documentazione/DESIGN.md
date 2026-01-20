@@ -1,324 +1,437 @@
-# DESIGN AND ARCHITECTURE
+# Design and Architecture
+## Gestione Dipendenti
 
-Questo documento descrive in modo approfondito, critico e definitivo le scelte
-di **design e architettura software** adottate nel progetto **Gestione
-Dipendenti**, sviluppato nell’ambito del corso di **Ingegneria del Software
-(AA 2025/26)**.
+Questo documento descrive le **scelte di design e architettura software**
+adottate per il progetto **Gestione Dipendenti**, sviluppato nell’ambito del
+corso di **Ingegneria del Software (AA 2025/26)**.
 
-Il documento riflette **lo stato finale del progetto**, a valle del completamento
-dell’implementazione e delle attività di testing, ed è strettamente allineato
-al codice effettivamente sviluppato e consegnato.
+Il documento nasce inizialmente come descrizione delle scelte architetturali
+preliminari, ma è stato successivamente **esteso e consolidato** per riflettere
+l’evoluzione reale del progetto fino alla sua conclusione.
 
----
+Non si tratta quindi di un design puramente teorico, ma di un **design
+a posteriori consapevole**, che integra:
+- progettazione iniziale;
+- implementazione effettiva;
+- risultati del testing;
+- difficoltà incontrate;
+- compromessi architetturali adottati.
 
-## 1. Obiettivi del design
-
-Gli obiettivi principali del design architetturale sono stati:
-
-- strutturare il sistema in componenti chiaramente separati;
-- ridurre la complessità complessiva del software;
-- favorire testabilità e manutenibilità;
-- applicare i principi di ingegneria del software studiati durante il corso;
-- mantenere una struttura comprensibile e difendibile in un contesto accademico.
-
-Il design non è stato concepito come un esercizio puramente teorico, ma come un
-**processo iterativo**, fortemente influenzato dall’evoluzione del codice, dal
-testing e dalle difficoltà tecniche incontrate.
-
----
-
-## 2. Visione architetturale generale
-
-Il sistema è organizzato secondo un’architettura **a livelli**, ispirata a
-modelli architetturali consolidati e adattata alle dimensioni del progetto.
-
-I livelli individuati sono:
-
-- **Domain Layer**
-- **Application / Service Layer**
-- **Infrastructure / Data Layer**
-- **Presentation Layer (GUI a falso terminale)**
-
-Questa suddivisione è stata adottata con l’obiettivo di:
-- separare la logica di business dalla logica applicativa;
-- isolare la persistenza dei dati;
-- limitare la propagazione delle dipendenze;
-- consentire un testing mirato dei diversi componenti.
+Il contenuto è coerente e allineato con:
+- `PROJECT_PLAN.md`
+- `SRC.md`
+- `SCRUM_MANAGEMENT.md`
+- `TEST_MANAGEMENT.md`
+- `MAINTENANCE.md`
 
 ---
 
-## 3. Domain Layer: struttura e criticità reali
+## 1. Visione architetturale generale (estesa)
 
-### 3.1 Ruolo del Domain Layer
+Il sistema **Gestione Dipendenti** è stato progettato seguendo un’architettura
+modulare, ispirata a una suddivisione a livelli, con l’obiettivo di:
 
-Il **domain layer** rappresenta il nucleo concettuale del sistema e contiene:
+- separare le responsabilità;
+- ridurre la complessità cognitiva;
+- favorire la manutenibilità;
+- rendere il sistema estendibile.
 
-- le entità principali (dipendenti, utenti, ruoli, ecc.);
-- le strutture dati fondamentali;
-- parte delle regole di business.
+Fin dalle prime fasi di progettazione si è cercato di distinguere tra:
 
-L’intento iniziale era mantenere il dominio:
-- indipendente dal framework;
-- privo di logica applicativa;
-- facilmente testabile in isolamento.
+- **Domain layer**
+- **Application layer**
+- **Infrastructure / Data layer**
+- **Presentation layer (CLI / GUI)**
+
+Questa separazione è stata perseguita come **obiettivo architetturale**, pur
+consapevoli delle difficoltà pratiche legate a un progetto accademico di media
+complessità.
+
+L’architettura finale rappresenta un **compromesso realistico** tra:
+- correttezza teorica;
+- tempo disponibile;
+- complessità tecnologica;
+- maturità delle competenze.
 
 ---
 
-### 3.2 Problemi emersi nella separazione Domain / Application
+## 2. Separazione Domain / Application: obiettivo e realtà
 
-Durante lo sviluppo reale del progetto è emerso che mantenere una separazione
-netta e rigorosa tra **domain layer** e **application layer** è risultato più
-complesso del previsto.
+### 2.1 Intento progettuale iniziale
+
+L’intento iniziale era mantenere una separazione netta tra:
+
+- **Domain**: entità, regole di business, modelli concettuali
+- **Application**: casi d’uso, orchestrazione delle operazioni, coordinamento
+
+Questo approccio era motivato da:
+- miglior testabilità;
+- riduzione dell’accoppiamento;
+- maggiore chiarezza architetturale;
+- possibilità di evoluzione futura.
+
+---
+
+### 2.2 Problemi emersi durante lo sviluppo
+
+Con l’aumentare delle funzionalità implementate, è emerso che la **quantità di
+responsabilità** concentrate nel sistema ha reso difficile mantenere una
+separazione perfettamente pulita.
 
 In particolare:
-
-- alcune operazioni di business richiedevano il coordinamento di più entità;
-- la necessità di gestire flussi applicativi complessi ha portato ad
-  interazioni dirette tra dominio e servizi applicativi;
-- alcune classi del dominio hanno finito per conoscere dettagli applicativi.
-
-Questo ha generato:
-- **accoppiamento eccessivo** tra domain e application;
-- difficoltà nel testing isolato di alcune classi;
-- maggiore complessità nella gestione delle dipendenze.
-
-Questa criticità non è stata ignorata, ma è stata:
-- analizzata;
-- documentata;
-- parzialmente mitigata tramite refactoring.
-
----
-
-## 4. Application / Service Layer: orchestrazione e limiti
-
-### 4.1 Ruolo dell’Application Layer
-
-Il **application layer** ha il compito di:
-
-- orchestrare i casi d’uso;
-- coordinare dominio e persistenza;
-- gestire il flusso delle operazioni applicative.
-
-Questo livello funge da **punto di controllo centrale** del sistema e rappresenta
-l’accesso principale alla logica di business.
-
----
-
-### 4.2 Accoppiamento e complessità nei servizi
-
-Nel progetto reale, alcuni servizi applicativi hanno assunto un numero elevato
-di responsabilità, in particolare quando:
-
-- gestivano flussi complessi (es. import/export dati);
-- coordinavano più componenti contemporaneamente;
-- interagivano con file system e database.
+- alcune classi hanno iniziato a contenere logica mista;
+- alcune operazioni applicative richiedevano conoscenza diretta del dominio;
+- il domain layer, in certi punti, è risultato influenzato da scelte applicative.
 
 Questo ha portato a:
-- servizi con molti metodi;
-- metodi con elevata complessità ciclomatica;
-- maggiore difficoltà nel testing unitario.
+- **accoppiamento eccessivo domain–application**
+- difficoltà nella scrittura di test unitari puri
+- necessità di refactoring progressivo
 
-Queste problematiche sono state individuate principalmente durante la fase di
-testing, confermando il ruolo del testing come strumento di validazione
-architetturale.
-
----
-
-## 5. Function Decomposition e Object-Oriented Design
-
-### 5.1 Approccio adottato
-
-Durante il progetto si è cercato di combinare:
-
-- **function decomposition**, per suddividere le operazioni in passi chiari;
-- **object-oriented design**, per modellare il dominio tramite oggetti.
-
-Questo approccio misto è stato scelto per:
-- rendere comprensibili operazioni complesse;
-- mantenere una struttura modulare;
-- evitare metodi monolitici.
+È importante sottolineare che questi problemi **non derivano da assenza di
+design**, ma da un tentativo consapevole di applicare principi avanzati in un
+contesto didattico complesso.
 
 ---
 
-### 5.2 Limiti concreti riscontrati
+## 3. Function Decomposition e Object-Oriented Design (approfondimento)
 
-Nel codice reale del progetto, alcune operazioni (ad esempio:
-- importazione di file CSV;
-- conversione dei dati in strutture interne;
-- gestione di file e byte;
-- scrittura e lettura da cartelle)
+### 3.1 Approccio ibrido adottato
 
-si sono rivelate **difficili da scomporre ulteriormente** senza introdurre
-complessità aggiuntiva.
+Durante il progetto è stato adottato un approccio ibrido che combina:
 
-Di conseguenza:
-- alcuni metodi risultano lunghi e complessi;
-- il top-down decomposition non sempre ha prodotto componenti riutilizzabili;
-- l’aggregazione finale dei metodi ha generato sovraccarico in alcuni moduli.
+- **Function Decomposition**
+- **Object-Oriented Design**
 
-Questo ha avuto un impatto diretto sulla testabilità di tali componenti.
+La function decomposition è stata utilizzata per:
+- scomporre problemi complessi;
+- isolare operazioni logiche;
+- rendere il codice più leggibile.
 
----
-
-## 6. Modularità, coesione e information hiding
-
-### 6.1 Obiettivi perseguiti
-
-Il progetto ha cercato di applicare i seguenti principi:
-
-- modularità;
-- alta coesione;
-- basso accoppiamento;
-- **information hiding**.
-
-L’information hiding è stato utilizzato per:
-- nascondere dettagli implementativi;
-- ridurre la complessità percepita;
-- limitare l’accesso diretto ai dati sensibili.
+L’orientamento agli oggetti è stato invece usato per:
+- modellare il dominio;
+- rappresentare entità e relazioni;
+- incapsulare lo stato.
 
 ---
 
-### 6.2 Difficoltà con nuove tecnologie
+### 3.2 Squilibri emersi
 
-L’introduzione di **Spring Boot** e della **GUI personalizzata** ha rappresentato
-una nuova competenza tecnica, che ha influito sulla capacità di applicare questi
-principi in modo rigoroso e uniforme.
+Nel corso dello sviluppo è emerso che la combinazione dei due approcci non è
+sempre stata equilibrata.
 
-Le difficoltà non sono state teoriche, ma pratiche:
-- gestione del ciclo di vita dei bean;
-- configurazione del contesto applicativo;
-- integrazione tra componenti già esistenti.
+In particolare:
+- alcune classi hanno accumulato un numero elevato di metodi;
+- alcuni metodi sono diventati troppo complessi;
+- la decomposizione top-down non sempre si è integrata bene con l’aggregazione
+  bottom-up tipica dell’OOP.
+
+Questo ha avuto impatto diretto su:
+- testabilità dei moduli;
+- leggibilità del codice;
+- necessità di refactoring in fase di testing.
 
 ---
 
-## 7. Architettura Spring Boot
+## 4. Modularità, coesione e accoppiamento (rafforzamento)
+
+Il progetto ha cercato di applicare i principi di:
+
+- modularità
+- alta coesione
+- basso accoppiamento
+
+In molti casi questi obiettivi sono stati raggiunti, ma in altri:
+- la pressione funzionale ha portato a compromessi;
+- la separazione tra moduli è risultata meno netta.
+
+L’esperienza ha mostrato come:
+> la modularità non sia solo una scelta progettuale iniziale,  
+> ma una disciplina da mantenere durante tutto lo sviluppo.
+
+---
+
+## 5. Sicurezza: scelte, limiti e consapevolezza
+
+La sicurezza è stata affrontata con un approccio pragmatico e coerente con il
+contesto del progetto.
+
+Sono state adottate le seguenti misure:
+- hashing delle password;
+- uso di UUID per identificazione utenti;
+- password minima di 8 caratteri;
+- memorizzazione dei dati sensibili solo nel database.
+
+Tuttavia, l’analisi finale ha evidenziato una criticità importante:
+
+- la verifica delle credenziali non è sempre centralizzata;
+- alcuni metodi accedono ai dati senza passare da un unico punto di controllo;
+- questo può introdurre potenziali vulnerabilità logiche.
+
+Questa problematica è **riconosciuta e documentata** come limite
+architetturale e come area di miglioramento futuro.
+
+---
+
+## 6. Spring Boot: uso professionale e limiti di contesto
 
 Spring Boot è stato utilizzato come framework principale per:
 
-- configurazione dell’applicazione;
+- gestione del ciclo di vita dell’applicazione;
 - dependency injection;
-- gestione del ciclo di vita;
-- integrazione con JPA/Hibernate.
+- configurazione centralizzata;
+- integrazione con il database.
 
 L’uso di Spring Boot è stato:
-- studiato;
-- sperimentato;
-- applicato in modo progressivo.
+- consapevole;
+- coerente;
+- aderente alle best practice di base.
 
-Nonostante la complessità iniziale, il framework ha consentito di strutturare
-l’applicazione in modo più ordinato rispetto a una gestione manuale.
+Non è stata sviluppata una web application REST:
+- per scelta progettuale;
+- per limitare la complessità;
+- per mantenere il focus sul dominio.
 
----
-
-## 8. Sicurezza: scelte e limiti
-
-### 8.1 Misure adottate
-
-Le misure di sicurezza implementate includono:
-
-- hashing delle password;
-- generazione di **UUID** per l’identificazione degli utenti;
-- memorizzazione dei dati sensibili esclusivamente nel database;
-- limitazione dell’accesso diretto alle informazioni critiche.
+L’architettura rimane comunque predisposta a una futura estensione REST.
 
 ---
 
-### 8.2 Criticità individuate
+## 7. GUI a falso terminale e MVC (integrazione finale)
 
-È stata identificata una criticità nella gestione uniforme delle password:
+La GUI è stata progettata come **falso terminale**, non come interfaccia grafica
+tradizionale.
 
-- alcuni metodi applicativi richiamano correttamente i controlli di sicurezza;
-- altri accedono ai dati senza un passaggio uniforme dal livello di controllo.
+Questa scelta ha permesso di:
+- mantenere la logica di business invariata;
+- evitare duplicazioni;
+- creare un ponte verso il main originale.
 
-Questo può introdurre potenziali rischi, anche se le password risultano hashate.
+La GUI segue il pattern **Model–View–Controller**, con:
+- Model: dominio e servizi
+- View: terminale simulato
+- Controller: gestione input e flussi
 
-La problematica è stata riconosciuta come **area di miglioramento futuro**.
+La GUI non è stata sottoposta a testing automatico per:
+- vincoli di tempo;
+- complessità degli strumenti;
+- priorità accademiche su altri moduli
 
----
-
-## 9. Presentation Layer: GUI a falso terminale
-
-### 9.1 Motivazioni della scelta
-
-L’interfaccia utente è stata realizzata come **GUI a falso terminale**, con
-l’obiettivo di:
-
-- evitare la complessità di una web UI;
-- concentrarsi sulla logica applicativa;
-- mantenere un controllo completo sui flussi.
+Questa scelta è **dichiarata e motivata**, non nascosta.
 
 ---
 
-### 9.2 MVC e ponte verso il main
+## 8. UML come strumento di supporto reale
 
-La GUI segue il pattern **Model–View–Controller**:
+L’UML non è stato usato come semplice adempimento formale, ma come:
+- strumento di comprensione;
+- guida alla progettazione;
+- mezzo di comunicazione tra i membri del team.
 
-- **Model**: dominio e servizi;
-- **View**: terminale simulato;
-- **Controller**: gestione dell’interazione.
-
-È stato implementato un **ponte** verso il `main` originale, consentendo di
-riutilizzare integralmente la logica già esistente senza duplicazioni.
-
-La GUI non contiene logica di business.
-
----
-
-## 10. Uso consapevole del Vibe Coding
-
-Nel progetto è stato adottato il **vibe coding** come strumento di supporto, non
-come sostituto dello sviluppatore.
-
-È stato utilizzato per:
-- comprendere framework e concetti nuovi;
-- supportare la scrittura di test complessi;
-- gestire casi specifici (CSV, file, conversioni);
-- strutturare la documentazione.
-
-Oltre il **95% del codice applicativo** è stato scritto manualmente.
+I diagrammi sono stati:
+- creati progressivamente;
+- aggiornati durante lo sviluppo;
+- verificati a progetto concluso.
 
 ---
 
-## 11. Modellazione UML
+## 9. Relazione tra design, testing e manutenzione
 
-Il progetto è corredato da una modellazione UML completa, utilizzata per:
+Il design ha influenzato direttamente:
+- la qualità del testing;
+- la facilità di manutenzione.
 
-- progettazione iniziale;
-- comprensione dell’architettura;
-- documentazione finale.
+Il testing ha a sua volta:
+- evidenziato problemi architetturali;
+- guidato refactoring mirati;
+- rafforzato la consapevolezza progettuale.
 
-Sono presenti:
-- diagrammi dei casi d’uso;
-- diagrammi delle classi;
-- diagrammi di sequenza;
-- diagrammi di attività;
-- diagrammi di stato;
-- diagrammi dei componenti e dei package.
+Questo ciclo continuo rappresenta uno degli aspetti più importanti del progetto
+dal punto di vista dell’ingegneria del software.
+
+## 10. Testing come strumento di validazione del design
+
+Durante lo sviluppo del progetto, il testing non è stato considerato
+semplicemente come una fase di verifica funzionale, ma come un vero e proprio
+**strumento di validazione del design architetturale**.
+
+L’esecuzione dei test ha permesso di evidenziare:
+
+- classi con responsabilità eccessive;
+- metodi troppo complessi;
+- accoppiamenti non immediatamente visibili;
+- difficoltà nella separazione dei livelli.
+
+In particolare, le difficoltà di testing emerse hanno confermato che alcune
+scelte di design iniziali, pur corrette dal punto di vista concettuale, hanno
+mostrato limiti nella loro applicazione pratica.
 
 ---
 
-## 12. Valutazione finale del design
+## 11. Impatto della complessità sul testing
 
-Il design del sistema rappresenta un compromesso realistico tra:
+La complessità del sistema ha influito direttamente sulla strategia di testing.
 
-- obiettivi progettuali;
-- complessità del problema;
-- vincoli temporali;
-- apprendimento tecnologico.
+Sono risultati facilmente testabili:
+- moduli con responsabilità ben definite;
+- classi con funzioni semplici e coese;
+- componenti con dipendenze limitate.
+
+Sono risultati invece più complessi da testare:
+- moduli con forte interazione tra domain e application;
+- metodi che combinano più operazioni (file system, parsing, database);
+- flussi applicativi articolati.
+
+Questo ha portato alla consapevolezza che:
+> un design apparentemente corretto può risultare fragile se non supportato
+> da una decomposizione adeguata delle responsabilità.
+
+---
+
+## 12. Copertura del testing e relazione con il design
+
+Il progetto ha raggiunto una **copertura dei test superiore al 75% per ciascun
+modulo e package**, escludendo consapevolmente la GUI.
+
+Questa copertura è stata ottenuta tramite:
+- test JUnit;
+- testing incrementale;
+- test focalizzati sui metodi critici;
+- verifica dei casi limite.
+
+La copertura non è stata perseguita come obiettivo numerico fine a sé stesso,
+ma come indicatore della **qualità del design**.
+
+Dove la copertura risultava difficile da aumentare, spesso la causa era da
+ricercare in:
+- design poco modulare;
+- metodi troppo complessi;
+- accoppiamento eccessivo.
+
+---
+
+## 13. Testing della GUI: scelta progettuale motivata
+
+La GUI a falso terminale **non è stata sottoposta a testing automatico**.
+
+Questa scelta è stata:
+- consapevole;
+- documentata;
+- motivata.
+
+Le ragioni principali sono state:
+- elevato costo temporale per apprendere strumenti di GUI testing;
+- priorità accademiche legate ad altri esami;
+- focus del corso sulla progettazione e sul testing della logica applicativa.
+
+La GUI è stata comunque:
+- verificata manualmente;
+- validata funzionalmente;
+- integrata correttamente con il sistema esistente.
+
+Dal punto di vista del design, la separazione MVC e l’uso del ponte verso il
+main originale garantiscono che:
+- l’assenza di test sulla GUI non comprometta la correttezza della logica;
+- la parte critica del sistema sia comunque testata in modo esteso.
+
+---
+
+## 14. Uso consapevole del supporto esterno (vibe coding)
+
+Nel progetto è stato utilizzato il **vibe coding** come strumento di supporto,
+non come sostituto dello sviluppatore.
+
+Il suo utilizzo ha riguardato principalmente:
+- comprensione di framework complessi (Spring Boot);
+- supporto nella scrittura di test complessi;
+- gestione di casi particolari (CSV, byte, file system);
+- miglioramento della struttura della documentazione.
+
+È importante sottolineare che:
+- la progettazione architetturale è stata svolta dal team;
+- la maggior parte del codice è stata scritta manualmente;
+- il vibe coding è stato usato come strumento di apprendimento e supporto.
+
+Questa scelta è coerente con un approccio moderno e responsabile allo sviluppo
+software.
+
+---
+
+## 15. Evoluzione del design nel tempo
+
+Il design del progetto **non è rimasto statico**, ma si è evoluto nel tempo.
+
+In particolare:
+- alcune scelte iniziali sono state riviste;
+- alcune soluzioni sono state raffinate;
+- alcuni compromessi sono stati accettati consapevolmente.
+
+L’evoluzione del design è stata guidata da:
+- risultati del testing;
+- feedback derivanti dall’uso del sistema;
+- difficoltà pratiche incontrate;
+- necessità di completare il progetto in modo coerente.
+
+Questo processo riflette un ciclo di vita realistico del software.
+
+---
+
+## 16. Relazione tra design e manutenzione
+
+Il design ha influenzato direttamente le attività di manutenzione.
+
+In particolare:
+- moduli ben progettati hanno richiesto pochi interventi;
+- moduli complessi hanno richiesto refactoring ripetuti;
+- la chiarezza del design ha facilitato la correzione dei bug.
+
+Le attività di manutenzione hanno a loro volta contribuito a:
+- migliorare il design;
+- ridurre la complessità;
+- rendere il codice più leggibile e stabile.
+
+Design e manutenzione sono stati quindi strettamente interconnessi.
+
+---
+
+## 17. Valutazione critica finale del design
+
+Il design finale del progetto **Gestione Dipendenti** presenta:
+
+### Punti di forza
+- architettura complessivamente modulare;
+- uso consapevole dei framework;
+- separazione logica tra componenti;
+- buona testabilità della logica applicativa;
+- documentazione coerente con il codice.
+
+### Limiti riconosciuti
+- separazione non perfetta tra domain e application;
+- complessità eccessiva in alcuni moduli;
+- testing automatico assente sulla GUI;
+- gestione della sicurezza migliorabile.
+
+Questi limiti sono stati:
+- riconosciuti;
+- documentati;
+- contestualizzati.
+
+---
+
+## 18. Conclusioni sul design
+
+Il design del progetto **Gestione Dipendenti** rappresenta il risultato di un
+percorso di apprendimento e applicazione pratica dei principi di
+**Ingegneria del Software**.
 
 Pur non essendo perfetto, il design è:
 - coerente;
 - completo;
-- testato;
-- difendibile.
+- realistico;
+- difendibile in un contesto accademico.
 
----
+Il progetto dimostra la capacità del team di:
+- progettare sistemi complessi;
+- affrontare difficoltà tecniche reali;
+- riflettere criticamente sulle scelte effettuate;
+- documentare in modo trasparente il lavoro svolto.
 
-## 13. Conclusioni
-
-Il progetto **Gestione Dipendenti** ha permesso di applicare in modo concreto i
-principi di **design e architettura software**.
-
-Le difficoltà incontrate sono state comprese, documentate e utilizzate come
-strumento di apprendimento, contribuendo alla maturazione tecnica e
-progettuale del team.

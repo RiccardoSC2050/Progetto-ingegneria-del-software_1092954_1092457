@@ -1,241 +1,350 @@
-# WORK_LOG_AND_MILESTONES
-## Diario delle Attività e Tracciabilità delle Milestone
+# Project Development Log
+## Tracciato cronologico e organizzativo dello sviluppo
 ### Progetto: Gestione Dipendenti
 
-Questo documento descrive in modo dettagliato, cronologico e tracciabile le
-**attività di sviluppo**, le **sedute periodiche di lavoro**, il **coordinamento
-tra i membri del team** e l’evoluzione delle **milestone** del progetto
-**Gestione Dipendenti**.
+Questo documento descrive il **percorso di sviluppo del progetto Gestione
+Dipendenti**, ricostruito in modo cronologico e organizzativo a partire:
 
-Il documento ha lo scopo di:
-- dimostrare il lavoro continuativo svolto sul progetto;
-- collegare le attività di sviluppo alle issue e milestone GitHub;
-- rendere esplicita la collaborazione tra i membri del team;
-- fornire una visione realistica dell’evoluzione del progetto nel tempo.
+- dallo storico dei commit Git;
+- dalle pull request;
+- dalle issue chiuse;
+- dalle milestone di progetto.
 
-Il contenuto è coerente con:
-- commit GitHub;
-- issue chiuse;
-- board di progetto;
-- documentazione tecnica finale.
+Lo scopo del documento è dimostrare:
+- la **costanza del lavoro nel tempo**;
+- la **collaborazione tra i membri del team**;
+- l’evoluzione progressiva del sistema;
+- l’assenza di sviluppo “tutto alla fine”.
 
----
-
-## 1. Avvio del progetto e organizzazione iniziale
-
-### Periodo: fine settembre – inizio ottobre 2025
-
-Nella fase iniziale il team ha:
-- analizzato i requisiti del progetto;
-- discusso l’architettura generale;
-- impostato il repository GitHub;
-- definito le prime milestone di lavoro.
-
-Le prime attività si sono concentrate su:
-- creazione della struttura base del progetto Java;
-- impostazione del main applicativo;
-- prime bozze di progettazione UML;
-- definizione delle responsabilità dei moduli principali.
-
-In questa fase il coordinamento tra i membri è avvenuto tramite:
-- confronto diretto;
-- scambio di idee sulle scelte architetturali;
-- definizione delle priorità iniziali.
+Il tracciato presentato è coerente con lo storico del repository e con la
+documentazione tecnica finale.
 
 ---
 
-## 2. Progettazione UML e consolidamento dell’architettura
+## 1. Fase di avvio e impostazione del progetto
 
-### Periodo: ottobre 2025
+### Periodo: fine settembre 2025
 
-Durante il mese di ottobre il lavoro si è focalizzato sulla progettazione
-strutturale del sistema.
+Lo sviluppo del progetto ha avuto inizio con una fase di avvio dedicata alla
+creazione dell’infrastruttura di base.
+
+In questo periodo sono stati effettuati:
+- creazione del progetto Java;
+- primo commit iniziale;
+- aggiornamento del README;
+- creazione della cartella di documentazione.
+
+I commit di questa fase riflettono:
+- l’impostazione dell’ambiente di sviluppo;
+- la volontà di strutturare il progetto fin dall’inizio;
+- l’attenzione alla documentazione sin dalle prime fasi.
+
+Il lavoro è stato svolto in modo coordinato, con confronto iniziale sulle
+scelte tecnologiche e organizzative.
+
+---
+
+## 2. Prime attività di progettazione e UML
+
+### Periodo: inizio – metà ottobre 2025
+
+Successivamente, il team ha concentrato le attività sulla progettazione del
+sistema.
+
+In questa fase:
+- sono stati effettuati i primi tentativi di modellazione UML;
+- sono stati creati diagrammi iniziali delle classi;
+- è stato utilizzato Papyrus per la rappresentazione grafica;
+- sono state corrette e adattate le classi effettivamente implementabili.
+
+I commit mostrano:
+- sperimentazione iniziale;
+- correzioni progressive;
+- allineamento tra modello e codice reale.
+
+Questa fase è stata fondamentale per:
+- comprendere il dominio;
+- impostare la struttura delle classi;
+- prevenire errori concettuali grossolani.
+
+---
+
+## 3. Inizio implementazione del core applicativo
+
+### Periodo: metà ottobre 2025
+
+Dopo la fase di progettazione iniziale, il team ha iniziato
+l’implementazione del core del sistema.
 
 Le attività principali includono:
-- creazione delle basi per i diagrammi UML;
-- progettazione dei diagrammi delle classi;
-- modellazione dei casi d’uso principali;
-- verifica della coerenza tra UML e codice.
+- creazione delle prime classi concrete;
+- definizione del main applicativo;
+- implementazione dei metodi fondamentali;
+- sistemazione delle annotazioni e della struttura del codice.
 
-Questa fase è tracciabile tramite le issue:
-- *Creazione basi per UML*;
-- *UML implementazione*;
-- *Verifica degli UML*.
+I commit di questo periodo mostrano:
+- avanzamento graduale;
+- piccoli passi incrementali;
+- continua verifica del codice scritto.
 
-Le sedute di lavoro sono state frequenti e orientate alla:
-- comprensione del dominio;
-- definizione delle relazioni tra classi;
-- validazione delle scelte progettuali.
+Il lavoro è stato svolto in modo coordinato, con scambi frequenti sulle
+decisioni implementative.
 
 ---
 
-## 3. Implementazione core e gestione del database
+## 4. Sviluppo delle funzionalità principali e gestione utenti
 
-### Periodo: fine ottobre – metà novembre 2025
+### Periodo: fine ottobre – inizio novembre 2025
 
-In questa fase il progetto entra nel vivo dello sviluppo.
+In questa fase il progetto entra nel vivo dello sviluppo funzionale.
 
-Le attività principali includono:
-- implementazione delle classi di dominio;
-- sviluppo della logica applicativa;
-- gestione del database utenti;
-- implementazione delle classi Operators;
-- definizione delle operazioni CRUD.
+Le attività principali sono state:
+- implementazione delle funzionalità di gestione utenti;
+- definizione delle classi di supporto;
+- sviluppo delle operazioni principali;
+- primi test manuali sul funzionamento del sistema.
 
-Le milestone di riferimento includono:
-- *database Users*;
-- *aggiungere/verificare classi operators*;
-- *testing + database (operators)*.
+I commit indicano:
+- progressi costanti;
+- introduzione di nuove funzionalità;
+- sistemazione di problemi emersi durante l’uso del sistema.
 
-Il team ha lavorato in modo coordinato:
-- suddividendo le attività per moduli;
-- integrando progressivamente le funzionalità;
-- correggendo errori man mano che emergevano.
+Il lavoro di squadra è evidente dalla continuità dei commit e dalla
+distribuzione delle attività.
 
 ---
 
-## 4. Testing iniziale e stabilizzazione del main
+## 5. Introduzione del database e primi test strutturati
 
-### Periodo: novembre 2025
+### Periodo: inizio – metà novembre 2025
 
-Con l’aumento della complessità del sistema, il focus si è spostato sul testing
-e sulla stabilizzazione della logica centrale.
+Con l’aumento della complessità del sistema, il team ha introdotto la gestione
+del database.
 
-Le attività svolte includono:
-- testing della logica del main;
-- verifica dei flussi principali;
-- gestione delle eccezioni;
-- correzione di bug emersi.
+Le attività includono:
+- creazione di un database dedicato ai test;
+- implementazione delle connessioni;
+- gestione degli utenti persistenti;
+- primi test JUnit su componenti chiave.
 
-Questa fase è collegata alle issue:
-- *Testing*;
-- *Testing generale*;
-- *Gestione logic main e testing generale del software*;
-- *end testing of operators*.
+I commit di questo periodo mostrano:
+- attenzione alla stabilità del sistema;
+- introduzione graduale del testing;
+- correzione di bug legati alla persistenza.
 
-Il testing ha avuto un ruolo chiave nel:
-- evidenziare problemi architetturali;
-- individuare moduli troppo complessi;
-- guidare il refactoring successivo.
+Questa fase segna l’inizio di un uso più sistematico del testing.
 
 ---
 
-## 5. Sviluppo e consolidamento della gestione CSV
+## 6. Rafforzamento del testing e stabilizzazione del main
+
+### Periodo: metà – fine novembre 2025
+
+Il team ha dedicato un periodo specifico al rafforzamento delle attività di
+testing e alla stabilizzazione della logica centrale.
+
+Sono state svolte le seguenti attività:
+- incremento dei test unitari;
+- test della logica del main;
+- gestione dei casi limite;
+- correzione di errori logici;
+- refactoring mirati.
+
+I commit evidenziano:
+- messaggi espliciti legati al testing;
+- sequenza logica di correzione → verifica;
+- attenzione alla qualità complessiva del codice.
+
+---
+
+## 7. Lavoro costante e collaborazione documentata
+
+Durante tutte le fasi sopra descritte:
+- i commit sono stati frequenti;
+- il lavoro è stato distribuito nel tempo;
+- non si osservano lunghi periodi di inattività;
+- le modifiche sono incrementali.
+
+Questo dimostra:
+- continuità nello sviluppo;
+- collaborazione reale tra i membri del team;
+- approccio serio e organizzato al progetto.
+
+## 8. Introduzione e sviluppo della gestione CSV
 
 ### Periodo: fine novembre – inizio dicembre 2025
 
-Una fase rilevante del progetto è stata dedicata alla gestione dei file CSV.
+Dopo la stabilizzazione delle funzionalità principali e della gestione utenti,
+il team ha avviato una fase specifica dedicata alla **gestione dei file CSV**.
 
-Le attività includono:
-- comprensione della struttura dei file CSV;
-- definizione del formato dei dati;
+Questa fase ha richiesto un cambio di prospettiva rispetto allo sviluppo
+precedente, poiché ha introdotto:
+- gestione di input esterni;
+- parsing strutturato dei dati;
 - conversione dei dati in strutture interne;
 - integrazione con il database.
 
-Le milestone di riferimento:
-- *comprensione gestione csv*;
-- *applicazione delle conoscenze csv*;
-- *Gestione csv*;
-- *sviluppo gestione csv con data*.
+Le attività principali sono state:
+- comprensione della struttura dei file CSV;
+- definizione del formato dei dati;
+- sviluppo dei metodi di lettura e scrittura;
+- gestione degli errori e dei casi limite.
 
-Questa fase ha richiesto:
-- numerose sedute di confronto;
-- sperimentazione;
-- revisione del codice;
-- supporto al testing dei moduli CSV.
+I commit di questo periodo mostrano chiaramente:
+- una fase iniziale di studio e comprensione;
+- successive applicazioni pratiche delle conoscenze acquisite;
+- correzioni progressive legate a problemi reali di parsing e visualizzazione.
+
+Il lavoro è stato svolto in modo collaborativo, con continui scambi per chiarire
+il formato dei dati e le modalità di integrazione con il resto del sistema.
 
 ---
 
-## 6. Periodo delle festività natalizie
+## 9. Testing avanzato e integrazione con la gestione CSV
+
+### Periodo: inizio – metà dicembre 2025
+
+Con l’introduzione della gestione CSV, il testing è diventato ancora più
+centrale.
+
+In questa fase il team ha:
+- esteso i test esistenti;
+- introdotto nuovi casi di test specifici per i CSV;
+- verificato la coerenza tra dati importati e dati persistiti;
+- testato il comportamento del sistema in presenza di file non validi.
+
+I commit mostrano:
+- riferimento esplicito al testing;
+- correzione di bug legati a casi limite;
+- miglioramento della robustezza del sistema.
+
+Questa fase ha evidenziato:
+- l’impatto diretto delle scelte progettuali sulla testabilità;
+- la necessità di refactoring mirati;
+- l’importanza di un testing strutturato per moduli complessi.
+
+---
+
+## 10. Periodo delle festività natalizie: sviluppo asincrono
 
 ### Periodo: metà dicembre 2025 – inizio gennaio 2026
 
-Durante il periodo delle festività natalizie:
-- la comunicazione tra i membri è stata meno frequente;
-- il coordinamento sincrono è diminuito;
-- il lavoro è proseguito in modo asincrono.
+Durante il periodo delle festività natalizie, il ritmo delle comunicazioni
+sincrone tra i membri del team è diminuito.
 
-Nonostante ciò:
-- lo sviluppo non si è fermato;
-- sono stati completati moduli importanti;
-- sono state chiuse diverse issue;
-- sono stati effettuati refactoring mirati.
+Tuttavia:
+- lo sviluppo del progetto non si è fermato;
+- il lavoro è proseguito in modo asincrono;
+- sono stati effettuati commit significativi;
+- sono state chiuse diverse issue rilevanti.
 
-Questa fase riflette una dinamica realistica:
-- minor numero di incontri;
-- maggiore lavoro individuale;
-- integrazione successiva delle modifiche.
+In questo periodo sono state svolte attività quali:
+- sistemazione di metodi esistenti;
+- miglioramento della visualizzazione dei dati CSV;
+- gestione di eccezioni residue;
+- riorganizzazione di package e nomi di file.
+
+I commit di questo periodo dimostrano:
+- continuità del lavoro anche in assenza di incontri frequenti;
+- capacità di procedere individualmente mantenendo coerenza;
+- successiva integrazione delle modifiche nel branch principale.
+
+Questo comportamento riflette una dinamica realistica di lavoro in contesto
+universitario.
 
 ---
 
-## 7. Implementazione e sistemazione della GUI
+## 11. Introduzione e sviluppo della GUI Java
 
-### Periodo: dicembre 2025 – gennaio 2026
+### Periodo: dicembre 2025 – inizio gennaio 2026
 
-La GUI a falso terminale è stata sviluppata come estensione del sistema
-esistente.
+In una fase successiva, il team ha avviato lo sviluppo della **GUI Java**, con
+l’obiettivo di fornire un’interfaccia alternativa al main testuale.
 
 Le attività principali includono:
-- implementazione della GUI Java;
-- creazione del controller;
-- realizzazione del ponte verso il main originale;
-- verifica del funzionamento dei flussi.
+- progettazione della GUI come falso terminale;
+- implementazione della schermata principale;
+- sviluppo dei controller;
+- creazione di un ponte verso il main originale.
 
-Le issue di riferimento includono:
-- *implementazione grafica*;
-- *java gui*;
-- *testing java gui* (classificata come *won’t fix* per il testing automatico).
+I commit indicano:
+- avanzamento graduale della GUI;
+- completamento delle funzionalità principali;
+- integrazione senza duplicazione della logica di business.
 
-La GUI è stata:
-- testata manualmente;
-- validata dal punto di vista funzionale;
-- integrata senza duplicare la logica di business.
+La GUI è stata sviluppata in modo coerente con l’architettura esistente, seguendo
+il pattern **Model–View–Controller**.
 
 ---
 
-## 8. Sistemazione finale e chiusura del progetto
+## 12. Testing finale e consolidamento del progetto
 
 ### Periodo: gennaio 2026
 
-Nella fase finale il team ha lavorato su:
-- sistemazione definitiva del codice;
-- risoluzione di bug residui;
-- verifica finale degli UML;
-- completamento della documentazione.
+Nella fase finale del progetto, il focus si è spostato sul **consolidamento
+complessivo** del sistema.
 
-Le milestone finali includono:
-- *sistemazione definitiva*;
-- *verifica degli UML*;
-- chiusura delle ultime issue aperte.
+Le attività includono:
+- revisione finale del codice;
+- completamento dei test rimanenti;
+- verifica della copertura dei test;
+- sistemazione di bug residui;
+- merge delle ultime pull request.
 
-Questa fase segna la **conclusione formale del progetto**.
+I commit di questa fase mostrano:
+- messaggi espliciti di completamento del testing;
+- revisione e sistemazione finale;
+- conferma che i test del progetto sono stati completati.
 
----
-
-## 9. Collaborazione e coordinamento del team
-
-Durante l’intero progetto:
-- il coordinamento è avvenuto in modo continuo;
-- le decisioni sono state condivise;
-- il lavoro è stato distribuito in base alle competenze.
-
-Le sedute di lavoro, anche quando non formalizzate, hanno garantito:
-- allineamento sugli obiettivi;
-- gestione degli imprevisti;
-- avanzamento costante del progetto.
+Questa fase rappresenta la chiusura formale dello sviluppo.
 
 ---
 
-## 10. Conclusioni
+## 13. Collaborazione e lavoro di squadra
 
-Il percorso di sviluppo del progetto **Gestione Dipendenti** è stato:
-- continuo;
+L’analisi complessiva dello storico dei commit mostra che:
+
+- il lavoro è stato distribuito nel tempo;
+- non sono presenti lunghi periodi di inattività;
+- i contributi sono progressivi e incrementali;
+- le attività sono state coordinate tramite issue e pull request.
+
+La collaborazione tra i membri del team è stata:
+- continua;
+- concreta;
+- orientata alla risoluzione dei problemi.
+
+Questo dimostra un reale lavoro di squadra e non uno sviluppo individuale.
+
+---
+
+## 14. Considerazioni finali sul percorso di sviluppo
+
+Il percorso di sviluppo del progetto **Gestione Dipendenti** può essere
+riassunto come:
+
+- strutturato;
+- progressivo;
 - coerente;
-- tracciabile;
-- realistico.
+- tracciabile.
 
-Le milestone, le issue e i commit dimostrano un lavoro strutturato e progressivo,
-non un semplice caricamento finale del codice.
+Lo storico dei commit e delle milestone dimostra che:
+- il progetto è cresciuto nel tempo;
+- le funzionalità sono state aggiunte gradualmente;
+- il testing ha accompagnato lo sviluppo;
+- la documentazione è stata aggiornata in modo coerente.
 
-Questo documento conclude la tracciabilità delle attività e si integra con la
-documentazione tecnica fornendo una visione completa del lavoro svolto.
+---
+
+## 15. Conclusione
+
+Questo documento fornisce una rappresentazione fedele e organizzata del
+percorso di sviluppo del progetto **Gestione Dipendenti**.
+
+Insieme alla documentazione tecnica e al codice sorgente, dimostra:
+- costanza nel lavoro;
+- collaborazione tra i membri del team;
+- capacità di gestire un progetto software nel tempo.
+
+Il tracciato qui descritto conclude la rappresentazione dello sviluppo del
+progetto.

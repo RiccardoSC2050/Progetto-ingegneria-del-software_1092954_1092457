@@ -46,7 +46,7 @@ Questi interventi sono stati effettuati principalmente:
 
 ---
 
-### 2.2 Manutenzione migliorativa
+### 2.2 Manutenzione perfettiva
 
 La manutenzione migliorativa ha avuto un ruolo centrale nel progetto ed è stata
 svolta principalmente tramite **attività di refactoring**.

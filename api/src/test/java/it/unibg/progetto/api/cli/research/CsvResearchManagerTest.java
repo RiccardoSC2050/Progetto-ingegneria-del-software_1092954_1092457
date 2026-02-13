@@ -31,11 +31,10 @@ class CsvResearchManagerTest {
 		GlobalScanner.scanner = new Scanner(System.in);
 	}
 
-	// ---------- helper: chiamare metodo privato askAndSaveResult ----------
 	private static void invokeAskAndSaveResult(Session current, List<String[]> result) throws Exception {
 		Method m = CsvResearchManager.class.getDeclaredMethod("askAndSaveResult", Session.class, List.class);
 		m.setAccessible(true);
-		m.invoke(null, current, result); // static => null
+		m.invoke(null, current, result); 
 	}
 
 	@Test
@@ -51,7 +50,7 @@ class CsvResearchManagerTest {
 
 			invokeAskAndSaveResult(session, result);
 
-			// non deve salvare nulla
+			
 			cli.verifyNoInteractions();
 			uc.verifyNoInteractions();
 		}
@@ -59,7 +58,7 @@ class CsvResearchManagerTest {
 
 	@Test
 	void askAndSaveResult_whenAnswerIsYes_savesStandard_thenChangesName_thenAddsToDb() throws Exception {
-		// input: "s" poi nome file "risultato"
+		
 		GlobalScanner.scanner = new Scanner(
 				new ByteArrayInputStream("s\nrisultato\n".getBytes(StandardCharsets.UTF_8)));
 
@@ -78,11 +77,11 @@ class CsvResearchManagerTest {
 
 			invokeAskAndSaveResult(session, result);
 
-			// 1) salva STANDARD.csv temporaneo
+			
 			cli.verify(
 					() -> CsvResearchCli.saveSearchResult(eq(CsvStandard.STANDARD.toString()), eq(result), eq(true)));
 
-			// 2) rename + inserimento in tabella (DB via usecase)
+			
 			verify(csvUseCase).changeNameFile("risultato");
 			verify(csvUseCase).convertFileCsvToCsvDto("risultato", session);
 			verify(csvUseCase).addNewFileInCsvTableFromCsvDto(dto);
@@ -91,7 +90,7 @@ class CsvResearchManagerTest {
 
 	@Test
 	void searchAndMaybeSaveByMarker_whenAccessBelowAL2_doesNotAskToSave() throws Exception {
-		// input marker: prima invalido "9" poi valido "2"
+		
 		GlobalScanner.scanner = new Scanner(new ByteArrayInputStream("9\n2\n".getBytes(StandardCharsets.UTF_8)));
 
 		Session session = mock(Session.class);
@@ -113,16 +112,16 @@ class CsvResearchManagerTest {
 
 			CsvResearchManager.searchAndMaybeSaveByMarker();
 
-			// deve salvare il CSV di base dal DB in temp
+			
 			verify(csvUseCase).saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-			// deve chiamare la ricerca col marker corretto (2)
+			
 			cli.verify(() -> CsvResearchCli.searchByMarker(2));
 
-			// stampa risultato
+			
 			fm.verify(() -> CsvFileManager.printRows(result));
 
-			// permessi insufficienti => NON deve chiamare changeNameFile/addNewFile...
+			
 			verify(csvUseCase, never()).changeNameFile(anyString());
 			verify(csvUseCase, never()).addNewFileInCsvTableFromCsvDto(any());
 		}
@@ -131,7 +130,7 @@ class CsvResearchManagerTest {
 	@Test
 	void statsAndMaybeSavePercentByRole_whenAccessBelowAL2_doesNotSave() throws Exception {
 		Session session = mock(Session.class);
-		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); // < AL2
+		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel());
 
 		CsvUseCase csvUseCase = mock(CsvUseCase.class);
 
@@ -160,13 +159,10 @@ class CsvResearchManagerTest {
 		}
 
 	}
-	// ----------------------------
-	// searchAndMaybeSave(StringValues)
-	// ----------------------------
 
 	@Test
 	void searchAndMaybeSave_whenResultEmpty_returnsBeforePrintAndSave() throws Exception {
-		// input: ruolo "DEV"
+		
 		GlobalScanner.scanner = new Scanner(new ByteArrayInputStream("DEV\n".getBytes(StandardCharsets.UTF_8)));
 
 		Session session = mock(Session.class);
@@ -183,20 +179,20 @@ class CsvResearchManagerTest {
 			sm.when(SessionManager::getCurrent).thenReturn(session);
 			uc.when(CsvUseCase::getIstnce).thenReturn(csvUseCase);
 
-			// usa un valore reale del tuo enum StringValues
+			
 			cli.when(() -> CsvResearchCli.searchByStringValue(eq(StringValues.RUOLO), eq("DEV"))).thenReturn(empty);
 
 			CsvResearchManager.searchAndMaybeSave(StringValues.RUOLO);
 
 			verify(csvUseCase).saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-			// deve aver fatto la ricerca
+			
 			cli.verify(() -> CsvResearchCli.searchByStringValue(StringValues.RUOLO, "DEV"));
 
-			// result empty => ritorna prima di stampare e prima di chiedere salvataggio
+			
 			fm.verifyNoInteractions();
 
-			// no salvataggio su DB (use case)
+			
 			verify(csvUseCase, never()).changeNameFile(anyString());
 			verify(csvUseCase, never()).addNewFileInCsvTableFromCsvDto(any());
 		}
@@ -204,11 +200,11 @@ class CsvResearchManagerTest {
 
 	@Test
 	void searchAndMaybeSave_whenAccessBelowAL2_printsButDoesNotSave() throws Exception {
-		// input: ruolo "QA"
+		
 		GlobalScanner.scanner = new Scanner(new ByteArrayInputStream("QA\n".getBytes(StandardCharsets.UTF_8)));
 
 		Session session = mock(Session.class);
-		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); // < AL2
+		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel());
 
 		CsvUseCase csvUseCase = mock(CsvUseCase.class);
 		List<String[]> result = java.util.Collections.singletonList(new String[] { "1", "Mario", "Rossi" });
@@ -228,26 +224,24 @@ class CsvResearchManagerTest {
 			verify(csvUseCase).saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 			cli.verify(() -> CsvResearchCli.searchByStringValue(StringValues.RUOLO, "QA"));
 
-			// stampa risultato
+			
 			fm.verify(() -> CsvFileManager.printRows(result));
 
-			// permessi insufficienti => NON salva
+			
 			verify(csvUseCase, never()).changeNameFile(anyString());
 			verify(csvUseCase, never()).addNewFileInCsvTableFromCsvDto(any());
 		}
 	}
 
-	// ----------------------------
-	// searchAndMaybeSaveByAnnoInizio()
-	// ----------------------------
+
 
 	@Test
 	void searchAndMaybeSaveByAnnoInizio_whenAccessBelowAL2_printsButDoesNotSave() throws Exception {
-		// input: anno "2018"
+		
 		GlobalScanner.scanner = new Scanner(new ByteArrayInputStream("2018\n".getBytes(StandardCharsets.UTF_8)));
 
 		Session session = mock(Session.class);
-		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); // < AL2
+		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); 
 
 		CsvUseCase csvUseCase = mock(CsvUseCase.class);
 		List<String[]> result = java.util.Collections.singletonList(new String[] { "7", "Luca", "Bianchi" });
@@ -273,9 +267,7 @@ class CsvResearchManagerTest {
 		}
 	}
 
-	// ----------------------------
-	// statsAndMaybeSaveCountByRole()
-	// ----------------------------
+
 
 	@Test
 	void statsAndMaybeSaveCountByRole_whenEmptyMap_returnsAndDoesNotPrint() throws Exception {
@@ -298,7 +290,7 @@ class CsvResearchManagerTest {
 			verify(csvUseCase).saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 			stats.verify(CsvStatisticsResearch::countEmployeesByRole);
 
-			// empty => niente stampa reportRows
+			
 			fm.verifyNoInteractions();
 
 			verify(csvUseCase, never()).changeNameFile(anyString());
@@ -309,7 +301,7 @@ class CsvResearchManagerTest {
 	@Test
 	void statsAndMaybeSaveCountByRole_whenAccessBelowAL2_printsButDoesNotSave() throws Exception {
 		Session session = mock(Session.class);
-		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); // < AL2
+		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel());
 
 		CsvUseCase csvUseCase = mock(CsvUseCase.class);
 
@@ -337,9 +329,7 @@ class CsvResearchManagerTest {
 		}
 	}
 
-	// ----------------------------
-	// statsAndMaybeSaveRichiamiSummary()
-	// ----------------------------
+
 
 	@Test
 	void statsAndMaybeSaveRichiamiSummary_whenNullStats_returnsAndDoesNotPrint() throws Exception {
@@ -377,7 +367,7 @@ class CsvResearchManagerTest {
 
 		CsvUseCase csvUseCase = mock(CsvUseCase.class);
 
-		// totale, media, min, max
+		
 		double[] s = new double[] { 10.0, 2.5, 0.0, 5.0 };
 
 		try (MockedStatic<SessionManager> sm = mockStatic(SessionManager.class);
@@ -395,7 +385,7 @@ class CsvResearchManagerTest {
 			verify(csvUseCase).saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 			stats.verify(CsvStatisticsResearch::statsRichiami);
 
-			// stampa righe report
+			
 			fm.verify(() -> CsvFileManager.printRows(anyList()));
 
 			verify(csvUseCase, never()).changeNameFile(anyString());
@@ -403,9 +393,7 @@ class CsvResearchManagerTest {
 		}
 	}
 
-	// ----------------------------
-	// statsAndMaybeSaveTop5Richiami()
-	// ----------------------------
+
 
 	@Test
 	void statsAndMaybeSaveTop5Richiami_whenEmptyList_returnsAndDoesNotPrint() throws Exception {
@@ -440,7 +428,7 @@ class CsvResearchManagerTest {
 	@Test
 	void statsAndMaybeSaveTop5Richiami_whenAccessBelowAL2_printsButDoesNotSave() throws Exception {
 		Session session = mock(Session.class);
-		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); // < AL2
+		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); 
 
 		CsvUseCase csvUseCase = mock(CsvUseCase.class);
 
@@ -469,9 +457,7 @@ class CsvResearchManagerTest {
 		}
 	}
 
-	// ----------------------------
-	// statsAndMaybeSaveZeroRichiami()
-	// ----------------------------
+
 
 	@Test
 	void statsAndMaybeSaveZeroRichiami_whenEmpty_returnsAndDoesNotPrint() throws Exception {
@@ -505,7 +491,7 @@ class CsvResearchManagerTest {
 	@Test
 	void statsAndMaybeSaveZeroRichiami_whenAccessBelowAL2_printsButDoesNotSave() throws Exception {
 		Session session = mock(Session.class);
-		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); // < AL2
+		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel());
 
 		CsvUseCase csvUseCase = mock(CsvUseCase.class);
 
@@ -533,9 +519,7 @@ class CsvResearchManagerTest {
 		}
 	}
 
-	// ----------------------------
-	// statsAndMaybeSaveMissingFields()
-	// ----------------------------
+
 
 	@Test
 	void statsAndMaybeSaveMissingFields_whenEmptyMap_returnsAndDoesNotPrint() throws Exception {
@@ -569,7 +553,7 @@ class CsvResearchManagerTest {
 	@Test
 	void statsAndMaybeSaveMissingFields_whenAccessBelowAL2_printsButDoesNotSave() throws Exception {
 		Session session = mock(Session.class);
-		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); // < AL2
+		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel());
 
 		CsvUseCase csvUseCase = mock(CsvUseCase.class);
 
@@ -597,9 +581,6 @@ class CsvResearchManagerTest {
 		}
 	}
 
-	// ============================
-	// TEST MANCANTI: ANNO INIZIO
-	// ============================
 
 	@Test
 	void statsAndMaybeSaveMinMaxAnnoInizio_whenNullStats_returnsAndDoesNotPrintOrSave() throws Exception {
@@ -632,7 +613,7 @@ class CsvResearchManagerTest {
 	@Test
 	void statsAndMaybeSaveMinMaxAnnoInizio_whenAccessBelowAL2_printsButDoesNotSave() throws Exception {
 		Session session = mock(Session.class);
-		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); // < AL2
+		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); 
 
 		CsvUseCase csvUseCase = mock(CsvUseCase.class);
 
@@ -652,10 +633,10 @@ class CsvResearchManagerTest {
 
 			verify(csvUseCase).saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-			// deve stampare la tabellina
+			
 			fm.verify(() -> CsvFileManager.printRows(anyList()));
 
-			// access < AL2 => NON deve salvare
+			
 			verify(csvUseCase, never()).changeNameFile(anyString());
 			verify(csvUseCase, never()).addNewFileInCsvTableFromCsvDto(any());
 		}
@@ -682,7 +663,7 @@ class CsvResearchManagerTest {
 
 			verify(csvUseCase).saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-			// null => non stampa e non salva
+			
 			fm.verifyNoInteractions();
 			verify(csvUseCase, never()).changeNameFile(anyString());
 			verify(csvUseCase, never()).addNewFileInCsvTableFromCsvDto(any());
@@ -692,7 +673,7 @@ class CsvResearchManagerTest {
 	@Test
 	void statsAndMaybeSaveAverageAnnoInizio_whenAccessBelowAL2_printsButDoesNotSave() throws Exception {
 		Session session = mock(Session.class);
-		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); // < AL2
+		when(session.getAccessLevel()).thenReturn(AccessLevel.AL1.getLevel()); 
 
 		CsvUseCase csvUseCase = mock(CsvUseCase.class);
 
@@ -712,10 +693,10 @@ class CsvResearchManagerTest {
 
 			verify(csvUseCase).saveOneFileCsvFromData(CsvStandard.DOCUMENTO_AZIENDALE.toString());
 
-			// deve stampare la tabellina
+			
 			fm.verify(() -> CsvFileManager.printRows(anyList()));
 
-			// access < AL2 => NON deve salvare
+			
 			verify(csvUseCase, never()).changeNameFile(anyString());
 			verify(csvUseCase, never()).addNewFileInCsvTableFromCsvDto(any());
 		}

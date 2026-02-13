@@ -19,8 +19,7 @@ class UserMapperTest {
 
 	private final UserMapper mapper = new UserMapper();
 
-	// -------- helper reflection: evita problemi se i getter si chiamano
-	// diversamente
+	
 	private static Object callGetter(Object obj, String getter) {
 		try {
 			Method m = obj.getClass().getMethod(getter);
@@ -31,9 +30,7 @@ class UserMapperTest {
 		}
 	}
 
-	// =========================
-	// toUserdtoFromUser
-	// =========================
+	
 	@Test
 	void toUserdtoFromUser_createsUserDtoWithSameValues() {
 		UserDto dto = mapper.toUserdtoFromUser("id1", "mario", "pw", AccessLevel.AL2);
@@ -45,9 +42,7 @@ class UserMapperTest {
 		assertEquals(AccessLevel.AL2, dto.getAccessLevelvalue());
 	}
 
-	// =========================
-	// toEntityUsersFromUserdto
-	// =========================
+
 	@Test
 	void toEntityUsersFromUserdto_whenNull_returnsNull() {
 		assertNull(mapper.toEntityUsersFromUserdto(null));
@@ -59,7 +54,7 @@ class UserMapperTest {
 		when(dto.getUuid()).thenReturn("u1");
 		when(dto.getUsername()).thenReturn("anna");
 		when(dto.getPassword()).thenReturn("pw2");
-		when(dto.getAccessLevel()).thenReturn(AccessLevel.AL3.getLevel()); // qui è int nel tuo mapper
+		when(dto.getAccessLevel()).thenReturn(AccessLevel.AL3.getLevel()); 
 
 		Users entity = mapper.toEntityUsersFromUserdto(dto);
 
@@ -70,9 +65,7 @@ class UserMapperTest {
 		assertEquals(AccessLevel.AL3.getLevel(), callGetter(entity, "getAccessLevel"));
 	}
 
-	// =========================
-	// toUserdtoFromUsers
-	// =========================
+
 	@Test
 	void toUserdtoFromUsers_whenNull_returnsNull() {
 		assertNull(mapper.toUserdtoFromUsers(null));
@@ -92,12 +85,10 @@ class UserMapperTest {
 		assertEquals("u2", dto.getUuid());
 		assertEquals("luca", dto.getUsername());
 		assertEquals("pw3", dto.getPassword());
-		assertEquals(AccessLevel.AL1, dto.getAccessLevelvalue()); // mapper usa fromLevel(...)
+		assertEquals(AccessLevel.AL1, dto.getAccessLevelvalue()); 
 	}
 
-	// =========================
-	// toUserFromUserDTO
-	// =========================
+
 	@Test
 	void toUserFromUserDTO_whenNull_returnsNull() {
 		assertNull(mapper.toUserFromUserDTO(null));
@@ -110,20 +101,17 @@ class UserMapperTest {
 		User user = mapper.toUserFromUserDTO(dto);
 
 		assertNotNull(user);
-		// uso reflection per non dipendere dai nomi esatti dei getter del dominio
+		
 		assertEquals("u3", callGetter(user, "getId"));
 		assertEquals("marco", callGetter(user, "getName"));
 		assertEquals("pw4", callGetter(user, "getPassword"));
-		// access level nel dominio potrebbe essere AccessLevel oppure int:
-		// nel tuo mapper passa getAccessLevelvalue(), quindi tipicamente int.
+		
 		AccessLevel al = (AccessLevel) callGetter(user, "getAccessLevel");
 		assertEquals(AccessLevel.AL2, al);
 
 	}
 
-	// =========================
-	// getAllUsersInUserFormatWithoutPassword
-	// =========================
+
 	@Test
 	void getAllUsersInUserFormatWithoutPassword_whenEmpty_returnsNull() {
 		assertNull(mapper.getAllUsersInUserFormatWithoutPassword(Collections.<Users>emptyList()));
@@ -144,12 +132,10 @@ class UserMapperTest {
 		User out = list.get(0);
 		assertEquals("u1", callGetter(out, "getId"));
 		assertEquals("anna", callGetter(out, "getName"));
-		assertEquals("*********", callGetter(out, "getPassword")); // punto chiave del metodo
+		assertEquals("*********", callGetter(out, "getPassword")); 
 	}
 
-	// =========================
-	// getAllUsersInUserFormat
-	// =========================
+
 	@Test
 	void getAllUsersInUserFormat_whenEmpty_returnsNull() {
 		assertNull(mapper.getAllUsersInUserFormat(Collections.<Users>emptyList()));
@@ -171,6 +157,6 @@ class UserMapperTest {
 		User out = list.get(0);
 		assertEquals("u9", callGetter(out, "getId"));
 		assertEquals("mario", callGetter(out, "getName"));
-		assertEquals("realPw", callGetter(out, "getPassword")); // qui NON deve essere mascherata
+		assertEquals("realPw", callGetter(out, "getPassword")); 
 	}
 }

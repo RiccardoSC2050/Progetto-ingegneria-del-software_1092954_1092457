@@ -29,7 +29,7 @@ class MasterTest {
 			Validators result = sut.login("mario", "pw");
 
 			assertEquals(Validators.negative, result);
-			sm.verifyNoInteractions(); // non deve chiamare SessionManager.login/logout
+			sm.verifyNoInteractions(); 
 		}
 	}
 
@@ -39,7 +39,6 @@ class MasterTest {
 
 		UsersUseCase usersUseCase = mock(UsersUseCase.class);
 
-		// Utente "secret" (id,name,password = "secret") => branch neutral
 		User secret = mock(User.class);
 		when(secret.getId()).thenReturn("secret");
 		when(secret.getName()).thenReturn("secret");
@@ -54,7 +53,7 @@ class MasterTest {
 			Validators result = sut.login("x", "y");
 
 			assertEquals(Validators.neutral, result);
-			sm.verifyNoInteractions(); // NON deve fare SessionManager.login
+			sm.verifyNoInteractions(); 
 		}
 	}
 
@@ -70,7 +69,6 @@ class MasterTest {
 		when(u.getName()).thenReturn("luca");
 		when(u.getAccessLevel()).thenReturn(AccessLevel.AL2);
 
-		// importante: NON deve risultare "secret" su tutte e 3
 		when(u.getPassword()).thenReturn("hashQualsiasi");
 
 		try (MockedStatic<UsersUseCase> uc = mockStatic(UsersUseCase.class);

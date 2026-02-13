@@ -25,7 +25,7 @@ class CsvMapperTest {
 
         CsvDto dto = mapper.csvConverterFromData(c);
 
-        assertEquals(7, dto.getId()); // CsvDto id è int
+        assertEquals(7, dto.getId()); 
         assertEquals("file.csv", dto.getFileName());
         assertEquals("user-1", dto.getOwnerId());
         assertArrayEquals(data, dto.getData()); // byte[]
@@ -39,7 +39,7 @@ class CsvMapperTest {
 
         Csv c = mapper.toCsvFromCsvDtoNoId(dto);
 
-        // Qui NON controlliamo id: il costruttore no-id non lo prende
+      
         assertEquals("x.csv", c.getFileName());
         assertEquals("user-2", c.getOwnerId());
         assertArrayEquals(data, c.getData());
@@ -53,7 +53,7 @@ class CsvMapperTest {
 
         Csv c = mapper.toCsvFromCsvDtoWithId(dto);
 
-        assertEquals(Integer.valueOf(10), c.getId()); // Csv id è Integer
+        assertEquals(Integer.valueOf(10), c.getId()); 
         assertEquals("y.csv", c.getFileName());
         assertEquals("user-3", c.getOwnerId());
         assertArrayEquals(data, c.getData());

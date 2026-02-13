@@ -14,7 +14,7 @@ class HashTest {
 
 		assertNotNull(hashed);
 		assertFalse(hashed.trim().isEmpty());
-		assertNotEquals(pwd, hashed); // un hash non deve mai essere uguale al plain
+		assertNotEquals(pwd, hashed); 
 	}
 
 	@Test
@@ -40,10 +40,9 @@ class HashTest {
 		String h1 = Hash.hash(pwd);
 		String h2 = Hash.hash(pwd);
 
-		// BCrypt usa salt, quindi gli hash devono essere diversi
+		
 		assertNotEquals(h1, h2);
 
-		// ma entrambi devono validare la password
 		assertTrue(Hash.verify(pwd, h1));
 		assertTrue(Hash.verify(pwd, h2));
 	}

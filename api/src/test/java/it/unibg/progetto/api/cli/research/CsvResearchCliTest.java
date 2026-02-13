@@ -39,7 +39,7 @@ class CsvResearchCliTest {
 			fm.when(() -> CsvFileManager.readAllRows(CsvStandard.DOCUMENTO_AZIENDALE.toString(), true))
 					.thenReturn(allRows);
 
-			// colonna 1 = nome
+			
 			List<String[]> res = CsvResearchCli.searchOnBaseFileByColumnEquals(1, "ma");
 
 			assertNotNull(res);
@@ -70,8 +70,7 @@ class CsvResearchCliTest {
 
 	@Test
 	void searchOnBaseFileByColumnEquals_phoneColumn_startsWith_ignoresPlus39InCell() {
-		// colonna 4 = numero_di_telefono (vedi javadoc nel codice)
-		// cell ha +39, il codice fa replace("+39","") sulla cell
+		
 		String[] r1 = new String[] { "1", "a", "b", "c", "+39 333123", "dev", "2020", "0" };
 		String[] r2 = new String[] { "2", "a", "b", "c", "444000", "dev", "2020", "0" };
 
@@ -89,8 +88,7 @@ class CsvResearchCliTest {
 
 	@Test
 	void searchByAnnoInizioMaggioreUguale_filtersAndSkipsInvalidYear() {
-		// anno_inizio è la colonna StringValues.ANNO_INIZIO.getIndex()
-		// (nel file aziendale è 6)
+		
 		String[] ok1 = new String[] { "1", "a", "b", "c", "d", "dev", "2020", "0" };
 		String[] ok2 = new String[] { "2", "a", "b", "c", "d", "dev", "2010", "0" };
 		String[] bad = new String[] { "3", "a", "b", "c", "d", "dev", "xx", "0" };
@@ -102,14 +100,13 @@ class CsvResearchCliTest {
 			List<String[]> res = CsvResearchCli.searchByAnnoInizioMaggioreUguale(2015);
 
 			assertEquals(1, res.size());
-			assertEquals("1", res.get(0)[0]); // solo 2020
+			assertEquals("1", res.get(0)[0]);
 		}
 	}
 
 	@Test
 	void searchByMarker_filtersAndSkipsInvalidMarker() {
-		// richiami è la colonna StringValues.RICHIAMI.getIndex() (nel file aziendale è
-		// 7)
+		
 		String[] ok1 = new String[] { "1", "a", "b", "c", "d", "dev", "2020", "2" };
 		String[] ok2 = new String[] { "2", "a", "b", "c", "d", "dev", "2020", "1" };
 		String[] bad = new String[] { "3", "a", "b", "c", "d", "dev", "2020", "xx" };

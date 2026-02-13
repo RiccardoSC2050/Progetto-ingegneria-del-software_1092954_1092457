@@ -210,11 +210,7 @@ class AppBlocksManageUsersUnitTest {
 
 			String passedHash = pwCaptor.getValue();
 			assertNotNull(passedHash);
-			assertNotEquals("password99", passedHash); // non deve passare in chiaro
-
-			// se è BCrypt (molto probabile), puoi anche usare questa:
-			// assertTrue(passedHash.startsWith("$2a$") || passedHash.startsWith("$2b$") ||
-			// passedHash.startsWith("$2y$"));
+			assertNotEquals("password99", passedHash); 
 		}
 	}
 
@@ -248,7 +244,7 @@ class AppBlocksManageUsersUnitTest {
 	void changeAccLev_returns_whenQuitOnFirstInput() {
 		AppBlocksManageUsers sut = new AppBlocksManageUsers();
 
-		// primo input: nome utente -> quit
+		
 		GlobalScanner.scanner = new Scanner(new ByteArrayInputStream("q\n".getBytes(StandardCharsets.UTF_8)));
 
 		Session session = mock(Session.class);

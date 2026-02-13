@@ -15,7 +15,7 @@ class SessionManagerTest {
 
 	@AfterEach
 	void cleanup() {
-		SessionManager.logout(); // stato statico: pulizia obbligatoria
+		SessionManager.logout(); 
 	}
 
 	@Test
@@ -39,7 +39,7 @@ class SessionManagerTest {
 		SessionManager.login("uuid-1", "mario", AccessLevel.AL1);
 		Session first = SessionManager.getCurrent();
 
-		// secondo login: NON deve cambiare nulla (il codice lo impedisce)
+		
 		SessionManager.login("uuid-2", "anna", AccessLevel.AL3);
 		Session after = SessionManager.getCurrent();
 
@@ -94,7 +94,7 @@ class SessionManagerTest {
 		assertTrue(out.contains("LIVELLO DI ACCESSO ROOT"));
 	}
 
-	// ---- helper semplice per catturare System.out
+	
 	private static String captureStdout(Runnable action) {
 		PrintStream old = System.out;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

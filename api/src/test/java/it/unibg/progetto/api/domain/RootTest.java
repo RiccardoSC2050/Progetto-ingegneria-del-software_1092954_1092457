@@ -43,16 +43,15 @@ class RootTest {
 	 */
 	@BeforeEach
 	void setup() throws Exception {
-		// backup input/scanner globali
-		originalIn = System.in;
+				originalIn = System.in;
 		originalScanner = GlobalScanner.scanner;
 
-		// reset singleton Root.root
+		
 		Field rootField = Root.class.getDeclaredField("root");
 		rootField.setAccessible(true);
 		rootField.set(null, null);
 
-		// backup CsvUseCase.istance (static)
+	
 		Field csvField = CsvUseCase.class.getDeclaredField("istance");
 		csvField.setAccessible(true);
 		originalCsvUseCaseInstance = (CsvUseCase) csvField.get(null);
@@ -60,10 +59,10 @@ class RootTest {
 
 	@AfterEach
 	void teardown() throws Exception {
-		// ripristino input
+		
 		System.setIn(originalIn);
 
-		// chiudo lo scanner creato nel test (se diverso dall'originale)
+		
 		if (GlobalScanner.scanner != null && GlobalScanner.scanner != originalScanner) {
 			try {
 				GlobalScanner.scanner.close();
@@ -72,28 +71,27 @@ class RootTest {
 		}
 		GlobalScanner.scanner = originalScanner;
 
-		// ripristino CsvUseCase.istance
+		
 		Field csvField = CsvUseCase.class.getDeclaredField("istance");
 		csvField.setAccessible(true);
 		csvField.set(null, originalCsvUseCaseInstance);
 	}
 
-	// Helper: setta input finto + scanner globale
+	
 	private void setFakeInput(String... lines) {
 		String fakeInput = String.join("\n", lines) + "\n";
 		System.setIn(new ByteArrayInputStream(fakeInput.getBytes(StandardCharsets.UTF_8)));
 		GlobalScanner.scanner = new Scanner(System.in);
 	}
 
-	// Helper: forza CsvUseCase.getIstnce() a non essere null (unit test senza
-	// Spring)
+	
 	private void setCsvUseCaseMock(CsvUseCase csvMock) throws Exception {
 		Field csvField = CsvUseCase.class.getDeclaredField("istance");
 		csvField.setAccessible(true);
 		csvField.set(null, csvMock);
 	}
 
-	// ---------- 1. Singleton: getInstanceRoot() ----------
+	
 
 	@Test
 	void getInstanceRootReturnsSameInstance() {
@@ -132,7 +130,7 @@ class RootTest {
 		}
 	}
 
-	// ---------- 2. Costruttore manuale ----------
+	
 
 	@Test
 	void manualRootConstructorSetsIdZeroAndLevelFive() {
@@ -144,13 +142,13 @@ class RootTest {
 		assertEquals(5, customRoot.getAccessLevelValue(), "Il livello di accesso di Root deve essere 5");
 	}
 
-	// ---------- 3. createUser() (unit test con mock UseCase) ----------
+	
 
 	@Test
 	void createUserCallsAddUserOnDataOnValidInput() {
 		Root root = new Root("pwd");
 
-		// password >= 8 (altrimenti il metodo ripete la domanda e finisci l'input)
+		
 		setFakeInput("tester", "secret123", "2");
 
 		try (MockedStatic<UsersUseCase> mockedStatic = mockStatic(UsersUseCase.class)) {
@@ -175,7 +173,7 @@ class RootTest {
 		}
 	}
 
-	// ---------- 4. deleteUser() ----------
+	
 
 	@Test
 	void deleteUserWithNullUserListDoesNotThrow() {
@@ -199,15 +197,10 @@ class RootTest {
 		User existing = new User("tester", "pw", AccessLevel.AL1);
 		List<User> userList = Collections.singletonList(existing);
 
-		// Sequenza input REALE attesa da Root:
-		// - nome utente
-		// - conferma nome [s|n]
-		// - "Conosci già l'id?" [s|n]
-		// - id utente
+	
 		setFakeInput("tester", "s", "s", existing.getId());
 
-		// CsvUseCase è null nei unit test (non parte Spring): lo settiamo a mock per
-		// evitare NPE
+		
 		CsvUseCase csvMock = mock(CsvUseCase.class);
 		setCsvUseCaseMock(csvMock);
 		doNothing().when(csvMock).deleteAllFileOfUserDeleted(anyString());
@@ -216,7 +209,7 @@ class RootTest {
 			UsersUseCase mockService = mock(UsersUseCase.class);
 			mockedStatic.when(UsersUseCase::getInstance).thenReturn(mockService);
 
-			// viene chiamato più volte (deleteUser + delUser)
+			
 			when(mockService.trasformListUsersIntoListUserWithoutPassword()).thenReturn(userList);
 
 			assertDoesNotThrow(root::deleteUser, "deleteUser() non deve lanciare eccezioni con utente esistente");

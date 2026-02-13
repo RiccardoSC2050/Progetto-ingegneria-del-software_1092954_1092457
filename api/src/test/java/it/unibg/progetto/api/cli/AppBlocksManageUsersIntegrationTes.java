@@ -19,7 +19,7 @@ import it.unibg.progetto.api.security.Hash;
 import it.unibg.progetto.data.UsersRepository;
 
 @SpringBootTest(classes = ApiMain.class)
-@ActiveProfiles("test") // usa api/src/test/resources/application-test.properties
+@ActiveProfiles("test") 
 class AppBlocksManageUsersIntegrationTes {
 
 	@Autowired
@@ -30,13 +30,11 @@ class AppBlocksManageUsersIntegrationTes {
 
 	@BeforeEach
 	void cleanDb() {
-		// IMPORTANTISSIMO: ogni test parte pulito
 		usersRepository.deleteAll();
 	}
 
 	@Test
 	void addRootOnData_then_rootIsOnData_returnsRootDto() {
-		// Arrange: creo "root" come record Users (via usecase)
 		var root = new it.unibg.progetto.api.domain.Root(Hash.hash("passwordRoot123"));
 
 		// Act
@@ -55,61 +53,60 @@ class AppBlocksManageUsersIntegrationTes {
 
 	@Test
 	void addUserOnData_then_numberOfAllOperators_is1() {
-		// Arrange
+		
 		String hashed = Hash.hash("pwUtente123");
 		User u = new User("mario", hashed, AccessLevel.AL1);
 
-		// Act
+		
 		usersUseCase.addUserOnData(u);
 
-		// Assert
+		
 		assertEquals(1, usersUseCase.numberOfAllOperators());
 	}
 
 	@Test
 	void deleteUser_removesUserFromDb() {
-		// Arrange
+		
 		User u = new User("luca", Hash.hash("pwLuca123"), AccessLevel.AL2);
 		usersUseCase.addUserOnData(u);
 		assertEquals(1, usersUseCase.numberOfAllOperators());
 
-		// Act
+		
 		usersUseCase.deleteUser(u);
 
-		// Assert
+		
 		assertEquals(0, usersUseCase.numberOfAllOperators());
 	}
 
 	@Test
 	void loginAuthenticator_withCorrectPassword_returnsProtectedUser() {
-		// Arrange
+		
 		String clearPw = "pwSegreta123";
 		String hashed = Hash.hash(clearPw);
 
 		User u = new User("anna", hashed, AccessLevel.AL3);
 		usersUseCase.addUserOnData(u);
 
-		// Act
+		
 		User logged = usersUseCase.LoginAuthenticator("anna", clearPw);
 
-		// Assert
+		
 		assertNotNull(logged);
 		assertEquals("anna", logged.getName());
-		// la password deve essere "protetta"/mascherata (non l'hash vero)
 		assertNotEquals(hashed, logged.getPassword());
 		assertNotNull(logged.getAccessLevel());
 	}
 
 	@Test
 	void loginAuthenticator_wrongPassword_returnsNull() {
-		// Arrange
+		
 		User u = new User("paolo", Hash.hash("pwPaolo123"), AccessLevel.AL1);
 		usersUseCase.addUserOnData(u);
 
-		// Act
+		
 		User logged = usersUseCase.LoginAuthenticator("paolo", "passwordSbagliata");
 
-		// Assert
+		
 		assertNull(logged);
 	}
 }

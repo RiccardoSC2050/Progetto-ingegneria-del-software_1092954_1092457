@@ -160,9 +160,7 @@ class UsersUseCaseUnitTest {
 
 		User u = new User("id1", "u1", "pw", AccessLevel.AL1);
 
-		// userMapper.toUserdtoFromUser(...) e userMapper.toEntityUsersFromUserdto(...)
-		// non serve costruire un UserDto reale: basta far ritornare una entity Users
-		// finale
+		
 		Users expected = mock(Users.class);
 		when(userMapper.toEntityUsersFromUserdto(any())).thenReturn(expected);
 

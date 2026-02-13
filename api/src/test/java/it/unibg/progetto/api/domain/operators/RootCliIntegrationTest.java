@@ -56,12 +56,12 @@ class RootCliIntegrationTest {
     @Test
     @Timeout(10)
     void createUserFromConsoleFlowWorks() {
-        // ✅ NON usare getInstanceRoot(): nel profilo test Root può non essere sul DB → rischi null
+        
         Root root = new Root("pwd");
 
         String uname = "cliuser_" + UUID.randomUUID().toString().substring(0, 8);
 
-        // name, password>=8, access level [1-3]
+        
         setFakeInput(uname, "secret123", "2");
 
         assertTrue(root.createUser());
@@ -81,11 +81,11 @@ class RootCliIntegrationTest {
 
         String uname = "cliuserdel_" + UUID.randomUUID().toString().substring(0, 8);
 
-        // 1) creo utente
+        
         setFakeInput(uname, "secret123", "2");
         assertTrue(root.createUser());
 
-        // 2) recupero id
+       
         List<User> users = service.trasformListUsersIntoListUserWithoutPassword();
         assertNotNull(users);
 
@@ -97,11 +97,11 @@ class RootCliIntegrationTest {
 
         assertNotNull(idToDelete);
 
-        // 3) deleteUser: nome → conferma [s|n] → conosco id? [s|n] → id
+        
         setFakeInput(uname, "s", "s", idToDelete);
         assertDoesNotThrow(root::deleteUser);
 
-        // 4) verifico che non esista più
+        
         List<User> after = service.trasformListUsersIntoListUserWithoutPassword();
         assertTrue(after == null || after.stream().noneMatch(u -> uname.equals(u.getName())));
     }

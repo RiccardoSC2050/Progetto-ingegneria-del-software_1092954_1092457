@@ -16,7 +16,7 @@ class UserDtoTest {
         dto.setUsername("user");
         dto.setPassword("pwd");
 
-        // setta livello con int (come nel tuo file)
+        
         dto.setAccessLevel(AccessLevel.values()[0].getLevel());
 
         assertEquals("uuid-1", dto.getUuid());

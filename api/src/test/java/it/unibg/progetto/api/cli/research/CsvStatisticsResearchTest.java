@@ -19,14 +19,13 @@ import it.unibg.progetto.api.infrastructure.csv.CsvFileManager;
 
 class CsvStatisticsResearchTest {
 
-	// ---- helper: crea una row abbastanza lunga e imposta le celle per indice enum
+	
 	private static String[] row(Object... pairs) {
 		int max = 0;
 		for (StringValues v : StringValues.values()) {
 			max = Math.max(max, v.getIndex());
 		}
 		String[] r = new String[max + 1];
-		// default null va bene, ma per evitare NPE in alcuni accessi metto "" ovunque
 		for (int i = 0; i < r.length; i++)
 			r[i] = "";
 
@@ -38,9 +37,7 @@ class CsvStatisticsResearchTest {
 		return r;
 	}
 
-	// =========================
-	// 1) countTotalValidEmployees
-	// =========================
+
 	@Test
 	void countTotalValidEmployees_countsOnlyValidRows() throws Exception {
 		List<String[]> rows = Arrays.asList(
@@ -65,9 +62,7 @@ class CsvStatisticsResearchTest {
 		}
 	}
 
-	// =========================
-	// 2) countEmployeesByRole
-	// =========================
+	
 	@Test
 	void countEmployeesByRole_countsRolesSkippingInvalidRows() throws Exception {
 		List<String[]> rows = Arrays.asList(
@@ -90,12 +85,10 @@ class CsvStatisticsResearchTest {
 		}
 	}
 
-	// =========================
-	// 3) percentEmployeesByRole
-	// =========================
+	
 	@Test
 	void percentEmployeesByRole_computesPercentages() throws Exception {
-		// 2 DEV, 1 QA => DEV 66.666.. QA 33.333..
+		
 		List<String[]> rows = Arrays.asList(
 				row(StringValues.ID, "1", StringValues.NOME, "A", StringValues.COGNOME, "A", StringValues.RUOLO, "DEV"),
 				row(StringValues.ID, "2", StringValues.NOME, "B", StringValues.COGNOME, "B", StringValues.RUOLO, "DEV"),
@@ -114,9 +107,7 @@ class CsvStatisticsResearchTest {
 		}
 	}
 
-	// =========================
-	// 4) minMaxAnnoInizio
-	// =========================
+	
 	@Test
 	void minMaxAnnoInizio_returnsMinAndMax() {
 		List<String[]> rows = Arrays.asList(row(StringValues.ANNO_INIZIO, "2018"),
@@ -134,9 +125,7 @@ class CsvStatisticsResearchTest {
 		}
 	}
 
-	// =========================
-	// 5) averageAnnoInizioAndSeniority
-	// =========================
+
 	@Test
 	void averageAnnoInizioAndSeniority_computesAverages() {
 		int current = Year.now().getValue();
@@ -159,9 +148,6 @@ class CsvStatisticsResearchTest {
 		}
 	}
 
-	// =========================
-	// 6) countEmployeesByStartYear
-	// =========================
 	@Test
 	void countEmployeesByStartYear_countsByYearSorted() {
 		List<String[]> rows = Arrays.asList(row(StringValues.ANNO_INIZIO, "2020"),
@@ -178,9 +164,7 @@ class CsvStatisticsResearchTest {
 		}
 	}
 
-	// =========================
-	// 7) statsRichiami
-	// =========================
+
 	@Test
 	void statsRichiami_returnsTotalAvgMinMax() {
 		List<String[]> rows = Arrays.asList(row(StringValues.RICHIAMI, "0"), row(StringValues.RICHIAMI, "2"),
@@ -200,9 +184,7 @@ class CsvStatisticsResearchTest {
 		}
 	}
 
-	// =========================
-	// 8) topEmployeesByRichiami
-	// =========================
+
 	@Test
 	void topEmployeesByRichiami_returnsTopNOrderedDesc() {
 		List<String[]> rows = Arrays.asList(
@@ -227,9 +209,7 @@ class CsvStatisticsResearchTest {
 		}
 	}
 
-	// =========================
-	// 9) employeesWithZeroRichiami
-	// =========================
+
 	@Test
 	void employeesWithZeroRichiami_returnsOnlyZero() {
 		List<String[]> rows = Arrays.asList(
@@ -252,22 +232,20 @@ class CsvStatisticsResearchTest {
 		}
 	}
 
-	// =========================
-	// 10) countMissingFields
-	// =========================
+
 	@Test
 	void countMissingFields_countsMissingByColumn() {
-		// r1 completo, r2 manca EMAIL e TELEFONO, r3 manca NOME
+		
 		String[] r1 = row(StringValues.ID, "1", StringValues.NOME, "Mario", StringValues.COGNOME, "Rossi",
 				StringValues.MAIL, "m@x.it", StringValues.NUMERO_TELEFONO, "123", StringValues.RUOLO, "DEV",
 				StringValues.ANNO_INIZIO, "2020");
 
 		String[] r2 = row(StringValues.ID, "2", StringValues.NOME, "Anna", StringValues.COGNOME, "Verdi",
-				StringValues.MAIL, "", // missing
-				StringValues.NUMERO_TELEFONO, "   ", // missing
+				StringValues.MAIL, "",
+				StringValues.NUMERO_TELEFONO, "   ",
 				StringValues.RUOLO, "QA", StringValues.ANNO_INIZIO, "2019");
 
-		String[] r3 = row(StringValues.ID, "3", StringValues.NOME, "", // missing
+		String[] r3 = row(StringValues.ID, "3", StringValues.NOME, "", 
 				StringValues.COGNOME, "Neri", StringValues.MAIL, "c@x.it", StringValues.NUMERO_TELEFONO, "999",
 				StringValues.RUOLO, "DEV", StringValues.ANNO_INIZIO, "2018");
 

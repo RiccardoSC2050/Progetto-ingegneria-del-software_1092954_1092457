@@ -25,7 +25,7 @@ class SessionTest {
 
 		assertNotNull(s.getLoginTime());
 
-		// loginTime deve essere compreso tra before e after (o comunque molto vicino)
+		
 		assertFalse(s.getLoginTime().isBefore(before));
 		assertFalse(s.getLoginTime().isAfter(after));
 	}
@@ -38,7 +38,7 @@ class SessionTest {
 		Thread.sleep(5);
 		Instant t2 = s.getLoginTime();
 
-		// stesso oggetto => stesso valore
+		
 		assertEquals(t1, t2);
 	}
 
@@ -48,8 +48,7 @@ class SessionTest {
 		Thread.sleep(2);
 		Session s2 = new Session("uuid-2", "anna", 3);
 
-		// s2 creato dopo => loginTime uguale o successivo (dipende dalla risoluzione
-		// dell'orologio)
+		
 		assertFalse(s2.getLoginTime().isBefore(s1.getLoginTime()));
 	}
 }

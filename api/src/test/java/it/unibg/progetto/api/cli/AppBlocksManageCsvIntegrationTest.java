@@ -33,7 +33,7 @@ class AppBlocksManageCsvIntegrationTest {
 
     @AfterEach
     void resetScanner() {
-        // evita che altri test ereditino lo scanner
+        
         GlobalScanner.scanner = new Scanner(System.in);
     }
 
@@ -81,10 +81,10 @@ class AppBlocksManageCsvIntegrationTest {
 
             sut.editFileCsvFile();
 
-            // sempre chiamato a inizio metodo
+            
             verify(csvUseCase).saveAllFileCsvFromDataOfUser(session);
 
-            // deve uscire subito senza tentare altro
+            
             verifyNoMoreInteractions(csvUseCase);
         }
     }
@@ -122,7 +122,6 @@ class AppBlocksManageCsvIntegrationTest {
 
         doReturn(true).when(sut).lsFileUser();
 
-        // input: nome file da modificare
         GlobalScanner.scanner = new Scanner(new ByteArrayInputStream("missing\n".getBytes(StandardCharsets.UTF_8)));
 
         try (MockedStatic<CsvUseCase> uc = mockStatic(CsvUseCase.class);
@@ -133,13 +132,12 @@ class AppBlocksManageCsvIntegrationTest {
             uc.when(CsvUseCase::getIstnce).thenReturn(csvUseCase);
             sm.when(SessionManager::getCurrent).thenReturn(session);
 
-            // path finto: punta a cartella temporanea vuota
             Path tempDir = Files.createTempDirectory("csvtest");
             cst.when(Constant::getFilePathCsv).thenReturn(tempDir.toString() + File.separator);
 
             sut.editFileCsvFile();
 
-            fm.verifyNoInteractions(); // non deve aprire editor
+            fm.verifyNoInteractions(); 
         }
     }
 
@@ -166,7 +164,7 @@ class AppBlocksManageCsvIntegrationTest {
             Path tempDir = Files.createTempDirectory("csvtest");
             cst.when(Constant::getFilePathCsv).thenReturn(tempDir.toString() + File.separator);
 
-            // creo davvero doc.csv così Files.exists() torna true
+            
             Path file = tempDir.resolve("doc.csv");
             Files.write(file, "a,b\n1,2\n".getBytes(StandardCharsets.UTF_8));
 
@@ -229,7 +227,7 @@ class AppBlocksManageCsvIntegrationTest {
         Session session = mock(Session.class);
         when(session.getUuid()).thenReturn("U1");
 
-        // input: nome file
+        
         GlobalScanner.scanner = new Scanner(new ByteArrayInputStream("file\n".getBytes(StandardCharsets.UTF_8)));
 
         try (MockedStatic<CsvUseCase> uc = mockStatic(CsvUseCase.class);
@@ -370,7 +368,7 @@ class AppBlocksManageCsvIntegrationTest {
                 new CsvDto("doc2", "U1", new byte[] {2})
         );
 
-        // input: "2" -> index 1, poi conferma "s"
+        
         GlobalScanner.scanner = new Scanner(new ByteArrayInputStream("2\ns\n".getBytes(StandardCharsets.UTF_8)));
 
         try (MockedStatic<CsvUseCase> uc = mockStatic(CsvUseCase.class);
@@ -401,7 +399,7 @@ class AppBlocksManageCsvIntegrationTest {
 
         List<CsvDto> list = Arrays.asList(new CsvDto("doc1", "U1", new byte[] {1}));
 
-        // input: "1" poi "n"
+        
         GlobalScanner.scanner = new Scanner(new ByteArrayInputStream("1\nn\n".getBytes(StandardCharsets.UTF_8)));
 
         try (MockedStatic<CsvUseCase> uc = mockStatic(CsvUseCase.class);

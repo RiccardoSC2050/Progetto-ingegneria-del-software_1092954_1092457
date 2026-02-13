@@ -63,7 +63,7 @@ class AppBlocksManageCsvUnitTest {
 	void manageImplementationOfMainFileCsv_importsMainFile_whenNotAlreadyPresent() throws Exception {
 		AppBlocksManageCsv app = new AppBlocksManageCsv();
 
-		// input: percorso file
+		
 		GlobalScanner.setScanner(new Scanner(new ByteArrayInputStream(("/tmp/company.csv\n").getBytes())));
 
 		CsvUseCase useCase = mock(CsvUseCase.class);
@@ -75,7 +75,7 @@ class AppBlocksManageCsvUnitTest {
 			uc.when(CsvUseCase::getIstnce).thenReturn(useCase);
 			sm.when(SessionManager::getCurrent).thenReturn(current);
 
-			// lista senza DOCUMENTO_AZIENDALE -> quindi deve importare
+			
 			when(useCase.returnAllFileCsvDtoFromData())
 					.thenReturn(Arrays.asList(new CsvDto("altro", "U1", new byte[] { 1 })));
 
@@ -89,7 +89,7 @@ class AppBlocksManageCsvUnitTest {
 	void createGeneralFileCsv_createsFile_andDoesNotOpenEditor_whenUserSaysNo() throws Exception {
 		AppBlocksManageCsv app = new AppBlocksManageCsv();
 
-		// input: nome file + "n" (non modificare)
+		
 		GlobalScanner.setScanner(new Scanner(new ByteArrayInputStream(("miofile\nn\n").getBytes())));
 
 		CsvUseCase useCase = mock(CsvUseCase.class);
@@ -108,7 +108,7 @@ class AppBlocksManageCsvUnitTest {
 			app.createGeneralFileCsv();
 
 			fm.verify(() -> CsvFileManager.createFileCsvOnFolder("miofile"));
-			// NON deve aprire editor
+			
 			fm.verify(() -> CsvFileManager.writeCsvLikeEditor(anyString()), never());
 		}
 	}
@@ -130,9 +130,9 @@ class AppBlocksManageCsvUnitTest {
 
 			app.editFileCsvFile();
 
-			// viene chiamato sempre all'inizio
+			
 			verify(useCase).saveAllFileCsvFromDataOfUser(current);
-			// ma non deve aprire editor
+			
 			fm.verify(() -> CsvFileManager.writeCsvLikeEditor(anyString()), never());
 		}
 	}
@@ -141,7 +141,7 @@ class AppBlocksManageCsvUnitTest {
 	void deleteMyCsvFromDatabase_quitDoesNotDeleteAnything() {
 		AppBlocksManageCsv app = new AppBlocksManageCsv();
 
-		// input 'q' per annullare
+		
 		GlobalScanner.setScanner(new Scanner(new ByteArrayInputStream(("q\n").getBytes())));
 
 		CsvUseCase useCase = mock(CsvUseCase.class);

@@ -99,7 +99,7 @@ class CsvFileManagerTest {
 
 			assertArrayEquals(new String[] { "ID", "NOME", "COGNOME" }, all.get(0));
 
-			assertArrayEquals(new String[] { "2", "Anna" }, // ← CORRETTO
+			assertArrayEquals(new String[] { "2", "Anna" }, 
 					all.get(2));
 
 			List<String[]> noHeader = CsvFileManager.readAllRows("data", true);
@@ -107,14 +107,14 @@ class CsvFileManagerTest {
 
 			assertArrayEquals(new String[] { "1", "Mario", "Rossi" }, noHeader.get(0));
 
-			assertArrayEquals(new String[] { "2", "Anna" }, // ← CORRETTO
+			assertArrayEquals(new String[] { "2", "Anna" },
 					noHeader.get(1));
 		}
 	}
 
 	@Test
 	void printRows_printsTableLikeOutput() throws Exception {
-		// non serve Constant: lavora su lista in memoria
+	
 		List<String[]> rows = Arrays.asList(new String[] { "ID", "NOME" }, new String[] { "1", "Mario" });
 
 		PrintStream oldOut = System.out;
@@ -130,7 +130,7 @@ class CsvFileManagerTest {
 		String out = new String(baos.toByteArray(), StandardCharsets.UTF_8);
 		assertTrue(out.contains("ID"));
 		assertTrue(out.contains("Mario"));
-		// in genere stampa con separatori tipo |
+		
 		assertTrue(out.contains("|") || out.contains("----"));
 	}
 
@@ -142,7 +142,7 @@ class CsvFileManagerTest {
 			Path f = tempDir.resolve("edit.csv");
 			Files.write(f, Arrays.asList("HEADER1,HEADER2"), StandardCharsets.UTF_8);
 
-			// input: due righe, poi :wq
+			
 			String input = "1,Mario\n2,Anna\n:wq\n";
 			GlobalScanner.scanner = new Scanner(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
 

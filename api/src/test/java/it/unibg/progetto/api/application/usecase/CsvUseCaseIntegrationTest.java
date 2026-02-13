@@ -25,8 +25,7 @@ class CsvUseCaseIntegrationTest {
 	@BeforeEach
 	@AfterEach
 	void cleanCsvTable() {
-		// pulizia robusta usando solo metodi del use case (così non dipendiamo dal
-		// service)
+		
 		List<CsvDto> all = csvUseCase.returnAllFileCsvDtoFromData();
 		if (all != null) {
 			for (CsvDto dto : all) {
@@ -144,7 +143,7 @@ class CsvUseCaseIntegrationTest {
 		List<CsvDto> all = csvUseCase.returnAllFileCsvDtoFromDataOfUser(owner);
 		assertEquals(2, all.size());
 
-		// equivalente logico all’index=1
+		
 		CsvDto toDelete = all.get(1);
 		csvUseCase.deleteOneFileInData(toDelete);
 

@@ -9,8 +9,7 @@ public class TerminalController {
 	private final TerminalFrame view;
 	private final ConsoleBridge bridge;
 
-	// ✅ Ultima "richiesta" / ultimo output del BACKEND (quello che ti serve
-	// rivedere)
+	
 	private String lastBackendMessage = "";
 
 	public TerminalController(TerminalFrame view) {
@@ -26,14 +25,14 @@ public class TerminalController {
 			return;
 		}
 
-		// ✅ intercetta l'output del backend e salva l'ultimo messaggio utile
+		
 		bridge.setOnOutput(this::captureBackendOutput);
 
-		// Eventi GUI
+		
 		view.onSubmit(this::handleSubmit);
 		view.onClear(this::handleClear);
 
-		// Avvio backend/CLI
+		
 		new Thread(() -> {
 			try {
 				ApiMain.main(new String[] { "--spring.main.web-application-type=none" });
@@ -49,7 +48,7 @@ public class TerminalController {
 		String cmd = view.getInputText();
 		if (cmd == null)
 			cmd = "";
-		cmd = cmd.strip(); // Java 11+. Se Java 8: trim()
+		cmd = cmd.strip(); 
 
 		view.clearInput();
 		view.focusInput();
@@ -57,17 +56,17 @@ public class TerminalController {
 		if (cmd.isEmpty())
 			return;
 
-		// (opzionale) mostra il comando digitato
+		
 		view.appendLine("> " + cmd);
 
-		// invia al programma esistente
+		
 		bridge.sendLine(cmd);
 	}
 
 	private void handleClear() {
 		view.clearOutput();
 
-		// ✅ dopo clear, ristampa l’ultima richiesta del BACKEND
+	
 		if (lastBackendMessage != null && !lastBackendMessage.isBlank()) {
 			view.appendLine(lastBackendMessage);
 		} else {
@@ -81,18 +80,17 @@ public class TerminalController {
 		bridge.stop();
 	}
 
-	// ====== qui decidiamo cosa considerare "ultima richiesta utile" ======
+	
 	private void captureBackendOutput(String text) {
 		if (text == null)
 			return;
 
-		// normalizza
+		
 		String s = text.replace("\r", "").strip();
 		if (s.isEmpty())
 			return;
 
-		// Qui: SALVIAMO l’ultimo output non vuoto del backend.
-		// Questo copre "OK", "Inserisci ..." ecc.
+		
 		lastBackendMessage = s;
 	}
 }

@@ -27,13 +27,13 @@ public class TerminalFrame extends JFrame {
 		contentPane.setLayout(new BorderLayout(8, 8));
 		setContentPane(contentPane);
 
-		// OUTPUT
+		
 		outputArea = new JTextArea();
 		outputArea.setEditable(false);
 
-		// ✅ IMPORTANTI per tabelle allineate (stile terminale)
+		
 		outputArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
-		outputArea.setLineWrap(false); // niente wrap (rompe le colonne)
+		outputArea.setLineWrap(false); 
 		outputArea.setWrapStyleWord(false);
 
 		JScrollPane scrollPane = new JScrollPane(outputArea);
@@ -41,7 +41,7 @@ public class TerminalFrame extends JFrame {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 
-		// INPUT BAR
+		
 		JPanel bottom = new JPanel(new BorderLayout(8, 8));
 		contentPane.add(bottom, BorderLayout.SOUTH);
 
@@ -58,7 +58,7 @@ public class TerminalFrame extends JFrame {
 		buttons.add(clearButton);
 	}
 
-	// ===== Metodi "View API" (usati dal Controller) =====
+	
 
 	public void appendLine(String s) {
 		outputArea.append(s + System.lineSeparator());
@@ -87,7 +87,7 @@ public class TerminalFrame extends JFrame {
 	}
 
 
-	// ===== Hook per eventi (il controller registra i listener) =====
+	
 
 	public void onSubmit(Runnable handler) {
 		inputField.addActionListener(e -> handler.run());

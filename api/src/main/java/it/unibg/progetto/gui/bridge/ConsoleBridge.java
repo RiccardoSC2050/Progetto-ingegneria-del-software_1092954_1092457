@@ -24,7 +24,7 @@ public class ConsoleBridge {
 
     private final AtomicBoolean started = new AtomicBoolean(false);
 
-    // Hook: il controller può intercettare l’output del backend
+    
     private volatile Consumer<String> onOutput;
 
     public ConsoleBridge(TerminalFrame view) {
@@ -38,14 +38,14 @@ public class ConsoleBridge {
     public void start() throws IOException {
         if (!started.compareAndSet(false, true)) return;
 
-        // 1) Pipe: GUI -> Scanner (GlobalScanner)
+        
         inPipe = new PipedInputStream();
         outPipe = new PipedOutputStream(inPipe);
         writer = new PrintWriter(new OutputStreamWriter(outPipe, StandardCharsets.UTF_8), true);
 
         GlobalScanner.setScanner(new Scanner(inPipe, StandardCharsets.UTF_8));
 
-        // 2) Redirect System.out/err -> JTextArea
+        
         originalOut = System.out;
         originalErr = System.err;
 
@@ -60,7 +60,7 @@ public class ConsoleBridge {
 
     public void sendLine(String line) {
         if (!started.get()) return;
-        writer.println(line); // newline => Scanner.nextLine() sblocca
+        writer.println(line); 
         writer.flush();
     }
 
@@ -75,7 +75,7 @@ public class ConsoleBridge {
         if (originalErr != null) System.setErr(originalErr);
     }
 
-    // OutputStream -> JTextArea, thread-safe + callback per controller
+    
     static class TextAreaOutputStream extends OutputStream {
         private final TerminalFrame view;
         private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -88,10 +88,10 @@ public class ConsoleBridge {
 
         @Override
         public synchronized void write(int b) {
-            // Accumula SEMPRE: print() può arrivare a pezzetti
+            
             buffer.write(b);
 
-            // quando arriva newline, flushiamo il buffer (linea completa)
+            
             if (b == '\n') {
                 flushBuffer();
             }
@@ -99,7 +99,7 @@ public class ConsoleBridge {
 
         @Override
         public synchronized void flush() {
-            // importante per print() senza newline
+            
             flushBuffer();
         }
 
@@ -109,13 +109,13 @@ public class ConsoleBridge {
 
             if (text == null || text.isEmpty()) return;
 
-            // normalizza Windows CRLF
+            
             text = text.replace("\r", "");
 
-            // manda al controller (per salvare ultima domanda/OK ecc.)
+            
             if (callback != null) callback.accept(text);
 
-            // ✅ stampa RAW in GUI (non aggiungere newline extra)
+            
             final String toShow = text;
             SwingUtilities.invokeLater(() -> view.appendRaw(toShow));
         }

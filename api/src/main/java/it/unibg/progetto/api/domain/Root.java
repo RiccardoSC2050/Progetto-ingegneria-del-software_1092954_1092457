@@ -7,6 +7,7 @@ import it.unibg.progetto.api.application.dto.RootDto;
 import it.unibg.progetto.api.application.usecase.CsvUseCase;
 import it.unibg.progetto.api.application.usecase.UsersUseCase;
 import it.unibg.progetto.api.cli.AppBlocksManageUsers;
+import it.unibg.progetto.api.cli.components.CheckLenght;
 import it.unibg.progetto.api.cli.components.Exit;
 import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.cli.components.Input;
@@ -84,11 +85,7 @@ public class Root extends Operator {
 		ab.RootConfiguration(root);
 	}
 
-	public boolean checkLenghtPw(String p) {
-		if (p.length() < 8)
-			return false;
-		return true;
-	}
+	
 
 	/**
 	 * create a User user = new User user is added to allOperators List
@@ -117,7 +114,7 @@ public class Root extends Operator {
 			do {
 				System.out.print("Inserire password utente [min 8 caratteri]: ");
 				pw = GlobalScanner.scanner.nextLine().strip();
-			} while (!checkLenghtPw(pw));
+			} while (!CheckLenght.checkLenghtPw(pw));
 			if (Quit.quit(pw))
 				return Validators.neutral;
 			pw = Hash.hash(pw);

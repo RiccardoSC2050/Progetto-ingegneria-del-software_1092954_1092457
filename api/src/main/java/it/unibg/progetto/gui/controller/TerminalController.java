@@ -35,7 +35,7 @@ public class TerminalController {
 		
 		new Thread(() -> {
 			try {
-				ApiMain.main(new String[] { "--spring.main.web-application-type=none" });
+				ApiMain.main(new String[] {});
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
 import it.unibg.progetto.api.application.usecase.UsersUseCase;
+import it.unibg.progetto.api.cli.components.CheckLenght;
 import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.cli.components.Quit;
 import it.unibg.progetto.api.domain.Root;
@@ -188,7 +189,7 @@ class AppBlocksManageUsersUnitTest {
 		when(session.getUuid()).thenReturn("ID1");
 
 		Root root = mock(Root.class);
-		when(root.checkLenghtPw("password99")).thenReturn(true);
+		when(CheckLenght.checkLenghtPw("password99")).thenReturn(true);
 
 		UsersUseCase usersUseCase = mock(UsersUseCase.class);
 

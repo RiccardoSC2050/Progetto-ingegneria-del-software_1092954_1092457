@@ -20,7 +20,7 @@ public class LauncherMain {
         if (scelta.equals("1")) {
             GuiMain.main(args);
         } else if (scelta.equals("2")) {
-            ApiMain.main(new String[] { "--spring.main.web-application-type=none" });
+            ApiMain.main(new String[] {});
         } else {
             System.out.println("Scelta non valida.");
         }

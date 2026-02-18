@@ -9,6 +9,7 @@ import it.unibg.progetto.api.application.dto.CsvDto;
 import it.unibg.progetto.api.application.dto.RootDto;
 import it.unibg.progetto.api.application.usecase.CsvUseCase;
 import it.unibg.progetto.api.application.usecase.UsersUseCase;
+import it.unibg.progetto.api.cli.components.CheckLenght;
 import it.unibg.progetto.api.cli.components.Exit;
 import it.unibg.progetto.api.cli.components.GlobalScanner;
 import it.unibg.progetto.api.cli.components.Quit;
@@ -33,7 +34,7 @@ public class AppBlocksManageUsers {
 			do {
 				System.out.print("Inserire PASSWORD di SISTEMA: ");
 				pw = GlobalScanner.scanner.nextLine().strip();
-			} while (!Root.getInstanceRoot().checkLenghtPw(pw));
+			} while (!CheckLenght.checkLenghtPw(pw));
 			root = new Root(Hash.hash(pw));
 			UsersUseCase.getInstance().addRootOnData(root);
 			System.out.println();
@@ -370,7 +371,7 @@ public class AppBlocksManageUsers {
 			pw = GlobalScanner.scanner.nextLine().strip();
 			if (Quit.quit(pw))
 				return;
-		} while (!Root.getInstanceRoot().checkLenghtPw(pw));
+		} while (!CheckLenght.checkLenghtPw(pw));
 		UsersUseCase.getInstance().changePassordToUser(Hash.hash(pw), id);
 	}
 

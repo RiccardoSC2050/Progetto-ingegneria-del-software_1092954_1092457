@@ -1,0 +1,33 @@
+@startuml
+skinparam shadowing false
+skinparam linetype ortho
+
+object "ApiMain/CLI" as CLI
+object "CsvUseCase" as CUC
+object "CsvService" as CS
+object "CsvRepository" as CR
+object "CsvFileManager\n(temp folder)" as CFM
+
+CLI -- CUC
+CUC -- CS
+CS -- CR
+CUC -- CFM
+
+note right of CLI
+1: save
+end note
+
+note right of CUC
+1.1: saveAllTempCsvOfUser(session)
+1.2: listTempFiles()
+1.3: for each file -> convert to DTO
+end note
+
+note right of CS
+1.4: addNewFileInCsvTableFromCsvDto(dto)
+end note
+
+note right of CR
+1.5: save(entity)
+end note
+@enduml

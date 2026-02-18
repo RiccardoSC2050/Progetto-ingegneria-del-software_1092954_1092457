@@ -1,0 +1,44 @@
+@startuml
+hide footbox
+skinparam shadowing false
+skinparam linetype ortho
+
+actor User as U
+participant "ApiMain/CLI" as CLI
+participant "CsvResearchManager" as CRM
+participant "CsvFileManager" as CFM
+participant "CsvUseCase" as CUC
+participant "CsvService" as CS
+participant "CsvRepository" as CR
+
+U -> CLI : command "search"
+CLI -> CRM : startSearch(session, query)
+
+CRM -> CFM : readCsv(DOCUMENTO_AZIENDALE)
+CFM --> CRM : rows[]
+
+loop for each row
+  CRM -> CRM : applyFilter(row, query)
+end
+
+CRM --> CLI : results[]
+CLI -> U : show results
+
+alt AccessLevel < 2
+  CLI -> U : "Non puoi salvare (AL<2)"
+else AccessLevel >= 2
+  opt User wants to save
+    U -> CLI : confirm save + fileName
+    CLI -> CFM : writeTempCsv(results, fileName)
+
+    CLI -> CUC : saveAllTempCsvOfUser(session)
+    CUC -> CS : addNewFileInCsvTableFromCsvDto(dto)
+    CS -> CR : save(CsvEntity)
+    CR --> CS : ok
+    CS --> CUC : ok
+    CUC --> CLI : ok
+
+    CLI -> U : "Salvato su DB"
+  end
+end
+@enduml

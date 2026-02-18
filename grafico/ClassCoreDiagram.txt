@@ -1,0 +1,155 @@
+@startuml
+left to right direction
+skinparam shadowing false
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+' =======================
+' DOMAIN + SECURITY
+' =======================
+package "api.domain" {
+  abstract class Operator {
+    - id : String
+    - name : String
+    - password : String
+    - accessLevelValue : int
+    - accessLevel : AccessLevel
+  }
+
+  class User
+  class Root {
+    - root : Root {static}
+  }
+}
+
+package "api.domain.rules" {
+  enum AccessLevel {
+    AL1
+    AL2
+    AL3
+    AL5
+    + getLevel() : int
+  }
+}
+
+package "api.security" {
+  class Hash {
+    + hash(password:String) : String
+    + check(password:String, hashed:String) : boolean
+  }
+}
+
+package "api.security.session" {
+  class Session {
+    - uuid : String
+    - name : String
+    - accessLevel : int
+    - loginTime : Instant
+  }
+
+  class SessionManager {
+    - current : Session {static}
+    + login(userId:String, name:String, level:AccessLevel) : void
+    + logout() : void
+    + isLoggedIn() : boolean
+    + getCurrentSession() : Session
+  }
+}
+
+Operator <|-- User
+Operator <|-- Root
+Operator --> AccessLevel
+SessionManager *-- Session
+SessionManager --> AccessLevel
+
+' =======================
+' APPLICATION (DTO + USE CASE + MAPPER + INFRA)
+' =======================
+package "api.application.dto" {
+  class UserDto {
+    - uuid : String
+    - username : String
+    - password : String
+    - accessLevel : int
+  }
+  class RootDto {
+    - uuid : String
+    - username : String
+    - password : String
+    - accessLevel : int
+  }
+  class CsvDto {
+    - id : int
+    - fileName : String
+    - ownerId : String
+    - data : byte[]
+  }
+}
+
+package "api.mapping" {
+  class UserMapper <<Mapper>>
+  class RootMapper <<Mapper>>
+  class CsvMapper  <<Mapper>>
+}
+
+package "api.application.usecase" {
+  class UsersUseCase <<UseCase>>
+  class CsvUseCase   <<UseCase>>
+}
+
+package "api.infrastructure.csv" {
+  class CsvFileManager <<Infrastructure>>
+}
+
+UsersUseCase ..> UserMapper
+UsersUseCase ..> RootMapper
+UsersUseCase ..> Hash
+
+CsvUseCase ..> CsvMapper
+CsvUseCase ..> CsvFileManager
+
+UserMapper ..> UserDto
+RootMapper ..> RootDto
+CsvMapper  ..> CsvDto
+
+' =======================
+' SERVICE + DATA (JPA)
+' =======================
+package "service" {
+  class UsersService <<Service>>
+  class CsvService   <<Service>>
+}
+
+package "data" {
+  class Users <<Entity>> {
+    - uuid : String
+    - name : String
+    - password : String
+    - accessLevel : int
+  }
+
+  class Csv <<Entity>> {
+    - id : Integer
+    - fileName : String
+    - ownerId : String
+    - data : byte[]
+  }
+
+  interface UsersRepository <<Repository>>
+  interface CsvRepository   <<Repository>>
+}
+
+UsersUseCase ..> UsersService
+CsvUseCase   ..> CsvService
+
+UsersService ..> UsersRepository
+CsvService   ..> CsvRepository
+
+UsersRepository ..> Users
+CsvRepository   ..> Csv
+
+UserMapper ..> Users
+RootMapper ..> Users
+CsvMapper  ..> Csv
+
+@enduml

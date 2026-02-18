@@ -1,0 +1,36 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+package "api" as API {
+  package "cli" as API_CLI
+  package "application/usecase" as API_UC
+  package "domain" as API_DOM
+  package "mapping" as API_MAP
+  package "security/session" as API_SEC
+  package "csv" as API_CSV
+}
+
+package "service" as SRV {
+  package "services" as SRV_S
+}
+
+package "data" as DATA {
+  package "entities" as DATA_E
+  package "repositories" as DATA_R
+}
+
+API ..> SRV : uses
+SRV ..> DATA : uses
+
+API_UC ..> SRV_S : calls
+SRV_S ..> DATA_R : uses
+DATA_R ..> DATA_E : manages
+
+API_CLI ..> API_UC
+API_UC ..> API_DOM
+API_UC ..> API_MAP
+API_CLI ..> API_SEC
+API_CLI ..> API_CSV
+@enduml

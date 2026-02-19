@@ -1,0 +1,301 @@
+id,nome,cognome,mail,numero_di_telefono,ruolo,anno_inizio,richiami
+1,Giorgia,Sanna,giorgia.sanna@tech-italia.it,+39 3339149732,Senior Developer,2011,0
+2,Nicola,Galli,nicola.galli@azienda.it,+39 3399142600,Data Engineer,2018,0
+3,Marco,Moretti,marco.moretti@servizi-digitali.it,+39 3502608513,IT Support,2016,0
+4,Salvatore,Bruno,salvatore.bruno@servizi-digitali.it,+39 3490728977,QA Engineer,2021,0
+5,Maria,Marino,maria.marino@group.it,+39 3719686361,Product Manager,2013,0
+6,Beatrice,Marino,beatrice.marino@azienda.it,+39 3734663623,HR Specialist,2016,1
+7,Giorgio,Gentile,giorgio.gentile@group.it,+39 3302871230,Scrum Master,2016,0
+8,Pietro,Clemente,pietro.clemente@tech-italia.it,+39 3660938483,IT Support,2016,0
+9,Pietro,Colombo,pietro.colombo@softworks.it,+39 3663567281,Senior Developer,2018,0
+10,Barbara,Rizzo,barbara.rizzo@tech-italia.it,+39 3499807725,Senior Developer,2015,0
+11,Andrea,Cattaneo,andrea.cattaneo@azienda.it,+39 3342564251,Data Engineer,2020,1
+12,Matteo,Bernardi,matteo.bernardi@innovatech.it,+39 3499281590,DevOps Engineer,2022,0
+13,Rachele,Sala,rachele.sala@servizi-digitali.it,+39 3344924115,Customer Support,2018,0
+14,Claudia,Fabbri,claudia.fabbri@softworks.it,+39 3335007072,Customer Support,2022,0
+15,Filippo,Moretti,filippo.moretti@softworks.it,+39 3205438436,UX Designer,2019,0
+16,Michele,Vitale,michele.vitale@softworks.it,+39 3311437026,Developer,2021,1
+17,Rachele,Costa,rachele.costa@innovatech.it,+39 3374446912,Developer,2019,0
+18,Rachele,Marchegiani,rachele.marchegiani@servizi-digitali.it,+39 3776264956,Developer,2018,0
+19,Fabio,Colombo,fabio.colombo@softworks.it,+39 3479872386,QA Engineer,2016,0
+20,Marta,Colombo,marta.colombo@servizi-digitali.it,+39 3308626108,Security Engineer,2016,0
+21,Andrea,Bellini,andrea.bellini@tech-italia.it,+39 3916829332,Product Manager,2013,0
+22,Roberto,Coppola,roberto.coppola@group.it,+39 3291651177,Data Analyst,2014,0
+23,Elena,Martini,elena.martini@softworks.it,+39 3892351868,Developer,2018,0
+24,Matteo,Russo,matteo.russo@softworks.it,+39 3330848731,Sales Specialist,2020,0
+25,Giovanni,Vitale,giovanni.vitale@innovatech.it,+39 3913586084,Developer,2022,1
+26,Marco,Bernardi,marco.bernardi@innovatech.it,+39 3517096887,Senior Developer,2018,0
+27,Monica,Lombardi,monica.lombardi@tech-italia.it,+39 3299717032,Developer,2021,0
+28,Davide,Paci,davide.paci@softworks.it,+39 3370954280,Data Engineer,2023,0
+29,Raffaele,Colombo,raffaele.colombo@tech-italia.it,+39 3772011363,Scrum Master,2022,0
+30,Alessandro,Pastore,alessandro.pastore@group.it,+39 3664374922,Developer,2016,0
+31,Antonio,Costa,antonio.costa@servizi-digitali.it,+39 3905304573,Scrum Master,2022,2
+32,Pierluigi,Ferretti,pierluigi.ferretti@azienda.it,+39 3408487336,Office Manager,2014,2
+33,Serena,Marchetti,serena.marchetti@innovatech.it,+39 3608874152,Senior Developer,2008,1
+34,Simone,Giordano,simone.giordano@azienda.it,+39 3364569244,Senior Developer,2014,0
+35,Francesco,Fabbri,francesco.fabbri@azienda.it,+39 3317106422,Data Engineer,2022,0
+36,Andrea,Clemente,andrea.clemente@tech-italia.it,+39 3899255661,Technical Writer,2020,0
+37,Gabriele,Basile,gabriele.basile@servizi-digitali.it,+39 3367210624,Developer,2015,0
+38,Francesca,D'Angelo,francesca.d.angelo@tech-italia.it,+39 3335933742,Senior Developer,2019,1
+39,Pierluigi,Lombardi,pierluigi.lombardi@tech-italia.it,+39 3372970445,System Administrator,2021,0
+40,Arianna,Coppola,arianna.coppola@group.it,+39 3484476257,Sales Specialist,2015,0
+41,Alessandro,Pinna,alessandro.pinna@innovatech.it,+39 3705120253,Senior Developer,2020,1
+42,Paolo,Orlando,paolo.orlando@azienda.it,+39 3505891254,QA Engineer,2020,0
+43,Rachele,Amato,rachele.amato@azienda.it,+39 3492995870,System Administrator,2017,3
+44,Roberto,Messina,roberto.messina@servizi-digitali.it,+39 3888580255,IT Support,2015,1
+45,Alessandro,Ruggiero,alessandro.ruggiero@softworks.it,+39 3396110622,Developer,2018,2
+46,Patrizia,Grassi,patrizia.grassi@azienda.it,+39 3608508103,Scrum Master,2014,0
+47,Enrico,Cesarini,enrico.cesarini@innovatech.it,+39 3732919694,Developer,2020,0
+48,Marco,Farina,marco.farina@innovatech.it,+39 3667801207,Senior Developer,2015,0
+49,Riccardo,Caputo,riccardo.caputo@softworks.it,+39 3681566777,Developer,2021,0
+50,Marta,Ferrari,marta.ferrari@azienda.it,+39 3487971465,Developer,2020,0
+51,Edoardo,Caruso,edoardo.caruso@innovatech.it,+39 3926705062,IT Support,2017,0
+52,Simone,Sartori,simone.sartori@group.it,+39 3900842524,Senior Developer,2017,1
+53,Andrea,Piras,andrea.piras@softworks.it,+39 3667425149,Scrum Master,2017,0
+54,Carlo,Leone,carlo.leone@group.it,+39 3917550917,Accountant,2014,0
+55,Greta,De Santis,greta.de.santis@servizi-digitali.it,+39 3891299954,Project Manager,2018,0
+56,Giuseppe,Marino,giuseppe.marino@tech-italia.it,+39 3732563646,Developer,2020,0
+57,Giuseppe,Piras,giuseppe.piras@tech-italia.it,+39 3796534336,DevOps Engineer,2022,0
+58,Gaia,Villa,gaia.villa@servizi-digitali.it,+39 3606542890,Data Engineer,2022,2
+59,Giuseppe,Corsi,giuseppe.corsi@innovatech.it,+39 3474579094,Accountant,2016,0
+60,Antonio,Barbieri,antonio.barbieri@tech-italia.it,+39 3276610562,Account Manager,2017,0
+61,Roberto,Giordano,roberto.giordano@tech-italia.it,+39 3294364698,HR Specialist,2016,0
+62,Salvatore,Sanna,salvatore.sanna@innovatech.it,+39 3491374158,Customer Support,2019,0
+63,Giorgio,Ferri,giorgio.ferri@group.it,+39 3280520596,Project Manager,2022,0
+64,Gabriele,Vitale,gabriele.vitale@group.it,+39 3349461839,Developer,2023,0
+65,Filippo,Barbieri,filippo.barbieri@group.it,+39 3342747534,Product Owner,2023,0
+66,Michele,Bellini,michele.bellini@innovatech.it,+39 3773327421,Scrum Master,2011,0
+67,Elena,Farina,elena.farina@softworks.it,+39 3349494772,Account Manager,2019,0
+68,Filippo,Colombo,filippo.colombo@servizi-digitali.it,+39 3207047416,Data Engineer,2021,0
+69,Barbara,Lombardi,barbara.lombardi@group.it,+39 3509029043,Data Analyst,2021,0
+70,Irene,Sala,irene.sala@tech-italia.it,+39 3314679639,QA Engineer,2022,0
+71,Pierluigi,Luna,pierluigi.luna@azienda.it,+39 3925452832,DevOps Engineer,2016,0
+72,Arianna,Sanna,arianna.sanna@group.it,+39 3509324626,Accountant,2009,2
+73,Vincenzo,De Santis,vincenzo.de.santis@tech-italia.it,+39 3918234615,Product Manager,2016,0
+74,Antonio,Marchegiani,antonio.marchegiani@group.it,+39 3717939993,Senior Developer,2016,0
+75,Sofia,Amato,sofia.amato@innovatech.it,+39 3505144280,QA Engineer,2017,0
+76,Federico,Carbone,federico.carbone@group.it,+39 3383213524,Business Analyst,2016,0
+77,Greta,Pagani,greta.pagani@azienda.it,+39 3394970190,Senior Developer,2013,0
+78,Giuseppe,Costa,giuseppe.costa@azienda.it,+39 3512118618,Senior Developer,2017,0
+79,Marco,Bellini,marco.bellini@innovatech.it,+39 3895716097,Senior Developer,2012,0
+80,Cristina,De Luca,cristina.de.luca@innovatech.it,+39 3921242892,Sales Specialist,2020,0
+81,Edoardo,Farina,edoardo.farina@tech-italia.it,+39 3349362911,Developer,2021,0
+82,Marta,Benedetti,marta.benedetti@innovatech.it,+39 3609873813,DevOps Engineer,2024,0
+83,Patrizia,Bruno,patrizia.bruno@tech-italia.it,+39 3404440025,Business Analyst,2020,0
+84,Matteo,Moretti,matteo.moretti@innovatech.it,+39 3914886520,Developer,2013,0
+85,Cristian,Ricci,cristian.ricci@servizi-digitali.it,+39 3397132648,IT Support,2015,0
+86,Pietro,Rizzo,pietro.rizzo@tech-italia.it,+39 3609983182,Developer,2021,0
+87,Federico,Piras,federico.piras@group.it,+39 3774567533,IT Support,2019,0
+88,Alessandro,Ruggiero,aruggiero@softworks.it,+39 3490433940,IT Support,2014,2
+89,Gaia,Mori,gaia.mori@group.it,+39 3509667820,Business Analyst,2013,0
+90,Massimiliano,Sanna,massimiliano.sanna@softworks.it,+39 3888249789,Developer,2024,0
+91,Tommaso,Luna,tommaso.luna@tech-italia.it,+39 3686906258,Developer,2020,0
+92,Sofia,Gallo,sofia.gallo@servizi-digitali.it,+39 3495423634,Data Analyst,2015,0
+93,Chiara,Caputo,chiara.caputo@innovatech.it,+39 3790909393,HR Specialist,2013,0
+94,Simona,Esposito,simona.esposito@softworks.it,+39 3354832327,Developer,2018,0
+95,Raffaele,Vitale,raffaele.vitale@servizi-digitali.it,+39 3209265241,IT Support,2018,0
+96,Valentina,Piras,valentina.piras@group.it,+39 3368361353,Business Analyst,2023,0
+97,Elisa,Mazza,elisa.mazza@tech-italia.it,+39 3909248693,Technical Writer,2015,0
+98,Alessia,Colombo,alessia.colombo@innovatech.it,+39 3688518424,Senior Developer,2014,0
+99,Irene,Paci,irene.paci@innovatech.it,+39 3367491822,Office Manager,2016,0
+100,Giuseppe,Villa,giuseppe.villa@servizi-digitali.it,+39 3394006492,Data Analyst,2019,0
+101,Francesca,Grassi,francesca.grassi@group.it,+39 3736477326,Customer Support,2024,1
+102,Federica,Sorrentino,federica.sorrentino@tech-italia.it,+39 3939901584,Business Analyst,2017,0
+103,Elena,Donati,elena.donati@azienda.it,+39 3366878299,Security Engineer,2022,2
+104,Francesco,Testa,francesco.testa@innovatech.it,+39 3315512415,Project Manager,2020,1
+105,Tommaso,Guerra,tommaso.guerra@innovatech.it,+39 3281147909,IT Support,2016,0
+106,Fabio,Greco,fabio.greco@azienda.it,+39 3337443690,Data Analyst,2016,0
+107,Tommaso,Romano,tommaso.romano@servizi-digitali.it,+39 3882442255,Senior Developer,2013,0
+108,Ilaria,Barbieri,ilaria.barbieri@softworks.it,+39 3734040453,Developer,2019,0
+109,Francesco,D'Amico,francesco.d.amico@azienda.it,+39 3904825658,Senior Developer,2018,0
+110,Giorgio,Mori,giorgio.mori@innovatech.it,+39 3497664433,QA Engineer,2022,0
+111,Daniele,Rinaldi,daniele.rinaldi@softworks.it,+39 3709643743,Senior Developer,2014,0
+112,Antonio,Sanna,antonio.sanna@group.it,+39 3298333700,Developer,2022,1
+113,Marta,Corsi,marta.corsi@tech-italia.it,+39 3394204819,Sales Specialist,2020,0
+114,Alessia,Guerra,alessia.guerra@group.it,+39 3285183033,Developer,2021,0
+115,Andrea,Greco,andrea.greco@servizi-digitali.it,+39 3792946751,Security Engineer,2016,1
+116,Noemi,Donati,noemi.donati@servizi-digitali.it,+39 3374311242,Data Engineer,2023,2
+117,Beatrice,Testa,beatrice.testa@innovatech.it,+39 3302361510,Sales Specialist,2021,0
+118,Camilla,Mariani,camilla.mariani@innovatech.it,+39 3204436878,QA Engineer,2019,0
+119,Claudia,Paci,claudia.paci@group.it,+39 3711817745,DevOps Engineer,2020,0
+120,Sofia,Parisi,sofia.parisi@tech-italia.it,+39 3307789116,Security Engineer,2022,0
+121,Andrea,Conti,andrea.conti@servizi-digitali.it,+39 3921948178,Business Analyst,2014,1
+122,Cristian,Marchetti,cristian.marchetti@group.it,+39 3799853935,Scrum Master,2019,0
+123,Simone,De Santis,simone.de.santis@servizi-digitali.it,+39 3286216461,Project Manager,2013,0
+124,Filippo,Bruno,filippo.bruno@servizi-digitali.it,+39 3701015861,Technical Writer,2018,0
+125,Cristian,Greco,cristian.greco@group.it,+39 3270848566,Scrum Master,2019,0
+126,Edoardo,Gentile,edoardo.gentile@softworks.it,+39 3409837875,Developer,2016,1
+127,Gabriele,Pagani,gabriele.pagani@tech-italia.it,+39 3359063311,Developer,2017,0
+128,Giorgia,Costa,giorgia.costa@tech-italia.it,+39 3660264762,Developer,2016,0
+129,Greta,De Luca,greta.de.luca@innovatech.it,+39 3896074006,Customer Support,2019,0
+130,Pierluigi,Conti,pierluigi.conti@group.it,+39 3607684678,IT Support,2020,0
+131,Camilla,Sartori,camilla.sartori@innovatech.it,+39 3891232969,IT Support,2022,0
+132,Andrea,Sanna,andrea.sanna@softworks.it,+39 3666390515,Project Manager,2024,0
+133,Raffaele,Ruggiero,raffaele.ruggiero@group.it,+39 3349249870,Developer,2021,0
+134,Fabio,Coppola,fabio.coppola@innovatech.it,+39 3776979148,QA Engineer,2021,0
+135,Francesco,Marchetti,francesco.marchetti@group.it,+39 3911126310,Business Analyst,2014,0
+136,Filippo,Costa,filippo.costa@softworks.it,+39 3682050700,Product Manager,2015,1
+137,Roberta,Esposito,roberta.esposito@softworks.it,+39 3605899644,Business Analyst,2015,0
+138,Daniele,Ferri,daniele.ferri@servizi-digitali.it,+39 3711927455,Account Manager,2019,0
+139,Sofia,Pastore,sofia.pastore@group.it,+39 3274487028,Project Manager,2009,0
+140,Arianna,Messina,arianna.messina@tech-italia.it,+39 3771167449,Developer,2015,0
+141,Leonardo,Longo,leonardo.longo@innovatech.it,+39 3682640889,DevOps Engineer,2018,0
+142,Gaia,Pagani,gaia.pagani@azienda.it,+39 3362640899,Developer,2021,0
+143,Massimiliano,Caputo,massimiliano.caputo@softworks.it,+39 3896948850,DevOps Engineer,2017,0
+144,Roberto,De Luca,roberto.de.luca@group.it,+39 3928840487,Senior Developer,2018,0
+145,Raffaele,Romano,raffaele.romano@servizi-digitali.it,+39 3402302417,Developer,2021,0
+146,Sergio,Ruggiero,sergio.ruggiero@innovatech.it,+39 3478393009,Developer,2019,0
+147,Antonio,Conti,antonio.conti@innovatech.it,+39 3305252285,Data Analyst,2020,0
+148,Elisa,Pellegrini,elisa.pellegrini@azienda.it,+39 3662883553,Developer,2021,0
+149,Noemi,Greco,noemi.greco@azienda.it,+39 3487309439,Data Analyst,2020,0
+150,Michele,Testa,michele.testa@tech-italia.it,+39 3308564488,Senior Developer,2017,0
+151,Giorgio,Messina,giorgio.messina@group.it,+39 3363963933,IT Support,2015,0
+152,Gabriele,Vitali,gabriele.vitali@group.it,+39 3927783840,Developer,2021,0
+153,Edoardo,Locatelli,edoardo.locatelli@softworks.it,+39 3665303930,Project Manager,2012,0
+154,Michele,Sanna,michele.sanna@servizi-digitali.it,+39 3931244712,Product Owner,2014,0
+155,Enrico,Ricci,enrico.ricci@azienda.it,+39 3936450545,Project Manager,2016,0
+156,Francesca,Leone,francesca.leone@softworks.it,+39 3395394323,Security Engineer,2020,0
+157,Simona,Rinaldi,simona.rinaldi@servizi-digitali.it,+39 3318464927,Sales Specialist,2020,0
+158,Simona,Donati,simona.donati@tech-italia.it,+39 3716255418,UX Designer,2023,0
+159,Angela,Esposito,angela.esposito@group.it,+39 3681105817,Sales Specialist,2017,0
+160,Francesco,Caputo,francesco.caputo@softworks.it,+39 3365592886,Business Analyst,2014,0
+161,Caterina,Vitali,caterina.vitali@innovatech.it,+39 3359983135,IT Support,2020,0
+162,Alberto,Costa,alberto.costa@group.it,+39 3317103580,Scrum Master,2016,0
+163,Nicola,Testa,nicola.testa@innovatech.it,+39 3393800761,Business Analyst,2025,0
+164,Simone,Fabbri,simone.fabbri@group.it,+39 3285649968,Customer Support,2022,0
+165,Federica,Moretti,federica.moretti@group.it,+39 3377342941,Developer,2013,0
+166,Simona,Landi,simona.landi@group.it,+39 3893925917,Senior Developer,2016,0
+167,Cristina,Caruso,cristina.caruso@softworks.it,+39 3897745704,QA Engineer,2021,0
+168,Vincenzo,Moretti,vincenzo.moretti@softworks.it,+39 3354194357,Sales Specialist,2014,0
+169,Simone,Benedetti,simone.benedetti@servizi-digitali.it,+39 3312689594,Account Manager,2014,1
+170,Roberto,Greco,roberto.greco@tech-italia.it,+39 3895865064,Business Analyst,2023,0
+171,Filippo,Vitale,filippo.vitale@azienda.it,+39 3713767135,DevOps Engineer,2013,2
+172,Arianna,Rizzo,arianna.rizzo@servizi-digitali.it,+39 3912328554,Developer,2021,0
+173,Sara,Verdi,sara.verdi@tech-italia.it,+39 3881865405,Senior Developer,2019,0
+174,Emanuele,Valentini,emanuele.valentini@softworks.it,+39 3901053729,Project Manager,2011,1
+175,Giorgia,Guerra,giorgia.guerra@tech-italia.it,+39 3364886733,UX Designer,2018,0
+176,Vincenzo,Santoro,vincenzo.santoro@azienda.it,+39 3711135470,Scrum Master,2022,0
+177,Daniela,Cesarini,daniela.cesarini@innovatech.it,+39 3286490791,Developer,2024,0
+178,Matteo,Messina,matteo.messina@group.it,+39 3339762717,Senior Developer,2018,0
+179,Giuseppe,Testa,giuseppe.testa@tech-italia.it,+39 3908028420,Sales Specialist,2020,1
+180,Cristian,Gallo,cristian.gallo@azienda.it,+39 3390703065,Senior Developer,2014,0
+181,Giuseppe,Pinna,giuseppe.pinna@group.it,+39 3394800144,Senior Developer,2015,1
+182,Arianna,Sala,arianna.sala@servizi-digitali.it,+39 3886711251,Developer,2021,1
+183,Stefano,Sorrentino,stefano.sorrentino@servizi-digitali.it,+39 3501385991,IT Support,2021,0
+184,Ilaria,Basile,ilaria.basile@azienda.it,+39 3315501583,Senior Developer,2018,0
+185,Roberta,Barbieri,roberta.barbieri@servizi-digitali.it,+39 3890710601,IT Support,2021,1
+186,Roberta,Sanna,roberta.sanna@azienda.it,+39 3306815076,Project Manager,2015,1
+187,Giorgia,Rizzo,giorgia.rizzo@group.it,+39 3890583829,Account Manager,2012,0
+188,Noemi,Bernardi,noemi.bernardi@azienda.it,+39 3367548448,Business Analyst,2023,0
+189,Gaia,Giordano,gaia.giordano@innovatech.it,+39 3664675638,UX Designer,2017,0
+190,Monica,Benedetti,monica.benedetti@softworks.it,+39 3344391883,DevOps Engineer,2021,0
+191,Pierluigi,Palmieri,pierluigi.palmieri@innovatech.it,+39 3392057514,IT Support,2015,0
+192,Massimiliano,Greco,massimiliano.greco@servizi-digitali.it,+39 3701089496,Sales Specialist,2019,0
+193,Riccardo,Clemente,riccardo.clemente@servizi-digitali.it,+39 3933762150,Developer,2015,0
+194,Sergio,Neri,sergio.neri@softworks.it,+39 3717841768,QA Engineer,2021,0
+195,Sara,Colombo,sara.colombo@group.it,+39 3918819709,QA Engineer,2018,0
+196,Andrea,Grassi,andrea.grassi@innovatech.it,+39 3908679860,Project Manager,2014,1
+197,Irene,Santoro,irene.santoro@tech-italia.it,+39 3888436654,Customer Support,2022,0
+198,Gabriele,Farina,gabriele.farina@servizi-digitali.it,+39 3475805303,Developer,2023,0
+199,Giovanni,Serra,giovanni.serra@softworks.it,+39 3502100009,Developer,2020,0
+200,Riccardo,Mori,riccardo.mori@tech-italia.it,+39 3375664316,System Administrator,2020,0
+201,Giorgia,Marino,giorgia.marino@group.it,+39 3493536777,Developer,2021,0
+202,Monica,Guerra,monica.guerra@group.it,+39 3608102469,UX Designer,2017,1
+203,Cristian,Ricci,cristian.ricci@tech-italia.it,+39 3896972975,IT Support,2019,0
+204,Veronica,Grassi,veronica.grassi@servizi-digitali.it,+39 3772193891,IT Support,2021,0
+205,Emanuele,Piras,emanuele.piras@innovatech.it,+39 3482363534,Developer,2014,0
+206,Pierluigi,Valentini,pierluigi.valentini@tech-italia.it,+39 3669691980,Senior Developer,2018,0
+207,Claudio,Piras,claudio.piras@servizi-digitali.it,+39 3920388833,Data Engineer,2014,0
+208,Emanuele,Longo,emanuele.longo@azienda.it,+39 3294720376,Product Owner,2016,1
+209,Cristina,Palmieri,cristina.palmieri@azienda.it,+39 3882247055,UX Designer,2022,0
+210,Noemi,Conti,noemi.conti@softworks.it,+39 3396082139,DevOps Engineer,2019,0
+211,Carlo,Sanna,carlo.sanna@softworks.it,+39 3342158613,Account Manager,2023,0
+212,Arianna,Mariani,arianna.mariani@tech-italia.it,+39 3398541658,System Administrator,2015,0
+213,Alberto,Pinna,alberto.pinna@tech-italia.it,+39 3932345135,UX Designer,2017,0
+214,Pierluigi,Farina,pierluigi.farina@softworks.it,+39 3938931180,Product Owner,2016,0
+215,Luca,Marchetti,luca.marchetti@azienda.it,+39 3799792896,QA Engineer,2017,1
+216,Giorgia,Pagani,giorgia.pagani@group.it,+39 3470861596,Data Engineer,2020,0
+217,Patrizia,Villa,patrizia.villa@group.it,+39 3480529665,Developer,2019,0
+218,Massimiliano,Grassi,massimiliano.grassi@innovatech.it,+39 3406884990,DevOps Engineer,2019,0
+219,Davide,Giordano,davide.giordano@softworks.it,+39 3668025733,UX Designer,2019,0
+220,Giuseppe,Testa,giuseppe.testa@group.it,+39 3498123194,UX Designer,2016,0
+221,Fabio,Farina,fabio.farina@group.it,+39 3408204110,Customer Support,2017,0
+222,Alice,Palmieri,alice.palmieri@group.it,+39 3736619156,Developer,2021,2
+223,Beatrice,Conti,beatrice.conti@group.it,+39 3315811015,Senior Developer,2021,0
+224,Laura,Ferrari,laura.ferrari@servizi-digitali.it,+39 3502303058,Account Manager,2011,0
+225,Davide,Luna,davide.luna@tech-italia.it,+39 3470880654,Security Engineer,2015,0
+226,Andrea,Rossi,andrea.rossi@tech-italia.it,+39 3797980915,Business Analyst,2019,0
+227,Veronica,Palmieri,veronica.palmieri@azienda.it,+39 3478978365,Project Manager,2018,1
+228,Stefano,Valentini,stefano.valentini@tech-italia.it,+39 3286660463,Accountant,2020,0
+229,Beatrice,Gallo,beatrice.gallo@softworks.it,+39 3335621073,Developer,2017,4
+230,Alessia,Fabbri,alessia.fabbri@tech-italia.it,+39 3345547958,Data Analyst,2016,0
+231,Stefano,Bianchi,stefano.bianchi@servizi-digitali.it,+39 3392944316,IT Support,2020,0
+232,Roberto,Cattaneo,roberto.cattaneo@innovatech.it,+39 3333100114,QA Engineer,2024,0
+233,Chiara,Monti,chiara.monti@innovatech.it,+39 3505530194,DevOps Engineer,2017,0
+234,Filippo,Marchegiani,filippo.marchegiani@group.it,+39 3347808032,Senior Developer,2014,0
+235,Michele,Marchegiani,michele.marchegiani@servizi-digitali.it,+39 3713705235,Developer,2016,0
+236,Raffaele,Marchetti,raffaele.marchetti@softworks.it,+39 3919018050,DevOps Engineer,2021,1
+237,Angela,Marino,angela.marino@softworks.it,+39 3711310346,UX Designer,2023,0
+238,Daniela,Ferrari,daniela.ferrari@tech-italia.it,+39 3375504900,Product Manager,2020,0
+239,Irene,De Santis,irene.de.santis@softworks.it,+39 3890933413,Developer,2019,0
+240,Davide,Mariani,davide.mariani@servizi-digitali.it,+39 3276642917,Data Analyst,2017,0
+241,Matteo,Conti,matteo.conti@group.it,+39 3309079216,DevOps Engineer,2024,2
+242,Daniele,Gallo,daniele.gallo@tech-italia.it,+39 3357052503,Senior Developer,2015,1
+243,Salvatore,Villa,salvatore.villa@group.it,+39 3355834610,Developer,2015,4
+244,Fabio,Rossi,fabio.rossi@servizi-digitali.it,+39 3909134277,Customer Support,2018,0
+245,Cristian,Messina,cristian.messina@tech-italia.it,+39 3340540516,Developer,2021,0
+246,Giorgia,Vitale,giorgia.vitale@azienda.it,+39 3287490038,Senior Developer,2017,0
+247,Alessandro,Orlando,alessandro.orlando@softworks.it,+39 3400946973,Data Analyst,2015,3
+248,Gaia,Grassi,gaia.grassi@group.it,+39 3663974590,Product Manager,2014,0
+249,Marta,Coppola,marta.coppola@azienda.it,+39 3387167236,QA Engineer,2019,0
+250,Salvatore,Donati,salvatore.donati@innovatech.it,+39 3792503456,QA Engineer,2017,0
+251,Emanuele,Ferri,emanuele.ferri@group.it,+39 3367768273,QA Engineer,2023,0
+252,Sofia,Donati,sofia.donati@tech-italia.it,+39 3493411424,Developer,2017,0
+253,Filippo,Greco,filippo.greco@tech-italia.it,+39 3294504038,UX Designer,2018,0
+254,Matteo,Caruso,matteo.caruso@softworks.it,+39 3408042900,Sales Specialist,2016,1
+255,Marco,Longo,marco.longo@group.it,+39 3348034958,System Administrator,2021,0
+256,Camilla,Vitale,camilla.vitale@servizi-digitali.it,+39 3737822384,Product Manager,2016,0
+257,Claudio,Sorrentino,claudio.sorrentino@group.it,+39 3915372622,Data Analyst,2023,0
+258,Edoardo,Ferri,edoardo.ferri@azienda.it,+39 3499283027,Customer Support,2023,0
+259,Gabriele,Ferrari,gabriele.ferrari@innovatech.it,+39 3488376888,QA Engineer,2019,2
+260,Sergio,Locatelli,sergio.locatelli@innovatech.it,+39 3375908535,IT Support,2016,0
+261,Giuseppe,Locatelli,giuseppe.locatelli@softworks.it,+39 3281247057,Business Analyst,2023,0
+262,Elisa,Giordano,elisa.giordano@tech-italia.it,+39 3302533857,Account Manager,2008,0
+263,Pierluigi,Clemente,pierluigi.clemente@softworks.it,+39 3918184838,Scrum Master,2009,0
+264,Luca,Donati,luca.donati@softworks.it,+39 3510287605,IT Support,2019,0
+265,Stefano,Rinaldi,stefano.rinaldi@softworks.it,+39 3364042786,System Administrator,2013,0
+266,Alice,Fiore,alice.fiore@innovatech.it,+39 3909479163,Developer,2017,0
+267,Giovanni,Vitali,giovanni.vitali@group.it,+39 3281568678,Office Manager,2015,0
+268,Marco,Barbieri,marco.barbieri@innovatech.it,+39 3689493498,Developer,2024,2
+269,Francesca,Galli,francesca.galli@group.it,+39 3914548220,Senior Developer,2010,0
+270,Rachele,Ferretti,rachele.ferretti@tech-italia.it,+39 3660262699,Scrum Master,2023,0
+271,Camilla,Ricci,camilla.ricci@softworks.it,+39 3489507579,QA Engineer,2022,0
+272,Arianna,Bernardi,arianna.bernardi@tech-italia.it,+39 3318401909,Customer Support,2021,0
+273,Fabio,Ricci,fabio.ricci@softworks.it,+39 3775475691,QA Engineer,2013,0
+274,Monica,Galli,monica.galli@innovatech.it,+39 3883116163,QA Engineer,2020,0
+275,Pierluigi,Pellegrini,pierluigi.pellegrini@group.it,+39 3301376369,Sales Specialist,2017,0
+276,Federica,Bernardi,federica.bernardi@azienda.it,+39 3310087161,QA Engineer,2023,0
+277,Elena,Costa,elena.costa@innovatech.it,+39 3899344658,Developer,2019,0
+278,Giorgio,Cesarini,giorgio.cesarini@softworks.it,+39 3666463219,Developer,2012,0
+279,Sofia,Martini,sofia.martini@tech-italia.it,+39 3732843767,Product Manager,2012,0
+280,Matteo,Barbieri,matteo.barbieri@innovatech.it,+39 3608124053,Data Analyst,2021,0
+281,Monica,Pagani,monica.pagani@innovatech.it,+39 3332273137,Project Manager,2014,2
+282,Pierluigi,Villa,pierluigi.villa@servizi-digitali.it,+39 3895615941,Sales Specialist,2018,1
+283,Angela,Giordano,angela.giordano@softworks.it,+39 3398036449,QA Engineer,2017,2
+284,Beatrice,Marchegiani,beatrice.marchegiani@softworks.it,+39 3485467463,Project Manager,2015,1
+285,Federico,Ferretti,federico.ferretti@softworks.it,+39 3389229132,Developer,2013,0
+286,Laura,Russo,laura.russo@group.it,+39 3306864256,Sales Specialist,2020,0
+287,Francesco,Caputo,francesco.caputo@innovatech.it,+39 3731240929,Developer,2019,0
+288,Rachele,Fabbri,rachele.fabbri@group.it,+39 3799120853,System Administrator,2009,2
+289,Rachele,Pagani,rachele.pagani@azienda.it,+39 3334164624,Project Manager,2018,0
+290,Francesca,Ferretti,francesca.ferretti@group.it,+39 3775563269,Technical Writer,2023,0
+291,Francesco,Ferri,francesco.ferri@softworks.it,+39 3477478923,UX Designer,2018,0
+292,Daniela,Lombardi,daniela.lombardi@azienda.it,+39 3911754047,QA Engineer,2017,1
+293,Gabriele,Messina,gabriele.messina@innovatech.it,+39 3408742856,QA Engineer,2019,0
+294,Massimiliano,Grassi,massimiliano.grassi@azienda.it,+39 3340378915,Developer,2022,0
+295,Silvia,Martini,silvia.martini@softworks.it,+39 3375553084,UX Designer,2019,2
+296,Antonio,Guerra,antonio.guerra@group.it,+39 3886636771,Developer,2013,0
+297,Samuele,Sartori,samuele.sartori@group.it,+39 3403452490,DevOps Engineer,2017,0
+298,Gaia,Rinaldi,gaia.rinaldi@softworks.it,+39 3386136988,Sales Specialist,2017,0
+299,Sergio,Donati,sergio.donati@servizi-digitali.it,+39 3736585795,Business Analyst,2020,0
+300,Patrizia,Fontana,patrizia.fontana@group.it,+39 3609901382,Sales Specialist,2014,0
